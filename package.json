@@ -10,7 +10,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "postinstall": "quasar prepare"
+    "postinstall": "quasar prepare",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore"
   },
   "dependencies": {
     "vue-i18n": "^11.0.0",
@@ -18,14 +19,24 @@
     "@quasar/extras": "^1.16.4",
     "quasar": "^2.16.0",
     "vue": "^3.5.22",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "@apollo/client": "^4.0.9",
+    "@formkit/vue": "^1.6.9",
+    "dayjs": "^1.11.19",
+    "gql-query-builder": "^3.8.0",
+    "graphql": "^16.12.0",
+    "graphql-tag": "^2.12.6",
+    "pinia-plugin-persistedstate": "^4.7.1"
   },
   "devDependencies": {
     "@types/node": "^20.5.9",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@quasar/app-vite": "^2.1.0",
     "autoprefixer": "^10.4.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "prettier": "^3.3.3",
+    "unplugin-auto-import": "^20.3.0",
+    "unplugin-vue-components": "^30.0.0"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22 || ^20",
