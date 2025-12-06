@@ -1,24 +1,29 @@
-# Quasar App (frontend-fdn-quasar)
+# Quasar Enterprise Starter Kit
 
-A Quasar Project
+Arquitectura profesional para proyectos grandes con **Quasar + Vite + Pinia**, autoimportación completa y módulos escalables.
 
-## Install the dependencies
+---
+
+## 🚀 Características principales
+
+- ✔ Autoimportación de composables, stores, helpers, utils y módulos
+- ✔ Alias `@` y `~`
+- ✔ Estructura modular por dominios (`modules/users`, `modules/products`, etc.)
+- ✔ Integración con Quasar (layouts, componentes, assets)
+- ✔ Servicios limpios con Axios
+- ✔ Stores globales + stores por módulo (Pinia)
+- ✔ Composables reutilizables
+
+---
+
+## 📁 Estructura del proyecto
+
+Ver carpeta `src/` generada en el starter kit.
+
+---
+
+## 🛠 Instalación
+
 ```bash
-yarn
-# or
 npm install
 ```
-
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
-
-
-### Build the app for production
-```bash
-quasar build
-```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
