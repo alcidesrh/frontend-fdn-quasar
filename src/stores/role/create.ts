@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { SubmissionError } from "src/utils/error";
-import api from "src/utils/api";
+import api from "src/services/api";
 import type { Role } from "src/types/role";
 import type { SubmissionErrors } from "src/types/error";
 

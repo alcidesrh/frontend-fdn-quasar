@@ -6,33 +6,59 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const ENTRYPOINT: typeof import('./utils/config').ENTRYPOINT
+  const ENTRYPOINT_GRAPHQL: typeof import('./graphql/config').ENTRYPOINT_GRAPHQL
   const EffectScope: typeof import('vue').EffectScope
+  const Entity: typeof import('./models/useEntityFactory').Entity
+  const SubmissionError: typeof import('./utils/error').SubmissionError
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
+  const api: typeof import('./services/api').default
+  const apollo: typeof import('./graphql/api').apollo
+  const apolloClient: typeof import('./graphql/apolloClient').apolloClient
+  const bus: typeof import('./services/bus').bus
+  const cl: typeof import('./utils/miscellaneous').cl
+  const cle: typeof import('./utils/miscellaneous').cle
+  const cloading: typeof import('./utils/miscellaneous').cloading
+  const cls: typeof import('./utils/miscellaneous').cls
   const computed: typeof import('vue').computed
   const createApp: typeof import('vue').createApp
   const createPinia: typeof import('pinia').createPinia
+  const createStore: typeof import('./stores/useStore').createStore
   const customRef: typeof import('vue').customRef
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
   const effectScope: typeof import('vue').effectScope
+  const extractHubURL: typeof import('./utils/mercure').extractHubURL
+  const fdn: typeof import('./models/useEntityFactory').fdn
+  const formatDateInput: typeof import('./utils/date').formatDateInput
+  const formatDateTime: typeof import('./utils/date').formatDateTime
   const getActivePinia: typeof import('pinia').getActivePinia
+  const getAlertText: typeof import('./utils/miscellaneous').getAlertText
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const gloading: typeof import('./utils/miscellaneous').gloading
   const h: typeof import('vue').h
+  const highlighted: typeof import('./utils/miscellaneous').highlighted
   const inject: typeof import('vue').inject
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const logSQL: typeof import('./utils/miscellaneous').logSQL
   const mapActions: typeof import('pinia').mapActions
   const mapGetters: typeof import('pinia').mapGetters
   const mapState: typeof import('pinia').mapState
   const mapStores: typeof import('pinia').mapStores
   const mapWritableState: typeof import('pinia').mapWritableState
   const markRaw: typeof import('vue').markRaw
+  const mercureSubscribe: typeof import('./utils/mercure').mercureSubscribe
+  const merror: typeof import('./services/bus').merror
+  const minfo: typeof import('./services/bus').minfo
+  const mloading: typeof import('./utils/miscellaneous').mloading
+  const msuccess: typeof import('./services/bus').msuccess
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
   const onBeforeMount: typeof import('vue').onBeforeMount
@@ -51,6 +77,8 @@ declare global {
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
   const provide: typeof import('vue').provide
+  const qloading: typeof import('./utils/miscellaneous').qloading
+  const random: typeof import('./utils/miscellaneous').random
   const reactive: typeof import('vue').reactive
   const readonly: typeof import('vue').readonly
   const ref: typeof import('vue').ref
@@ -62,12 +90,15 @@ declare global {
   const shallowRef: typeof import('vue').shallowRef
   const storeToRefs: typeof import('pinia').storeToRefs
   const stores: typeof import('./stores/index').default
+  const str: typeof import('./utils/miscellaneous').str
   const toRaw: typeof import('vue').toRaw
   const toRef: typeof import('vue').toRef
   const toRefs: typeof import('vue').toRefs
   const toValue: typeof import('vue').toValue
+  const treeKey: typeof import('./utils/miscellaneous').treeKey
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
+  const useApollo: typeof import('./composables/useApollo').useApollo
   const useAttrs: typeof import('vue').useAttrs
   const useBreadcrumb: typeof import('./composables/breadcrumb').useBreadcrumb
   const useCounterStore: typeof import('./stores/example-store').useCounterStore
@@ -77,6 +108,7 @@ declare global {
   const useLink: typeof import('vue-router').useLink
   const useMercureItem: typeof import('./composables/mercureItem').useMercureItem
   const useMercureList: typeof import('./composables/mercureList').useMercureList
+  const useMetadataStore: typeof import('./stores/metadata').useMetadataStore
   const useModel: typeof import('vue').useModel
   const useNotifications: typeof import('./composables/notifications').useNotifications
   const useQuasar: typeof import('quasar').useQuasar
@@ -84,7 +116,9 @@ declare global {
   const useRouter: typeof import('vue-router').useRouter
   const useSlots: typeof import('vue').useSlots
   const useTemplateRef: typeof import('vue').useTemplateRef
+  const useUserSessionStore: typeof import('./stores/session').useUserSessionStore
   const useWatchErrors: typeof import('./composables/errors').useWatchErrors
+  const util: typeof import('./utils/miscellaneous').util
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
   const watchPostEffect: typeof import('vue').watchPostEffect
@@ -98,6 +132,12 @@ declare global {
   // @ts-ignore
   export type { PiniaCustomProperties } from './stores/index'
   import('./stores/index')
+  // @ts-ignore
+  export type { SubmissionError } from './utils/error'
+  import('./utils/error')
+  // @ts-ignore
+  export type { Entity } from './models/useEntityFactory'
+  import('./models/useEntityFactory')
 }
 
 // for vue template auto import
@@ -105,33 +145,59 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
+    readonly ENTRYPOINT: UnwrapRef<typeof import('./utils/config')['ENTRYPOINT']>
+    readonly ENTRYPOINT_GRAPHQL: UnwrapRef<typeof import('./graphql/config')['ENTRYPOINT_GRAPHQL']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Entity: UnwrapRef<typeof import('./models/useEntityFactory')['Entity']>
+    readonly SubmissionError: UnwrapRef<typeof import('./utils/error')['SubmissionError']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
+    readonly api: UnwrapRef<typeof import('./services/api')['default']>
+    readonly apollo: UnwrapRef<typeof import('./graphql/api')['apollo']>
+    readonly apolloClient: UnwrapRef<typeof import('./graphql/apolloClient')['apolloClient']>
+    readonly bus: UnwrapRef<typeof import('./services/bus')['bus']>
+    readonly cl: UnwrapRef<typeof import('./utils/miscellaneous')['cl']>
+    readonly cle: UnwrapRef<typeof import('./utils/miscellaneous')['cle']>
+    readonly cloading: UnwrapRef<typeof import('./utils/miscellaneous')['cloading']>
+    readonly cls: UnwrapRef<typeof import('./utils/miscellaneous')['cls']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
+    readonly createStore: UnwrapRef<typeof import('./stores/useStore')['createStore']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
+    readonly extractHubURL: UnwrapRef<typeof import('./utils/mercure')['extractHubURL']>
+    readonly fdn: UnwrapRef<typeof import('./models/useEntityFactory')['fdn']>
+    readonly formatDateInput: UnwrapRef<typeof import('./utils/date')['formatDateInput']>
+    readonly formatDateTime: UnwrapRef<typeof import('./utils/date')['formatDateTime']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
+    readonly getAlertText: UnwrapRef<typeof import('./utils/miscellaneous')['getAlertText']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
+    readonly gloading: UnwrapRef<typeof import('./utils/miscellaneous')['gloading']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly highlighted: UnwrapRef<typeof import('./utils/miscellaneous')['highlighted']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isShallow: UnwrapRef<typeof import('vue')['isShallow']>
+    readonly logSQL: UnwrapRef<typeof import('./utils/miscellaneous')['logSQL']>
     readonly mapActions: UnwrapRef<typeof import('pinia')['mapActions']>
     readonly mapGetters: UnwrapRef<typeof import('pinia')['mapGetters']>
     readonly mapState: UnwrapRef<typeof import('pinia')['mapState']>
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly mercureSubscribe: UnwrapRef<typeof import('./utils/mercure')['mercureSubscribe']>
+    readonly merror: UnwrapRef<typeof import('./services/bus')['merror']>
+    readonly minfo: UnwrapRef<typeof import('./services/bus')['minfo']>
+    readonly mloading: UnwrapRef<typeof import('./utils/miscellaneous')['mloading']>
+    readonly msuccess: UnwrapRef<typeof import('./services/bus')['msuccess']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -150,6 +216,8 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly onWatcherCleanup: UnwrapRef<typeof import('vue')['onWatcherCleanup']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
+    readonly qloading: UnwrapRef<typeof import('./utils/miscellaneous')['qloading']>
+    readonly random: UnwrapRef<typeof import('./utils/miscellaneous')['random']>
     readonly reactive: UnwrapRef<typeof import('vue')['reactive']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
@@ -161,12 +229,15 @@ declare module 'vue' {
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly stores: UnwrapRef<typeof import('./stores/index')['default']>
+    readonly str: UnwrapRef<typeof import('./utils/miscellaneous')['str']>
     readonly toRaw: UnwrapRef<typeof import('vue')['toRaw']>
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
+    readonly treeKey: UnwrapRef<typeof import('./utils/miscellaneous')['treeKey']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
+    readonly useApollo: UnwrapRef<typeof import('./composables/useApollo')['useApollo']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useBreadcrumb: UnwrapRef<typeof import('./composables/breadcrumb')['useBreadcrumb']>
     readonly useCounterStore: UnwrapRef<typeof import('./stores/example-store')['useCounterStore']>
@@ -176,6 +247,7 @@ declare module 'vue' {
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useMercureItem: UnwrapRef<typeof import('./composables/mercureItem')['useMercureItem']>
     readonly useMercureList: UnwrapRef<typeof import('./composables/mercureList')['useMercureList']>
+    readonly useMetadataStore: UnwrapRef<typeof import('./stores/metadata')['useMetadataStore']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useNotifications: UnwrapRef<typeof import('./composables/notifications')['useNotifications']>
     readonly useQuasar: UnwrapRef<typeof import('quasar')['useQuasar']>
@@ -183,7 +255,9 @@ declare module 'vue' {
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
+    readonly useUserSessionStore: UnwrapRef<typeof import('./stores/session')['useUserSessionStore']>
     readonly useWatchErrors: UnwrapRef<typeof import('./composables/errors')['useWatchErrors']>
+    readonly util: UnwrapRef<typeof import('./utils/miscellaneous')['util']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>

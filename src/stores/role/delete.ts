@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api from "src/utils/api";
+import api from "src/services/api";
 import type { Role } from "src/types/role";
 
 interface State {

@@ -1,11 +1,7 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+    <icon name="grid_view" size="40" wght="100" />
+    <example-component title="Example component" active :todos="todos" :meta="meta"></example-component>
   </q-page>
 </template>
 
@@ -13,6 +9,20 @@
 import { ref } from 'vue';
 import type { Todo, Meta } from 'components/models';
 import ExampleComponent from 'components/ExampleComponent.vue';
+
+apollo
+  .query({
+    operation: 'collectionAgnostic',
+    fields: ['data'],
+    variables: { resource: 'User' },
+  })
+  .then(({ data, networkStatus }) => {
+    if (typeof data == 'undefined' && networkStatus == 1) {
+      return;
+    }
+    cls(data.collectionAgnostic.data.collection);
+  })
+  .catch((error) => { cle(error) });
 
 const todos = ref<Todo[]>([
   {

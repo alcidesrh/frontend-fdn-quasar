@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api from "src/utils/api";
+import api from "src/services/api";
 import { extractHubURL } from "src/utils/mercure";
 import type { PagedCollection } from "src/types/collection";
 import type { ListParams } from "src/types/list";

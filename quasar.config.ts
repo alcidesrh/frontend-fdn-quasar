@@ -17,7 +17,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ["i18n"],
+    boot: ["localstore", "i18n", "apollo-client"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ["app.scss"],
@@ -31,9 +31,9 @@ export default defineConfig((ctx) => {
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
-      "roboto-font", // optional, you are not bound to it
-      "material-icons", // optional, you are not bound to it
+      // "roboto-font", // optional, you are not bound to it
+      // "material-icons", // optional, you are not bound to it
+      // "material-symbols-outlined",
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -96,7 +96,10 @@ export default defineConfig((ctx) => {
           dirs: [
             "src/composables",
             "src/stores",
-            // 'src/utils',
+            "src/graphql",
+            "src/utils",
+            "src/models",
+            "src/services",
             // 'src/helpers',
 
             // // Auto imports dentro de módulos feature
@@ -127,7 +130,7 @@ export default defineConfig((ctx) => {
         viteConf.resolve.alias = {
           ...(viteConf.resolve.alias || {}),
           "@": path.resolve(__dirname, "./src"),
-          "~": path.resolve(__dirname, "./src"),
+          // "~": path.resolve(__dirname, "./src"),
         };
       },
     },
@@ -140,9 +143,7 @@ export default defineConfig((ctx) => {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
-      config: {},
-
-      iconSet: "material-icons", // Quasar icon set
+      iconSet: "material-symbols-outlined", // Quasar icon set
       lang: "es", // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
@@ -153,7 +154,16 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ["Notify"],
+      config: {
+        // ...
+        notify: {
+          position: "top",
+          multiLine: true,
+          timeout: 0,
+          classes: "fdn-notify",
+        },
+      },
     },
 
     // animations: 'all', // --- includes all animations

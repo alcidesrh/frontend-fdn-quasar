@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { SubmissionError } from "src/utils/error";
-import api from "src/utils/api";
+import api from "src/services/api";
 import { extractHubURL } from "src/utils/mercure";
 import type { Role } from "src/types/role";
 import type { SubmissionErrors } from "src/types/error";
@@ -64,7 +64,7 @@ export const useRoleUpdateStore = defineStore("roleUpdate", {
             method: "PUT",
             headers: new Headers({ "Content-Type": "application/ld+json" }),
             body: JSON.stringify(payload),
-          }
+          },
         );
         const data: Role = await response.json();
 
