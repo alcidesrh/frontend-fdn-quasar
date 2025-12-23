@@ -12,6 +12,9 @@ function show(arg) {
     type: arg.color,
     multiLine: true,
     textColor: arg.color,
+    actions: [
+      { icon: 'sym_o_close', color: 'info', round: true, handler: () => { /* ... */ } }
+    ]
   }
 
   if (typeof arg.msg == "object") {

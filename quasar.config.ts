@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import path from "path";
+import UnoCSS from "unocss/vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -17,7 +18,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ["localstore", "i18n", "apollo-client"],
+    boot: ["unocss", "localstore", "i18n", "apollo-client"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ["app.scss"],
@@ -33,7 +34,7 @@ export default defineConfig((ctx) => {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
       // "roboto-font", // optional, you are not bound to it
       // "material-icons", // optional, you are not bound to it
-      // "material-symbols-outlined",
+      "material-symbols-outlined",
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -69,22 +70,22 @@ export default defineConfig((ctx) => {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
-        [
-          "@intlify/unplugin-vue-i18n/vite",
-          {
-            // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-            // compositionOnly: false,
+        // [
+        //   "@intlify/unplugin-vue-i18n/vite",
+        //   {
+        //     // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+        //     // compositionOnly: false,
 
-            // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
-            // you need to set `runtimeOnly: false`
-            // runtimeOnly: false,
+        //     // if you want to use named tokens in your Vue I18n messages, such as 'Hello {name}',
+        //     // you need to set `runtimeOnly: false`
+        //     // runtimeOnly: false,
 
-            ssr: ctx.modeName === "ssr",
+        //     ssr: ctx.modeName === "ssr",
 
-            // you need to set i18n resource including paths !
-            include: [fileURLToPath(new URL("./src/i18n", import.meta.url))],
-          },
-        ],
+        //     // you need to set i18n resource including paths !
+        //     include: [fileURLToPath(new URL("./src/i18n", import.meta.url))],
+        //   },
+        // ],
         Components({
           dirs: ["src/components"], // 👈 agrega tu carpeta aquí
           extensions: ["vue"],
@@ -95,9 +96,9 @@ export default defineConfig((ctx) => {
           // rutas para autoimportar tus composables
           dirs: [
             "src/composables",
-            "src/stores",
+            "src/stores/**/*",
             "src/graphql",
-            "src/utils",
+            "src/utils/autoimport",
             "src/models",
             "src/services",
             // 'src/helpers',
@@ -132,6 +133,8 @@ export default defineConfig((ctx) => {
           "@": path.resolve(__dirname, "./src"),
           // "~": path.resolve(__dirname, "./src"),
         };
+
+        viteConf.plugins.push(UnoCSS());
       },
     },
 

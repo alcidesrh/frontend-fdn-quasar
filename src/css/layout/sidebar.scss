@@ -1,0 +1,136 @@
+.wrap-sidebar {
+
+  background-color: var(--sidebar-background);
+
+  &>.sidebar-control {
+    display: flex;
+
+    &.mini {
+      justify-content: center;
+
+    }
+
+    &>div {
+      z-index: 0;
+      width: 100%;
+      display: flex;
+      justify-content: end;
+      padding: 0.5rem 1rem;
+      gap: 6px;
+
+      &.right {
+        flex-direction: row-reverse;
+        justify-content: start;
+      }
+
+      &>div {
+        margin: 0px 0px;
+        display: flex;
+        cursor: pointer;
+        height: 18px;
+        position: relative;
+        width: 38px;
+        transition: background-color 0.2s;
+        // margin-top: 5px;
+        background-color: var(--surface-200);
+
+        border: 1px solid var(--surface-4);
+
+        &:nth-child(1) {
+          width: 24px;
+        }
+
+        &:hover:not(.selected),
+        &.selected {
+          background-color: var(--surface-500);
+        }
+      }
+
+      &.mini {
+        display: grid;
+        justify-content: center;
+        margin: auto;
+        gap: 0px;
+
+        &>div {
+          margin: auto;
+          margin-top: 10px;
+
+          &:nth-child(1) {
+            margin-top: 25px;
+          }
+        }
+      }
+    }
+
+    &>.toogle-sidebar {
+      position: absolute;
+      font-size: 30px !important;
+      transform: rotate(-90deg);
+      margin-left: 1rem;
+      color: var(--surface-400);
+
+      &:hover {
+        transition: color 0.2s;
+        color: var(--surface-600);
+
+      }
+
+      &.mini {
+        margin: auto;
+        padding: 0rem;
+        z-index: 999;
+      }
+
+      &.right {
+        transform: rotate(90deg);
+        left: auto;
+        right: 1rem;
+      }
+    }
+  }
+}
+
+#toogleLeftSidebar>button {
+  position: fixed;
+  top: var(--topbar); // cursor: pointer;
+  z-index: 999;
+  margin-left: -20px;
+  box-shadow: var(--shadow);
+  background-color: var(--sidebar-background);
+  // border: 1px solid var(--surface-3);
+  border-radius: 4px;
+  // padding: 4px;
+  // padding-left: 10px;
+
+  &:hover {
+    background-colors: var(--surface-100) !important;
+
+    & .toogle-sidebar {
+      color: var(--surface-5);
+
+    }
+  }
+
+  & .toogle-sidebar {
+    cursor: pointer;
+    color: var(--surface-5);
+    transform: rotate(90deg);
+    // transition: background-color 0.2s;
+    transition: opacity 1s ease;
+    margin-right: -15px;
+
+
+  }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  transition: opacity 1s ease;
+  opacity: 0;
+}

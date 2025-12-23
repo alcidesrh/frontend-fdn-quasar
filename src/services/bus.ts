@@ -1,9 +1,9 @@
-import { EventBus } from "quasar";
+export const { bus: b } = useBus();
 
-export const bus = new EventBus();
+export const merror = (msg) => b.emit("error", msg);
 
-export const merror = (msg) => bus.emit("error", msg);
+export const msuccess = (msg) => b.emit("positive", msg);
 
-export const msuccess = (msg) => bus.emit("positive", msg);
+export const minfo = (msg) => b.emit("info", msg);
 
-export const minfo = (msg) => bus.emit("info", msg);
+export const bus = b;

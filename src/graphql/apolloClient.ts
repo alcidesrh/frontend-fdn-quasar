@@ -94,28 +94,32 @@ const authLink = new ApolloLink((operation, forward) => {
 });
 const errorLink = new ErrorLink(({ error, operation }) => {
   gloading.value = cloading.value = qloading.value = false;
+  let temp;
   if (ServerError.is(error)) {
     if (error.statusCode == 401) {
       useUserSessionStore().clear();
       const router = useRouter();
+      temp = {
+        message: "Acceso no permitido.",
+      };
       router.push({ name: "Login" });
     } else if (error.statusCode == 500) {
       const { status, title, detail } = JSON.parse(error.bodyText);
-      merror({
-        summary: `Status code: ${status}. GraphQL ServerError from plugin/apollo.ts: ${title}`,
-        detail: detail,
+      temp = {
+        caption: `Status code: ${status}. GraphQL ServerError from plugin/apollo.ts: ${title}`,
+        message: detail,
         // message: `GraphQL error from plugin/apollo.ts: ${message}, Location: ${locations}, Path: ${path}`,
-      });
+      };
     } else {
       error.errors.forEach(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-        ),
+        merror({
+          message: `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        }),
       );
+      return;
     }
   } else if (CombinedGraphQLErrors.is(error)) {
     error.errors.forEach(({ message, locations, path, extensions }) => {
-      let temp = {};
       if (extensions && extensions.debugMessage) {
         temp = {
           caption: message,
@@ -133,20 +137,22 @@ const errorLink = new ErrorLink(({ error, operation }) => {
           // message: `GraphQL error from plugin/apollo.ts: ${message}, Location: ${locations}, Path: ${path}`,
         };
       }
-      merror(temp);
     });
   } else if (ServerParseError.is(error)) {
-    merror({
-      summary: `Failed to parse response from ${error.response.url}`,
-      detail: `${error.bodyText} Status code: ${error.statusCode}`,
-    });
     // Access the original parse error
-    console.log(`Parse error: ${error.cause}`);
+    temp = {
+      caption: `Failed to parse response from ${error.response.url}`,
+      message: `${error.bodyText} Status code: ${error.statusCode}`,
+    };
   } else {
-    alert("error in useApollo");
-
-    console.error(`[Network error]: ${error}`);
+    temp = {
+      caption: "GraphQL error from plugin/apollo.ts",
+      message: "Problema con la conexión.",
+    };
   }
+
+  merror(temp);
+  console.error(`[Error]: ${error}`);
 });
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([

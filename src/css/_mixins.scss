@@ -1,0 +1,27 @@
+@mixin mq($size) {
+  @if $size == xs {
+    @media (max-width: 599px) { @content; }
+  } @else if $size == sm {
+    @media (min-width: 600px) and (max-width: 1023px) { @content; }
+  } @else if $size == md {
+    @media (min-width: 1024px) and (max-width: 1439px) { @content; }
+  } @else if $size == lg {
+    @media (min-width: 1440px) and (max-width: 1919px) { @content; }
+  } @else if $size == xl {
+    @media (min-width: 1920px) { @content; }
+  }
+}
+
+@mixin size($w, $h: $w) {
+  width: $w;
+  height: $h;
+}
+
+@mixin themed-bg($color) {
+  background: $color;
+  color: var(--q-dark);
+}
+
+@mixin shadow-sm { box-shadow: var(--q-shadow-2); }
+@mixin shadow-md { box-shadow: var(--q-shadow-4); }
+@mixin shadow-lg { box-shadow: var(--q-shadow-8); }

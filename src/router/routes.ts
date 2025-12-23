@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import userRoutes from "./user";
 import roleRoutes from "./role";
+import testRoutes from "./test";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -10,6 +11,7 @@ const routes: RouteRecordRaw[] = [
       { path: "", component: () => import("pages/IndexPage.vue") },
       ...userRoutes,
       ...roleRoutes,
+      ...testRoutes,
     ],
   },
 

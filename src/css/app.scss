@@ -1,3 +1,47 @@
-// app global css in SCSS form
-// $material-symbols-font-path: '~material-symbols/';
+@import "_fonts.css";
 @import "material-symbols/index.css";
+
+@import "./variables/index.scss";
+@import "./layout/index.scss";
+
+@import "mixins";
+
+// @import "helpers";
+// @import "theme-overrides";
+// // Import Quasar base styles
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--text-color);
+  font-size: var(--step-0);
+  line-height: normal;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.fdn-icon {
+  cursor: pointer;
+}
+
+.q-notification__actions {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+
+  &>button {
+    position: absolute;
+    right: -16px;
+    top: -10px;
+  }
+}
+
+.q-notification__content {
+  margin: 15px 0px;
+}
+
+.fdn-notify.bg-negative button>span {
+  color: $negative;
+}

@@ -50,7 +50,6 @@ export const apollo = {
     try {
       let query;
       const { operation, fields, variables, policy = "network-only" } = params;
-      cl(variables, fdn.value.queries[operation]);
       if (operation && fields) {
         query = gqlBuilder.query({
           operation: operation,

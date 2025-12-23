@@ -1,87 +1,156 @@
 <template>
-  <notify />
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <!-- <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" /> -->
-        <icon name="menu" @click="toggleLeftDrawer" classes="pointer" />
+  <q-layout view="hHh LpR fFf">
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
+    <Notify />
+    <Topbar />
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
+    <SidebarDrawer store-id="sidebarLeft" position="left" v-once>
+      <template #content="{ data }">
+        <q-separator class="mb-20px mt-10px" />
+        <nav>
+          <MenuLarge v-if="data.mode == data.modeStates.large" :store="data" :menu="customize" />
 
-    <q-drawer v-model="leftDrawerOpen" bordered mini-to-overlay mini>
-      <q-list>
-        <q-item-label header>
-          Essential Links
-        </q-item-label>
+          <MenuMini v-else-if="data.mode == data.modeStates.mini" :items="customize">
+          </MenuMini>
+        </nav>
+      </template>
+    </SidebarDrawer>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
+    <!-- <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered> -->
+    <!-- drawer content -->
+    <!-- </q-drawer> -->
 
     <q-page-container>
-      <router-view />
+      <div class="border border-slate-200">
+        <router-view />
+      </div>
     </q-page-container>
+
+
+    <!-- <q-footer elevated class="bg-grey-8 text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+          </q-avatar>
+          <div>Title</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer> -->
+    <div id="toogleLeftSidebar" class="shadow-7">
+    </div>
   </q-layout>
+
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
-
-const linksList: EssentialLinkProps[] = [
+<script lang="ts" setup>
+import { ref } from 'vue'
+const menu = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    label: 'Limpiar cache',
+    icon: 'cached',
+    name: 'refresh',
+    type: 'action',
+    command: () => {
+      fdn.value.refresh()
+    }
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    label: 'Mi cuenta',
+    icon: 'account_circle',
+    open: true,
+    children: [
+      {
+        label: 'Editar',
+        icon: 'person_edit',
+        name: 'account_edit',
+        params: { id: 'user.value.username' },
+      },
+      {
+        label: 'Chequear',
+        icon: 'transit_ticket',
+        to: '',
+      },
+      {
+        label: 'Buscar',
+        icon: 'search',
+        to: '',
+      },
+      {
+        label: 'Estadísticas',
+        icon: 'graph_7',
+        to: '',
+      },
+    ],
   }
-];
+]
+const menuStore = useMenuStateStore('menu-left', menu)
+const { toggle } = storeToRefs(menuStore)
 
-const leftDrawerOpen = ref(false);
+
+
+
+const leftDrawerOpen = ref(false)
+const rightDrawerOpen = ref(false)
+
+const customize = ref([
+  {
+    label: 'Menu',
+    icon: 'sym_o_menu',
+    name: 'collectionMenus',
+
+  },
+  {
+    label: 'Mi cuenta',
+    icon: 'sym_o_account_circle',
+    open: true,
+    children: [
+      {
+        label: 'Editar',
+        icon: 'sym_o_person_edit',
+        name: 'account_edit',
+        params: '{ id: user.value.username }',
+      },
+      {
+        label: 'Chequear',
+        icon: 'sym_o_transit_ticket',
+        to: '',
+        children: [
+          {
+            label: 'Editar',
+            icon: 'sym_o_person_edit',
+            name: 'account_edit',
+            params: '{ id: user.value.username }',
+          },
+          {
+            label: 'Chequear',
+            icon: 'sym_o_transit_ticket',
+            to: '',
+          },
+          {
+            label: 'Buscar',
+            icon: 'sym_o_search',
+            to: '',
+          }
+        ]
+      },
+      {
+        label: 'Buscar',
+        icon: 'sym_o_search',
+        to: '',
+      },
+      {
+        label: 'Estadísticas',
+        icon: 'sym_o_graph_7',
+        to: '',
+      },
+    ],
+  }
+])
 
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+  leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+
 </script>

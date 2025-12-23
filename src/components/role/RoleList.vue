@@ -13,38 +13,18 @@
   </q-banner>
 
 
-  <q-table
-    :pagination="pagination"
-    :rows="items"
-    :columns="columns"
-    :rows-per-page-options="[30]"
-    :loading="isLoading"
-    :no-data-label="$t('unavail')"
-    :no-results-label="$t('noresults')"
-    :loading-label="$t('loading')"
-    :rows-per-page-label="$t('recPerPage')"
-    row-key="id"
-    flat
-    wrap-cells
-    @request="sendRequest"
-  >
+  <q-table :pagination="pagination" :rows="items" :columns="columns" :rows-per-page-options="[30]" :loading="isLoading"
+    :no-data-label="$t('unavail')" :no-results-label="$t('noresults')" :loading-label="$t('loading')"
+    :rows-per-page-label="$t('recPerPage')" row-key="id" flat wrap-cells @request="sendRequest">
     <template #body-cell-actions="{ row }">
-      <ActionCell
-        :actions="['show', 'update', 'delete']"
-        @show="goToShowPage(row)"
-        @update="goToUpdatePage(row)"
-        @delete="deleteItem(row)"
-      />
+      <ActionCell :actions="['show', 'update', 'delete']" @show="goToShowPage(row)" @update="goToUpdatePage(row)"
+        @delete="deleteItem(row)" />
     </template>
 
     <template #body-cell-permisos="{ value }">
       <td>
         <template v-if="router.hasRoute('PermisoShow')">
-          <router-link
-            v-for="permiso in value"
-            :to="{ name: 'PermisoShow', params: { id: permiso } }"
-            :key="permiso"
-          >
+          <router-link v-for="permiso in value" :to="{ name: 'PermisoShow', params: { id: permiso } }" :key="permiso">
             {{ permiso }}
 
             <br />
@@ -58,7 +38,7 @@
         </template>
       </td>
     </template>
-    <template #body-cell-actions="{ value }">
+    <!-- <template #body-cell-actions="{ value }">
       <td>
         <template v-if="router.hasRoute('ActionShow')">
           <router-link
@@ -78,56 +58,24 @@
           </p>
         </template>
       </td>
-    </template>
+    </template> -->
 
     <template #pagination="{ pagesNumber }">
       <template v-if="view">
-        <q-btn
-          v-if="pagesNumber > 2"
-          :to="view['hydra:first'] ? view['hydra:first'] : { name: 'BookList' }"
-          :disable="!view['hydra:previous']"
-          icon="first_page"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn v-if="pagesNumber > 2" :to="view['hydra:first'] ? view['hydra:first'] : { name: 'BookList' }"
+          :disable="!view['hydra:previous']" icon="first_page" color="grey-8" round dense flat />
 
-        <q-btn
-          :to="
-            !view['hydra:previous'] ||
+        <q-btn :to="!view['hydra:previous'] ||
             view['hydra:previous'] === view['hydra:first']
-              ? { name: 'BookList' }
-              : view['hydra:previous']
-          "
-          :disable="!view['hydra:previous']"
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+            ? { name: 'BookList' }
+            : view['hydra:previous']
+          " :disable="!view['hydra:previous']" icon="chevron_left" color="grey-8" round dense flat />
 
-        <q-btn
-          :to="view['hydra:next'] ? view['hydra:next'] : '#'"
-          :disable="!view['hydra:next']"
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn :to="view['hydra:next'] ? view['hydra:next'] : '#'" :disable="!view['hydra:next']" icon="chevron_right"
+          color="grey-8" round dense flat />
 
-        <q-btn
-          v-if="pagesNumber > 2"
-          :to="view['hydra:last'] ? view['hydra:last'] : '#'"
-          :disable="!view['hydra:next']"
-          icon="last_page"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn v-if="pagesNumber > 2" :to="view['hydra:last'] ? view['hydra:last'] : '#'" :disable="!view['hydra:next']"
+          icon="last_page" color="grey-8" round dense flat />
       </template>
     </template>
   </q-table>
@@ -218,7 +166,7 @@ watch(
 );
 
 async function sendRequest() {
-  await roleListStore.getItems(page.value, {  });
+  await roleListStore.getItems(page.value, {});
 }
 
 useMercureList({ store: roleListStore, deleteStore: roleDeleteStore });

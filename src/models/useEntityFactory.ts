@@ -19,6 +19,8 @@ interface Base {
   _id: number;
 }
 
+export const user: Ref<User> = ref();
+
 export const fdn = ref({
   resources: {} as ReadonlyArray<IntrospectionType>,
   queries: {} as Query[],

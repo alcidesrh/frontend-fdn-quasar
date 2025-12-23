@@ -1,0 +1,18 @@
+:root {
+	--font-family: 'Roboto Flex Variable', sans-serif;
+	--text-color: var(--text-color);
+	--text-color-secondary: var(--text-muted-color);
+	--surface-border: var(--content-border-color);
+	--surface-card: var(--content-background);
+	--surface-hover: var(--content-hover-background);
+	--surface-overlay: var(--overlay-popover-background);
+	--content-border-radius: var(--content-border-radius);
+	--topbar-background: var(--surface-100);
+	--topbar-sticky-bg: rgba(255, 255, 255, 0.5);
+	--sidebar-background: var(--surface-100);
+	--sidebar-width: 220px;
+	--topbar: 70px;
+	--background: var(--surface-0);
+	--shadow: 5px 2px 10px 0px var(--surface-3);
+	--border: 1px solid var(--surface-200);
+}

@@ -1,8 +1,22 @@
 <template>
-  <span :class="[`fdn-icon slate-400 material-symbols-${type}`, ...clases]" :style="style">{{ name }}</span>
+  <span v-if="!quasar" :class="[`fdn-icon slate-400 material-symbols-${type}`, ...clases]" :style="style">{{ name
+  }}</span>
+  <q-icon v-else :name="name" tag="span" :left="left" :size="size" :color="color" />
 </template>
 <script setup lang="ts">
-const { name, fill, color, grad, size, opsz, wght, type } = defineProps({
+const props = defineProps({
+  quasar: {
+    type: Boolean,
+    default: false
+  },
+  left: {
+    type: Boolean,
+    default: false
+  },
+  right: {
+    type: Boolean,
+    default: false
+  },
   name: {
     type: String,
     required: true
@@ -41,15 +55,27 @@ const { name, fill, color, grad, size, opsz, wght, type } = defineProps({
   }
 });
 
-const style = computed(() => {
-  const temp = fill ? 1 : 0
-  const style = {
-    fontSize: size + 'px',
-    fontVariationSettings: `'FILL' ${temp}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`
-  }
-  if (color) {
-    style.color = color
-  }
-  return style
-})
+let name = '', style = {}
+if (props.quasar) {
+  name = 'sym_o_' + props.name
+}
+else {
+
+  const { fill, color, grad, size, opsz, wght, type } = props
+
+  name = props.name
+
+  style = computed(() => {
+    const temp = fill ? 1 : 0
+    const style = {
+      fontSize: size + 'px',
+      fontVariationSettings: `'FILL' ${temp}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`
+    }
+    if (color) {
+      style.color = color
+    }
+    return style
+  })
+
+}
 </script>
