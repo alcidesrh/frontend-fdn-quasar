@@ -1,0 +1,33 @@
+.q-notification__actions {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+
+	&>button {
+		position: absolute;
+		right: -16px;
+		top: -10px;
+	}
+}
+
+.q-notification__content {
+	margin: 5px 0px;
+	font-weight: 600;
+
+	&>i {
+		position: absolute;
+		top: 10px;
+	}
+
+	&>.q-notification__message {
+		margin-left: 35px;
+
+		&>.q-notification__caption {
+			margin-top: 10px;
+		}
+	}
+}
+
+.fdn-notify.bg-negative button>span {
+	color: $negative;
+}

@@ -1,17 +1,29 @@
 <template>
 
-  <q-menu persistent v-model="open" anchor="top right" self="top left" @mouseleave="onHover(false, i)">
+  <q-menu v-model="open" anchor="top right" self="top left">
     <q-list style="min-width: 100px">
-      <q-item v-for="v, i in v.children" :key="i" clickable>
-        <q-item-section>
-          {{ v.label }}
-        </q-item-section>
-        <q-item-section side v-if="v.children">
-          <icon name="keyboard_arrow_right" />
-        </q-item-section>
-        <!-- <MenuMini v-if="v.children" :items="v.children" /> -->
-        <SubMenuMini v-if="v.children" :open="flags[i]" :items="v.children" />
-      </q-item>
+      <template v-for="v, i in items" :key="i">
+        <template v-if="v.children">
+          <q-separator />
+          <q-item clickable dense>
+            <q-item-section @mouseover="flags[i] = !flags[i]">
+              {{ v.label }}
+            </q-item-section>
+            <q-item-section side v-if="v.children">
+              <icon name="keyboard_arrow_right" />
+            </q-item-section>
+            <SubMenuMini v-if="v.children" :toogle="flags[i]" :items="v.children" />
+          </q-item>
+          <q-separator />
+
+        </template>
+
+        <q-item v-else clickable dense>
+          <q-item-section>
+            {{ v.label }}
+          </q-item-section>
+        </q-item>
+      </template>
     </q-list>
   </q-menu>
 
@@ -31,16 +43,8 @@ const props = defineProps({
 })
 const open = ref(false);
 watch(() => props.toogle, (v) => {
-  open.value = v
+  open.value = !open.value
 })
-const flags = ref(Array.from({ length: props.items.length }, () => ref(false)))
-function onHover(hovered, i) {
-  flags.value[i] = true
-}
+const flags = ref(Array.from({ length: props.items.length }, () => false))
 </script>
-<style>
-.active {
-  scale: 1.5;
-}
-</style>
 `

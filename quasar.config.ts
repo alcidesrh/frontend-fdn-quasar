@@ -18,7 +18,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ["unocss", "localstore", "i18n", "apollo-client"],
+    boot: ["formkit", "unocss", "localstore", "i18n", "apollo-client"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ["app.scss"],
@@ -147,7 +147,7 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       iconSet: "material-symbols-outlined", // Quasar icon set
-      lang: "es", // Quasar language pack
+      lang: "en-US", // Quasar language pack
 
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),

@@ -21,7 +21,7 @@
     <!-- </q-drawer> -->
 
     <q-page-container>
-      <div class="border border-slate-200">
+      <div class="border border-slate-200 [padding]-fluid-type-2">
         <router-view />
       </div>
     </q-page-container>
@@ -37,7 +37,7 @@
         </q-toolbar-title>
       </q-toolbar>
     </q-footer> -->
-    <div id="toogleLeftSidebar" class="shadow-7">
+    <div id="toogleLeftSidebar">
     </div>
   </q-layout>
 
@@ -87,61 +87,75 @@ const menu = [
 const menuStore = useMenuStateStore('menu-left', menu)
 const { toggle } = storeToRefs(menuStore)
 
-
-
-
 const leftDrawerOpen = ref(false)
 const rightDrawerOpen = ref(false)
 
 const customize = ref([
   {
     label: 'Menu',
-    icon: 'sym_o_menu',
+    icon: 'menu',
     name: 'collectionMenus',
-
   },
   {
     label: 'Mi cuenta',
-    icon: 'sym_o_account_circle',
+    icon: 'account_circle',
     open: true,
     children: [
       {
         label: 'Editar',
-        icon: 'sym_o_person_edit',
+        icon: 'person_edit',
         name: 'account_edit',
         params: '{ id: user.value.username }',
       },
       {
         label: 'Chequear',
-        icon: 'sym_o_transit_ticket',
+        icon: 'transit_ticket',
         to: '',
         children: [
           {
-            label: 'Editar',
-            icon: 'sym_o_person_edit',
+            label: 'Editar dsaf dsf dsf dsf ds',
+            icon: 'person_edit',
             name: 'account_edit',
             params: '{ id: user.value.username }',
           },
           {
             label: 'Chequear',
-            icon: 'sym_o_transit_ticket',
+            icon: 'transit_ticket',
             to: '',
           },
           {
             label: 'Buscar',
-            icon: 'sym_o_search',
+            icon: 'search',
             to: '',
+            children: [
+              {
+                label: 'Editar',
+                icon: 'person_edit',
+                name: 'account_edit',
+                params: '{ id: user.value.username }',
+              },
+              {
+                label: 'Chequear',
+                icon: 'transit_ticket',
+                to: '',
+              },
+              {
+                label: 'Buscar',
+                icon: 'search',
+                to: '',
+              }
+            ]
           }
         ]
       },
       {
         label: 'Buscar',
-        icon: 'sym_o_search',
+        icon: 'search',
         to: '',
       },
       {
         label: 'Estadísticas',
-        icon: 'sym_o_graph_7',
+        icon: 'graph_7',
         to: '',
       },
     ],

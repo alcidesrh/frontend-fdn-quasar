@@ -12,7 +12,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AMenu: typeof import('./components/AMenu.vue')['default']
+    Button: typeof import('./components/skeleton/Button.vue')['default']
     Clock: typeof import('./components/Clock.vue')['default']
+    Collection: typeof import('./components/crud/Collection.vue')['default']
+    CollectionCell: typeof import('./components/crud/CollectionCell.vue')['default']
+    CollectionExpandedList: typeof import('./components/crud/CollectionExpandedList.vue')['default']
+    CollectionMenu: typeof import('./components/crud/CollectionMenu.vue')['default']
     CommonActionCell: typeof import('./components/common/CommonActionCell.vue')['default']
     CommonBreadcrumb: typeof import('./components/common/CommonBreadcrumb.vue')['default']
     CommonConfirmDelete: typeof import('./components/common/CommonConfirmDelete.vue')['default']
@@ -23,7 +28,10 @@ declare module 'vue' {
     copy: typeof import('./components/MenuMini copy.vue')['default']
     EssentialLink: typeof import('./components/EssentialLink.vue')['default']
     ExampleComponent: typeof import('./components/ExampleComponent.vue')['default']
+    Form: typeof import('./components/skeleton/Form.vue')['default']
     Icon: typeof import('./components/Icon.vue')['default']
+    List: typeof import('./components/skeleton/List.vue')['default']
+    ListSkeleton: typeof import('./components/skeleton/ListSkeleton.vue')['default']
     Menu: typeof import('./components/Menu.vue')['default']
     MenuLarge: typeof import('./components/MenuLarge.vue')['default']
     MenuMini: typeof import('./components/MenuMini.vue')['default']

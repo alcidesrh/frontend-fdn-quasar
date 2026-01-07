@@ -1,11 +1,14 @@
-import type { Collection } from "~/types/collection";
+import type { Collection } from "@/types/collection";
 import voca from "voca";
 import { green, Log, yellow } from "@kitql/helpers";
 
-export const logSQL = new Log("SQL");
+export const logSQL = new Log("Console Log", {
+  levelsToShow: 3,
+  withDate: "time",
+});
 
 export const cl = (...data) => {
-  logSQL.info(...data);
+  logSQL.info(data);
 };
 
 export const cle = (...data) => {

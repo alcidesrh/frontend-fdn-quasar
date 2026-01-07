@@ -1,8 +1,8 @@
-import type { Mutation, Query } from "~/graphql/graphql";
-import type { Field as CustomField } from "~/graphql/parse/src";
+import type { Mutation, Query } from "@/graphql/graphql";
+import type { Field as CustomField } from "@/graphql/parse/src";
 import { useChangeCase } from "@vueuse/integrations/useChangeCase";
-import type { Collection, Pagination } from "~/types/collection";
-import type { EntityInterface } from "~/types/entity";
+import type { Collection, Pagination } from "@/types/collection";
+import type { EntityInterface } from "@/types/entity";
 
 interface props {
   name: string;
@@ -100,7 +100,6 @@ export class Entity<Type> implements EntityInterface {
       pagination: ref({
         page: 1,
         itemsPerPage: 15,
-        order: [{ id: "ASC" }],
       }) as Ref<Pagination>,
       items: [],
       orderField: "id",

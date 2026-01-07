@@ -1,9 +1,9 @@
-import type { User } from "~/types/user";
+import type { User } from "@/types/user";
 import { defineStore } from "pinia";
 // import { parseGraphQl } from '@api-platform/api-doc-parser';
 import { parseGraphQl, Resource } from "@/graphql/parse/src";
-import { Query } from "~/graphql/parse/src/graphql/Query";
-import { Mutation } from "~/graphql/parse/src/graphql/Mutation";
+import { Query } from "@/graphql/parse/src/graphql/Query";
+import { Mutation } from "@/graphql/parse/src/graphql/Mutation";
 import { debounce } from "quasar";
 
 interface State {

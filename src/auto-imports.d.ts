@@ -17,7 +17,7 @@ declare global {
   const apolloClient: typeof import('./graphql/apolloClient').apolloClient
   const b: typeof import('./services/bus').b
   const bus: typeof import('./services/bus').bus
-  const cformat: typeof import("./utils/date copy").cformat
+  const cformat: typeof import('./utils/autoimport/date').cformat
   const cl: typeof import('./utils/autoimport/miscellaneous').cl
   const cle: typeof import('./utils/autoimport/miscellaneous').cle
   const cloading: typeof import('./utils/autoimport/miscellaneous').cloading
@@ -27,16 +27,16 @@ declare global {
   const createPinia: typeof import('pinia').createPinia
   const createStore: typeof import('./stores/useStore').createStore
   const customRef: typeof import('vue').customRef
-  const dayjs: typeof import("./utils/date copy").dayjs
+  const dayjs: typeof import('./utils/autoimport/date').dayjs
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
-  const dformat: typeof import("./utils/date copy").dformat
+  const dformat: typeof import('./utils/autoimport/date').dformat
   const effectScope: typeof import('vue').effectScope
   const extractHubURL: typeof import("./utils/mercure").extractHubURL
   const fdn: typeof import('./models/useEntityFactory').fdn
-  const formatDateInput: typeof import("./utils/date").formatDateInput
-  const formatDateTime: typeof import("./utils/date").formatDateTime
+  const formatDateInput: typeof import('./utils/autoimport/date').formatDateInput
+  const formatDateTime: typeof import('./utils/autoimport/date').formatDateTime
   const getActivePinia: typeof import('pinia').getActivePinia
   const getAlertText: typeof import('./utils/autoimport/miscellaneous').getAlertText
   const getCurrentInstance: typeof import('vue').getCurrentInstance
@@ -62,7 +62,8 @@ declare global {
   const merror: typeof import('./services/bus').merror
   const minfo: typeof import('./services/bus').minfo
   const mloading: typeof import('./utils/autoimport/miscellaneous').mloading
-  const month_day_hour_format: typeof import("./utils/date copy").month_day_hour_format
+  const month_day_hour_format: typeof import('./utils/autoimport/date').month_day_hour_format
+  const msgbus: typeof import('./composables/useBus').msgbus
   const msuccess: typeof import('./services/bus').msuccess
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
@@ -140,6 +141,7 @@ declare global {
   const useUserListStore: typeof import('./stores/user/list').useUserListStore
   const useUserSessionStore: typeof import('./stores/session').useUserSessionStore
   const useUserShowStore: typeof import('./stores/user/show').useUserShowStore
+  const useUserStore: typeof import('./stores/user/userStore').useUserStore
   const useUserUpdateStore: typeof import('./stores/user/update').useUserUpdateStore
   const useWatchErrors: typeof import('./composables/errors').useWatchErrors
   const user: typeof import('./models/useEntityFactory').user
@@ -183,6 +185,7 @@ declare module 'vue' {
     readonly apolloClient: UnwrapRef<typeof import('./graphql/apolloClient')['apolloClient']>
     readonly b: UnwrapRef<typeof import('./services/bus')['b']>
     readonly bus: UnwrapRef<typeof import('./services/bus')['bus']>
+    readonly cformat: UnwrapRef<typeof import('./utils/autoimport/date')['cformat']>
     readonly cl: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cl']>
     readonly cle: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cle']>
     readonly cloading: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cloading']>
@@ -195,6 +198,7 @@ declare module 'vue' {
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly dformat: UnwrapRef<typeof import('./utils/autoimport/date')['dformat']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly fdn: UnwrapRef<typeof import('./models/useEntityFactory')['fdn']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
@@ -221,6 +225,8 @@ declare module 'vue' {
     readonly merror: UnwrapRef<typeof import('./services/bus')['merror']>
     readonly minfo: UnwrapRef<typeof import('./services/bus')['minfo']>
     readonly mloading: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['mloading']>
+    readonly month_day_hour_format: UnwrapRef<typeof import('./utils/autoimport/date')['month_day_hour_format']>
+    readonly msgbus: UnwrapRef<typeof import('./composables/useBus')['msgbus']>
     readonly msuccess: UnwrapRef<typeof import('./services/bus')['msuccess']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
@@ -298,6 +304,7 @@ declare module 'vue' {
     readonly useUserListStore: UnwrapRef<typeof import('./stores/user/list')['useUserListStore']>
     readonly useUserSessionStore: UnwrapRef<typeof import('./stores/session')['useUserSessionStore']>
     readonly useUserShowStore: UnwrapRef<typeof import('./stores/user/show')['useUserShowStore']>
+    readonly useUserStore: UnwrapRef<typeof import('./stores/user/userStore')['useUserStore']>
     readonly useUserUpdateStore: UnwrapRef<typeof import('./stores/user/update')['useUserUpdateStore']>
     readonly useWatchErrors: UnwrapRef<typeof import('./composables/errors')['useWatchErrors']>
     readonly user: UnwrapRef<typeof import('./models/useEntityFactory')['user']>

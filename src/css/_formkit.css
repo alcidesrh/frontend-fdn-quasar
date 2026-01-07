@@ -1,0 +1,77 @@
+.form-wrapper {
+	width: 100%;
+	margin: auto;
+	margin-top: 20px;
+	& > form {
+		width: 100%;
+		& .form-row {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			margin: auto;
+			& > .form-col {
+				display: inline-block;
+				/* background-color: black; */
+				margin: auto;
+				width: fit-content;
+				& > * {
+					float: left;
+					margin: 0px 15px;
+					margin-bottom: 30px;
+					width: 25em;
+				}
+			}
+		}
+		& .divider {
+			border-top: 1px solid #e2e8f0;
+			margin: 25px auto;
+			width: 40%;
+		}
+		& > div > .form-header {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-items: center;
+			margin: auto;
+			margin: 10px auto;
+			width: 100%;
+			max-width: 1300px;
+			gap: 15px;
+			z-index: 20;
+		}
+		& .form-columns-2 {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 2rem;
+			justify-content: center;
+			grid-template-columns: repeat(2, minmax(10em, max-content));
+		}
+
+		& .form-columns-3 {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 2rem;
+			grid-template-columns: repeat(2, minmax(10em, max-content));
+		}
+
+		& .formkit-asterisk {
+			color: var(--red-500);
+			margin-left: 3px;
+		}
+
+		& .toast-error-form {
+			display: flex;
+			justify-content: center;
+			width: fit-content;
+			margin: auto;
+			margin-bottom: 20px;
+			& > .formkit-messages {
+				position: absolute;
+				margin-top: -10px;
+			}
+			& > ul > li {
+				font-size: 1rem;
+			}
+		}
+	}
+}

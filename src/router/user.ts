@@ -19,35 +19,58 @@ const show: BreadcrumbValue = {
 
 export default [
   {
-    name: list.label,
-    path: "/users/",
-    component: () => import("pages/user/PageList.vue"),
-    meta: {
-      breadcrumb: [list],
-    },
-  },
-  {
-    name: create.label,
-    path: "/users/create",
-    component: () => import("pages/user/PageCreate.vue"),
-    meta: {
-      breadcrumb: [{ ...list, to: { name: list.label } }, create],
-    },
-  },
-  {
-    name: update.label,
-    path: "/users/edit/:id",
-    component: () => import("pages/user/PageUpdate.vue"),
-    meta: {
-      breadcrumb: [{ ...list, to: { name: list.label } }, update],
-    },
-  },
-  {
-    name: show.label,
-    path: "/users/show/:id",
-    component: () => import("pages/user/PageShow.vue"),
-    meta: {
-      breadcrumb: [{ ...list, to: { name: list.label } }, show],
-    },
+    path: "/usuarios",
+    // name: 'User',
+    meta: { label: "usuarios", icon: "icon-park-outline:every-user" },
+
+    children: [
+      {
+        name: "user_collection",
+        path: "",
+        component: () => import("@/pages/user/UserCollection.vue"),
+        meta: {
+          label: "List",
+          type: "user",
+          action: "list",
+          route: "users",
+        },
+      },
+      {
+        name: "createUser",
+        path: "crear",
+        component: () => import("@/pages/user/UserForm.vue"),
+        meta: {
+          label: "Crear usuario",
+          icon: "icon-park-outline:edit",
+          type: "user",
+          action: "create",
+          route: "createUser",
+        },
+      },
+      {
+        name: "updateUser",
+        path: "edit/:id",
+        component: () => import("@/pages/user/UserForm.vue"),
+        meta: {
+          label: "Editar usuario",
+          icon: "icon-park-outline:edit",
+          type: "user",
+          action: "edit",
+          route: "updateUser",
+        },
+      },
+      {
+        name: "account_edit",
+        path: "cuenta/:id",
+        component: () => import("@/pages/user/UserAccount.vue"),
+        meta: {
+          label: "Mi cuenta",
+          icon: "icon-park-outline:edit",
+          type: "user",
+          action: "edit",
+          route: "account_edit",
+        },
+      },
+    ],
   },
 ];

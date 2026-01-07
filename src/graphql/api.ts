@@ -2,7 +2,7 @@ import type { FetchPolicy, OperationVariables } from "@apollo/client/core";
 import type { Collection } from "@/types/collection";
 import * as gqlBuilder from "gql-query-builder";
 import gql from "graphql-tag";
-import type { EntityInterface } from "~/types/entity";
+import type { EntityInterface } from "@/types/entity";
 import { argsToArgsConfig } from "graphql/type/definition";
 import { apolloClient } from "/src/graphql/apolloClient";
 

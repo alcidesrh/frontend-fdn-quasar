@@ -104,17 +104,18 @@
   // padding-left: 10px;
 
   &:hover {
-    background-colors: var(--surface-100) !important;
+    background-color: var(--sidebar-background) !important; //var(--surface-100) !important;
+    // box-shadow: none;
 
     & .toogle-sidebar {
-      color: var(--surface-5);
+      color: var(--surface-8);
 
     }
   }
 
   & .toogle-sidebar {
     cursor: pointer;
-    color: var(--surface-5);
+    color: var(--surface-7);
     transform: rotate(90deg);
     // transition: background-color 0.2s;
     transition: opacity 1s ease;

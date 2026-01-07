@@ -13,38 +13,18 @@
   </q-banner>
 
 
-  <q-table
-    :pagination="pagination"
-    :rows="items"
-    :columns="columns"
-    :rows-per-page-options="[30]"
-    :loading="isLoading"
-    :no-data-label="$t('unavail')"
-    :no-results-label="$t('noresults')"
-    :loading-label="$t('loading')"
-    :rows-per-page-label="$t('recPerPage')"
-    row-key="id"
-    flat
-    wrap-cells
-    @request="sendRequest"
-  >
+  <q-table :pagination="pagination" :rows="items" :columns="columns" :rows-per-page-options="[30]" :loading="isLoading"
+    :no-data-label="$t('unavail')" :no-results-label="$t('noresults')" :loading-label="$t('loading')"
+    :rows-per-page-label="$t('recPerPage')" row-key="id" flat wrap-cells @request="sendRequest">
     <template #body-cell-actions="{ row }">
-      <ActionCell
-        :actions="['show', 'update', 'delete']"
-        @show="goToShowPage(row)"
-        @update="goToUpdatePage(row)"
-        @delete="deleteItem(row)"
-      />
+      <ActionCell :actions="['show', 'update', 'delete']" @show="goToShowPage(row)" @update="goToUpdatePage(row)"
+        @delete="deleteItem(row)" />
     </template>
 
     <template #body-cell-permisos="{ value }">
       <td>
         <template v-if="router.hasRoute('PermisoShow')">
-          <router-link
-            v-for="permiso in value"
-            :to="{ name: 'PermisoShow', params: { id: permiso } }"
-            :key="permiso"
-          >
+          <router-link v-for="permiso in value" :to="{ name: 'PermisoShow', params: { id: permiso } }" :key="permiso">
             {{ permiso }}
 
             <br />
@@ -60,10 +40,7 @@
     </template>
     <template #body-cell-localidad="{ value }">
       <td>
-        <router-link
-          v-if="router.hasRoute('LocalidadShow')"
-          :to="{ name: 'LocalidadShow', params: { id: value } }"
-        >
+        <router-link v-if="router.hasRoute('LocalidadShow')" :to="{ name: 'LocalidadShow', params: { id: value } }">
           {{ value }}
         </router-link>
 
@@ -75,11 +52,7 @@
     <template #body-cell-roles="{ value }">
       <td>
         <template v-if="router.hasRoute('RoleShow')">
-          <router-link
-            v-for="role in value"
-            :to="{ name: 'RoleShow', params: { id: role } }"
-            :key="role"
-          >
+          <router-link v-for="role in value" :to="{ name: 'RoleShow', params: { id: role } }" :key="role">
             {{ role }}
 
             <br />
@@ -96,52 +69,20 @@
 
     <template #pagination="{ pagesNumber }">
       <template v-if="view">
-        <q-btn
-          v-if="pagesNumber > 2"
-          :to="view['first'] ? view['first'] : { name: 'BookList' }"
-          :disable="!view['previous']"
-          icon="first_page"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn v-if="pagesNumber > 2" :to="view['first'] ? view['first'] : { name: 'BookList' }"
+          :disable="!view['previous']" icon="first_page" color="grey-8" round dense flat />
 
-        <q-btn
-          :to="
-            !view['previous'] ||
+        <q-btn :to="!view['previous'] ||
             view['previous'] === view['first']
-              ? { name: 'BookList' }
-              : view['previous']
-          "
-          :disable="!view['previous']"
-          icon="chevron_left"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+            ? { name: 'BookList' }
+            : view['previous']
+          " :disable="!view['previous']" icon="chevron_left" color="grey-8" round dense flat />
 
-        <q-btn
-          :to="view['next'] ? view['next'] : '#'"
-          :disable="!view['next']"
-          icon="chevron_right"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn :to="view['next'] ? view['next'] : '#'" :disable="!view['next']" icon="chevron_right" color="grey-8"
+          round dense flat />
 
-        <q-btn
-          v-if="pagesNumber > 2"
-          :to="view['last'] ? view['last'] : '#'"
-          :disable="!view['next']"
-          icon="last_page"
-          color="grey-8"
-          round
-          dense
-          flat
-        />
+        <q-btn v-if="pagesNumber > 2" :to="view['last'] ? view['last'] : '#'" :disable="!view['next']" icon="last_page"
+          color="grey-8" round dense flat />
       </template>
     </template>
   </q-table>
@@ -155,7 +96,7 @@ import { useI18n } from 'vue-i18n';
 import Toolbar from 'components/common/CommonToolbar.vue';
 import Breadcrumb from 'components/common/CommonBreadcrumb.vue';
 import ActionCell from 'components/common/CommonActionCell.vue';
-import { formatDateTime } from 'src/utils/date';
+import { formatDateTime } from 'src/utils/autoimport/date';
 import { useUserListStore } from 'stores/user/list';
 import { useUserDeleteStore } from 'stores/user/delete';
 import { useBreadcrumb } from 'src/composables/breadcrumb';
@@ -324,7 +265,7 @@ watch(
 );
 
 async function sendRequest() {
-  await userListStore.getItems(page.value, {  });
+  await userListStore.getItems(page.value, {});
 }
 
 useMercureList({ store: userListStore, deleteStore: userDeleteStore });

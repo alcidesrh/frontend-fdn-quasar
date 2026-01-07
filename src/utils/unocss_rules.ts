@@ -45,7 +45,6 @@ export const color_rules = [
   [
     /(?<!-)(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(100|200|300|400|500|600|700|800|900|950|50|1|2|3|4|5|6|7|8|9)/,
     (match: string[]) => {
-      console.log(match);
       return { color: `var(--${match[1]}-${match[2]})` };
     },
   ],

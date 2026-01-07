@@ -1,9 +1,10 @@
 <template>
 
   <div v-for="(v, i) in items" :key="i" class="flex justify-center my-20px cursor-pointer">
-    <q-icon :name="v.icon" size="28px" class="slate-6" @mouseover="onHover(true, i)">
-      <SubMenuMini v-if="v.children" :toogle="flags[i]" :items="v.children" />
-    </q-icon>
+    <icon :name="v.icon" size="28px" wght="600" class="slate-5" @mouseover="flags[i] = !flags[i]">
+    </icon>
+    <SubMenuMini v-if="v.children" :toogle="flags[i]" :items="v.children" />
+
   </div>
 
 </template>
@@ -16,15 +17,7 @@ const props = defineProps({
     default: null,
   }
 })
-const hover = ref(false)
 const flags = ref(Array.from({ length: props.items.length }, () => false))
-function onHover(hovered, i) {
-  flags.value[i] = hovered
-}
+
 </script>
-<style>
-.active {
-  scale: 1.5;
-}
-</style>
 `

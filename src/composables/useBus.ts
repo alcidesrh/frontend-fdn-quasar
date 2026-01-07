@@ -19,3 +19,7 @@ export function useBus(initialValue = 0) {
     // minfo,
   };
 }
+
+export function msgbus() {
+  return bus;
+}

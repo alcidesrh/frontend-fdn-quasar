@@ -1,0 +1,17 @@
+fragment DataUser on User {
+    _id
+    id
+    username
+    telefono
+    roles
+    createdAt
+    status
+}
+
+mutation updateUser($input: updateUserInput!) {
+    updateUser(input: $input) {
+        user {
+            id
+        }
+    }
+}

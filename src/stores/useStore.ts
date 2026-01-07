@@ -1,6 +1,8 @@
 import type { Ref } from "vue";
-import type { Collection } from "~/types/collection";
-import type { SelectOption } from "~/types/fdn";
+import type { Collection } from "@/types/collection";
+import type { SelectOption } from "@/types/fdn";
+import { useCloned } from "@vueuse/core";
+import { useWindowScroll } from "@vueuse/core";
 
 export function createStore<Type>(
   name: string,
@@ -311,10 +313,11 @@ export function createStore<Type>(
         if (!Array.isArray(temp)) {
           const { collection, paginationInfo } =
             data[entity.value.endpoints.collection];
-          entity.value.collection.pagination = {
-            ...paginationInfo,
-            page: entity.value.collection.pagination.page,
-          };
+          entity.value.collection.pagination = paginationInfo;
+          // {
+          //   ...paginationInfo,
+          //   page: entity.value.collection.pagination.page,
+          // };
           entity.value.collection.items = collection;
         } else {
           entity.value.collection.items = temp;
@@ -343,19 +346,13 @@ export function createStore<Type>(
       nextTick(() => highlighted(entity.value.collection));
     },
   );
-  // watch(
-  // 	() => collection.value.vars,
-  // 	(v, v2) => {
-  // 		getCollection();
-  // 	},
-  // 	{ deep: true },
-  // );
 
-  msgbus(name).on((v: any) => {
-    if (!!v.collection) {
-      getCollection();
-    }
-  });
+  // bus.on(name, (v: any) => {
+  //   if (!!v.collection) {
+  //     getCollection();
+  //   }
+  // });
+
   return {
     getItems,
     schema,

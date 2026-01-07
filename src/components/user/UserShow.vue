@@ -19,46 +19,43 @@
 
           <td>
             {{ item.username }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.password') }}</td>
 
           <td>
             {{ item.password }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.plainPassword') }}</td>
 
           <td>
             {{ item.plainPassword }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.apiTokens') }}</td>
 
           <td>
             {{ item.apiTokens }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.userRoles') }}</td>
 
           <td>
             {{ item.userRoles }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.permisos') }}</td>
 
           <td>
             <template v-if="router.hasRoute('PermisoShow')">
-              <router-link
-                v-for="permiso in item.permisos"
-                :to="{ name: 'PermisoShow', params: { id: permiso } }"
-                :key="permiso"
-              >
+              <router-link v-for="permiso in item.permisos" :to="{ name: 'PermisoShow', params: { id: permiso } }"
+                :key="permiso">
                 {{ permiso }}
 
                 <br />
@@ -66,10 +63,7 @@
             </template>
 
             <template v-else>
-              <p
-                v-for="permiso in item.permisos"
-                :key="permiso"
-              >
+              <p v-for="permiso in item.permisos" :key="permiso">
                 {{ permiso }}
               </p>
             </template>
@@ -80,7 +74,7 @@
 
           <td>
             {{ item.label }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.createdAt') }}</td>
@@ -101,65 +95,63 @@
 
           <td>
             {{ item.status }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.legacyId') }}</td>
 
           <td>
             {{ item.legacyId }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.apellido') }}</td>
 
           <td>
             {{ item.apellido }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.nombre') }}</td>
 
           <td>
             {{ item.nombre }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.email') }}</td>
 
           <td>
             {{ item.email }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.nit') }}</td>
 
           <td>
             {{ item.nit }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.telefono') }}</td>
 
           <td>
             {{ item.telefono }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.direccion') }}</td>
 
           <td>
             {{ item.direccion }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.localidad') }}</td>
 
           <td>
-            <router-link
-              v-if="router.hasRoute('LocalidadShow')"
-              :to="{ name: 'LocalidadShow', params: { id: item.localidad } }"
-            >
+            <router-link v-if="router.hasRoute('LocalidadShow')"
+              :to="{ name: 'LocalidadShow', params: { id: item.localidad } }">
               {{ item.localidad }}
             </router-link>
 
@@ -173,32 +165,28 @@
 
           <td>
             {{ item.fullName }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.id') }}</td>
 
           <td>
             {{ item.id }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.userIdentifier') }}</td>
 
           <td>
             {{ item.userIdentifier }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.roles') }}</td>
 
           <td>
             <template v-if="router.hasRoute('RoleShow')">
-              <router-link
-                v-for="role in item.roles"
-                :to="{ name: 'RoleShow', params: { id: role } }"
-                :key="role"
-              >
+              <router-link v-for="role in item.roles" :to="{ name: 'RoleShow', params: { id: role } }" :key="role">
                 {{ role }}
 
                 <br />
@@ -206,10 +194,7 @@
             </template>
 
             <template v-else>
-              <p
-                v-for="role in item.roles"
-                :key="role"
-              >
+              <p v-for="role in item.roles" :key="role">
                 {{ role }}
               </p>
             </template>
@@ -220,14 +205,14 @@
 
           <td>
             {{ item.token }}
-                      </td>
+          </td>
         </tr>
         <tr>
           <td>{{ $t('user.validTokenStrings') }}</td>
 
           <td>
             {{ item.validTokenStrings }}
-                      </td>
+          </td>
         </tr>
       </tbody>
     </q-markup-table>
@@ -245,7 +230,7 @@ import Toolbar from 'components/common/CommonToolbar.vue';
 import Breadcrumb from 'components/common/CommonBreadcrumb.vue';
 import Loading from 'components/common/CommonLoading.vue';
 import { useUserShowStore } from 'stores/user/show';
-import { formatDateTime } from 'src/utils/date';
+import { formatDateTime } from 'src/utils/autoimport/date';
 import { useUserDeleteStore } from 'stores/user/delete';
 import { useBreadcrumb } from 'src/composables/breadcrumb';
 import { useWatchErrors } from 'src/composables/errors';

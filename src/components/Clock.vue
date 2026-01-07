@@ -42,9 +42,12 @@ function updateDate() {
 }
 updateDate()
 useIntervalFn(() => {
-  seconds.value = useDateFormat(new Date(), 'ss', { locales: 'es-Es' }).value
-  if (seconds.value == '00') {
-    updateDate()
+  const temp = useDateFormat(new Date(), 'ss', { locales: 'es-Es' }).value
+  if ((parseInt(temp) % 10) == 0) {
+    seconds.value = temp;//useDateFormat(new Date(), 'ss', { locales: 'es-Es' }).value
+    if (seconds.value == '00') {
+      updateDate()
+    }
   }
 }, 1000)
 </script>

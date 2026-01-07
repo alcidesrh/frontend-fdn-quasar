@@ -1,8 +1,18 @@
 <template>
-  <span v-if="!quasar" :class="[`fdn-icon slate-400 material-symbols-${type}`, ...clases]" :style="style">{{ name
-  }}</span>
-  <q-icon v-else :name="name" tag="span" :left="left" :size="size" :color="color" />
+  <span v-if="!quasar" :class="[`fdn-icon surface-6 material-symbols-${type}`, ...clases]" :style="style">{{
+    name
+  }}
+    <v-slot></v-slot>
+  </span>
+  <q-icon v-else :name="name" tag="span" :left="left" :size="size" :color="color">
+
+    <template #default>
+      <v-slot></v-slot>
+    </template>
+  </q-icon>
 </template>
+
+
 <script setup lang="ts">
 const props = defineProps({
   quasar: {
@@ -54,7 +64,6 @@ const props = defineProps({
     default: []
   }
 });
-
 let name = '', style = {}
 if (props.quasar) {
   name = 'sym_o_' + props.name
