@@ -18,7 +18,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ["formkit", "unocss", "localstore", "i18n", "apollo-client"],
+    boot: ["formkit", "localstore", "i18n"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ["app.scss"],
@@ -34,11 +34,17 @@ export default defineConfig((ctx) => {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
       // "roboto-font", // optional, you are not bound to it
       // "material-icons", // optional, you are not bound to it
-      "material-symbols-outlined",
+      // "material-symbols-outlined",
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
+      alias: {
+        "quasar/dist/quasar.sass": path.resolve(
+          import.meta.dirname,
+          "./src/css/empty.scss",
+        ),
+      },
       target: {
         browser: ["es2022", "firefox115", "chrome115", "safari14"],
         node: "node20",
@@ -70,6 +76,19 @@ export default defineConfig((ctx) => {
       // viteVuePluginOptions: {},
 
       vitePlugins: [
+        {
+          name: "quasar-strip-sass",
+          enforce: "pre",
+          transform(code, id) {
+            if (code.includes(`import 'quasar/dist/quasar.sass'`)) {
+              code = code.replaceAll(
+                "import 'quasar/dist/quasar.sass'",
+                "import 'virtual:uno.css'",
+              );
+            }
+            return code;
+          },
+        },
         // [
         //   "@intlify/unplugin-vue-i18n/vite",
         //   {
@@ -123,6 +142,7 @@ export default defineConfig((ctx) => {
           dts: "src/auto-imports.d.ts",
           vueTemplate: true,
         }) as Plugin,
+        //Tu use Layers
       ],
       extendViteConf(viteConf: Record<any, any>) {
         // ----------------------------------------
@@ -157,7 +177,7 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Notify"],
+      plugins: ["Notify", "Dialog"],
       config: {
         // ...
         notify: {

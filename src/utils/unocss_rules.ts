@@ -1,6 +1,6 @@
 export const utopia_rules = [
   [
-    /^u-(-)?([mp])([a-z]?)-(\d{0,2}[a-z]{0,2})$/,
+    /^u-(-)?([mpg])([a-z]?)-(\d{0,2}[a-z]{0,2})$/,
     (match: string[]) => {
       const property = getProperty(match);
       if (property && property.length) {
@@ -38,21 +38,31 @@ export const utopia_rules = [
       }
     },
   ],
+  [
+    /^font-(\d{1,2})$/,
+    (match: string[]) => {
+      return [{ "font-weight": match[1] }];
+    },
+  ],
   ["text-base", { "line-height": "normal" }],
 ];
 
 export const color_rules = [
   [
-    /(?<!-)(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(100|200|300|400|500|600|700|800|900|950|50|1|2|3|4|5|6|7|8|9)/,
+    /^(slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|surface|surface-contrast)-([1-9]|([1-9]00)|50|950)$/,
     (match: string[]) => {
       return { color: `var(--${match[1]}-${match[2]})` };
     },
   ],
 ];
-
+const temp = {
+  m: "margin",
+  p: "padding",
+  g: "gap",
+};
 function getProperty(match: string[]): string[] | null {
-  const property: string | string[] | null =
-    match[2] == "m" ? "margin" : "padding";
+  const property: string | string[] | null = temp[match[2]];
+  // match[2] == "m" ? "margin" : "padding";
 
   if (!property) {
     return null;

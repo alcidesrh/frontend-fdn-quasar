@@ -15,8 +15,16 @@ export interface Pagination {
 	hasNextPage?: Scalars['Boolean']['output'];
 	itemsPerPage?: number;
 	totalCount: Scalars['Int']['output'];
-	currentPage?: number;
+	page?: number;
   lastPage?: number
+}
+
+export interface PaginationQuasar {
+  sortBy?: string;
+  descending: boolean;
+  page: number;
+  rowsPerPage: number;
+  rowsNumber: number;
 }
 
 export interface Column {
@@ -25,7 +33,7 @@ export interface Column {
 	sort: string;
 	filter: boolean;
 	schema: Record<string, string>;
-	style: string;
+	field: String
 }
 
 export interface CollectionVars {
@@ -37,13 +45,15 @@ export interface CollectionVars {
 export interface Collection {
 	menu: string;
 	columns: [Column] | [];
+	computedColumns: [Column] | [];
+	visibleColumns: [String]
 	items: Maybe<Array<Maybe<{}>>>;
 	pagination: Ref<Pagination>;
+	computedPagination: Ref<PaginationQuasar>;
 	filters: any;
 	args: computed<Record>(() => {});
 	orderField: string;
 	orderType: string;
 	loading: boolean;
-	hasFilter: boolean;
 }
 

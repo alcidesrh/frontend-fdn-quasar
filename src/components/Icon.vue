@@ -1,20 +1,26 @@
 <template>
-  <span v-if="!quasar" :class="[`fdn-icon surface-6 material-symbols-${type}`, ...clases]" :style="style">{{
+
+  <q-btn v-if="btn" flat round :icon="`sym_o_${name}`">
+
+  </q-btn>
+
+  <span v-else-if="!quasar" :class="[`fdn-icon surface-45 material-symbols-${type}`]" :style="style">{{
     name
   }}
-    <v-slot></v-slot>
   </span>
-  <q-icon v-else :name="name" tag="span" :left="left" :size="size" :color="color">
 
-    <template #default>
-      <v-slot></v-slot>
-    </template>
-  </q-icon>
+  <q-icon v-else :name="name" tag="span" :left="left"></q-icon>
 </template>
-
-
 <script setup lang="ts">
 const props = defineProps({
+  flat: {
+    type: Boolean,
+    default: false
+  },
+  btn: {
+    type: Boolean,
+    default: false
+  },
   quasar: {
     type: Boolean,
     default: false
@@ -39,14 +45,7 @@ const props = defineProps({
     type: String,
     default: 'outlined' //rounded and sharp
   },
-  size: {
-    type: String,
-    default: "24"
-  },
-  color: {
-    type: String,
-    required: false
-  },
+
   opsz: {
     type: Number,
     default: 48  //20 to 48
@@ -56,35 +55,33 @@ const props = defineProps({
     default: 0  //-25 to 200
   },
   wght: {
-    type: String,
-    default: "400"  //100 to 700
+    type: String,  //100 to 700
+    required: false
   },
   clases: {
     type: Array,
     default: []
   }
 });
-let name = '', style = {}
-if (props.quasar) {
-  name = 'sym_o_' + props.name
-}
-else {
+const name = ref(props.quasar ? 'sym_o_' + props.name : props.name)
+let style = {}
+if (!props.quasar) {
 
-  const { fill, color, grad, size, opsz, wght, type } = props
-
-  name = props.name
+  const { fill, grad, opsz, wght, type, flat } = props
+  name.value = props.name
 
   style = computed(() => {
     const temp = fill ? 1 : 0
     const style = {
-      fontSize: size + 'px',
-      fontVariationSettings: `'FILL' ${temp}, 'wght' ${wght}, 'GRAD' ${grad}, 'opsz' ${opsz}`
+      fontVariationSettings: `'FILL' ${temp}, 'GRAD' ${grad}, 'opsz' ${opsz}`
     }
-    if (color) {
-      style.color = color
+    if (wght) {
+      style.fontVariationSettings += `, 'wght' ${wght}`
     }
     return style
   })
+
+
 
 }
 </script>

@@ -11,12 +11,11 @@ import number from "./number/number";
 // import radio_primevue from "./radio/radio";
 import select from "./select/select";
 // import selectcascade_primevue from "./selectcascade/selectcascade";
-import text from "./text/text";
+import { text, text_search } from "./text/text";
 // import text_mixed_primevue from "./text_mixed/text-mixed";
 // import textarea_primevue from "./textarea/textarea";
 // import texticon_primevue from "./texticon/texticon";
 // import toggleswitch_primevue from "./toggleswitch/toggleswitch";
-
 export {
   // autoComplete_primevue,
   // button_primevue,
@@ -33,6 +32,7 @@ export {
   // selectcascade_primevue,
   // text_mixed_primevue,
   text,
+  text_search,
   // textarea_primevue,
   // texticon_primevue,
   // toggleswitch_primevue,

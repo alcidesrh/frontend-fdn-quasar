@@ -1,3 +1,5 @@
+import { defineBoot } from "#q-app/wrappers";
+// import { apolloClient } from "src/graphql/apolloClient";
 import {
   ApolloClient,
   ApolloLink,
@@ -38,18 +40,17 @@ const mutationRelationIriLink = new ApolloLink((operation, forward) => {
 const queryRelationIriLink = new ApolloLink((operation, forward) => {
   if (
     operation.operationType == "query" &&
-    Object.keys(operation.variables).includes("id")
+    false &&
+    operation?.variables.id
+    // Object.keys(operation.variables).includes("id")
   ) {
-    cl(operation, Object.keys(operation.variables).includes("id"));
     const temp = operation.query.definitions[0].selectionSet.selections;
     const temp2 = temp.filter(
-      (i) =>
-        i.arguments.filter((i) => i.name.value == "id").length &&
-        i.selectionSet.selections.filter((i) => i.name.value == "collection")
-          .length == 0,
+      (i) => i.arguments.filter((i) => i.name.value == "id").length,
+      // && i.selectionSet.selections.filter((i) => i.name.value == "collection").length == 0,
     );
     if (temp2.length) {
-      operation.variables.id = `/api/${temp2[0].name.value}s/${operation.variables.id}`;
+      operation.variables.id = `/api/${temp2[0].name.value}/${operation.variables.id}`;
     }
   }
   return forward(operation);
@@ -154,7 +155,9 @@ const errorLink = new ErrorLink(({ error, operation }) => {
   merror(temp);
   console.error(`[Error]: ${error}`);
 });
+
 export const apolloClient = new ApolloClient({
+  assumeImmutableResults: true,
   link: ApolloLink.from([
     globalLoadingLink,
     queryRelationIriLink,
@@ -173,3 +176,49 @@ export const apolloClient = new ApolloClient({
     },
   },
 });
+
+export function useApollo() {
+  const loading = ref(false);
+  const error = ref(null);
+
+  const query = async (options) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const result = await apolloClient.query(options);
+      return result.data;
+    } catch (err: any) {
+      error.value = err;
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const mutate = async (options) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const result = await apolloClient.mutate(options);
+      return result.data;
+    } catch (err: any) {
+      error.value = err;
+      return null;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  return {
+    query,
+    mutate,
+    loading,
+    error,
+  };
+}
+
+// export default defineBoot(({ app }) => {
+// lo exponemos globalmente para poder usarlo
+// app.config.globalProperties.$apollo = apolloClient;
+// });
+// export { apolloClient };

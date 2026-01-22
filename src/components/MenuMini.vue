@@ -1,7 +1,7 @@
 <template>
 
   <div v-for="(v, i) in items" :key="i" class="flex justify-center my-20px cursor-pointer">
-    <icon :name="v.icon" size="28px" wght="600" class="slate-5" @mouseover="flags[i] = !flags[i]">
+    <icon :name="v.icon" wght="600" class="slate-5" @mouseover="flags[i] = !flags[i]">
     </icon>
     <SubMenuMini v-if="v.children" :toogle="flags[i]" :items="v.children" />
 

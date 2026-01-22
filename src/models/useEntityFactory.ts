@@ -38,13 +38,12 @@ export const fdn = ref({
   },
 });
 
-export class Entity<Type> implements EntityInterface {
+export class Entity implements EntityInterface {
   name: string;
   camelCase: string;
   plural: string;
   fields: CustomField[];
-  columns: CustomField[];
-  collection: Ref<Collection>;
+  collection: Collection;
   item: Ref<Type & Base>;
   payload: object;
   input: object;
@@ -61,8 +60,6 @@ export class Entity<Type> implements EntityInterface {
     this.fields = fdn.value.resources[name].fields;
 
     this.excludeFormFields = [];
-
-    this.columns = [];
 
     this.payload = this.input = {};
     ["create", "update", "delete"].forEach((v) => {
@@ -97,15 +94,29 @@ export class Entity<Type> implements EntityInterface {
     this.collection = ref({
       menu: "editar",
       columns: [],
+      computedColumns: computed(() =>
+        this.collection.value.columns.filter((v) =>
+          this.collection.value.visibleColumns.includes(v.field),
+        ),
+      ),
+      visibleColumns: [],
       pagination: ref({
         page: 1,
         itemsPerPage: 15,
       }) as Ref<Pagination>,
+      computedPagination: computed(() => {
+        return {
+          sortBy: this.collection.value.orderField,
+          descending: this.collection.value.orderType == "DESC",
+          page: this.collection.value.pagination.currentPage,
+          rowsPerPage: this.collection.value.pagination.itemsPerPage,
+          rowsNumber: this.collection.value.pagination.totalCount,
+        };
+      }),
       items: [],
       orderField: "id",
       orderType: "ASC",
       loading: false,
-      hasFilter: false,
       filters: {},
       args: computed(() => {
         return {
@@ -113,11 +124,15 @@ export class Entity<Type> implements EntityInterface {
           ...this.collection.value.pagination,
         };
       }),
+      // getArgs: () =>{
+      //   this.collection.value.f
+      // }
     });
   }
 
-  setColumns(fields: []) {
-    this.columns = this.fields.filter((v) => fields.includes(v.name));
+  getColumns() {
+    const fields = this.collection.columns.map((v) => v.field);
+    return this.fields.filter((v) => fields.includes(v.name));
   }
 
   getQueryFields(deep = 1) {
@@ -216,30 +231,28 @@ export class Entity<Type> implements EntityInterface {
 
   prepareFieldForCollection(v?: any, deep = 2, loop = 1) {
     let temp = [],
-      temp2,
-      temp3;
+      temp2;
     if (!v) {
       temp2 = fdn.value.queries[this.endpoints.collection];
-      cl(this.endpoints.collection);
       if (temp2.type.kind == "OBJECT") {
-        temp2 = fdn.value.resources[temp2.type.name];
-        temp2.fields.forEach((i) => {
-          temp3 = {};
+        fdn.value.resources[temp2.type.name].fields.forEach((i) => {
+          temp2 = {};
           if (i.name == "collection") {
-            temp3[i.name] = [
+            const fields = this.collection.visibleColumns; //.map((v) => v.field);
+            temp2[i.name] = [
               "_id",
-              ...this.columns.map((i) =>
-                this.prepareFieldForCollection(i, deep, loop),
-              ),
+              ...this.fields
+                .filter((v) => fields.includes(v.name))
+                .map((i) => this.prepareFieldForCollection(i, deep, loop)),
             ];
           } else if (fdn.value.resources[i.type.ofType.name]?.fields) {
-            temp3[i.name] = fdn.value.resources[i.type.ofType.name]?.fields.map(
+            temp2[i.name] = fdn.value.resources[i.type.ofType.name]?.fields.map(
               (i) => this.prepareFieldForCollection(i, deep, loop),
             );
           } else {
-            temp3 = i.name;
+            temp2 = i.name;
           }
-          temp.push(temp3);
+          temp.push(temp2);
         });
       } else if (temp2.type.kind == "LIST") {
         temp = fdn.value.resources[temp2.type.ofType.name].fields.map((i) =>
@@ -263,22 +276,19 @@ export class Entity<Type> implements EntityInterface {
           temp[v.name] = [
             {
               collection: ["label"],
-              // fdn.value.resources[r].fields
-              // .map((v) => Entity.prepareField(v, deep, loop + 1))
-              // .filter((v) => v),
             },
           ];
         } else if (v.type.name.endsWith("CursorConnection")) {
           const r = fdn.value.resources[v.type.name].fields.find(
             (v) => v.name == "edges",
           ).type.ofType.name;
-          const r2 = fdn.value.resources[r].fields.find((v) => v.name == "node")
+          temp2 = fdn.value.resources[r].fields.find((v) => v.name == "node")
             .type.name;
           temp[v.name] = [
             {
               edges: [
                 {
-                  node: fdn.value.resources[r2].fields
+                  node: fdn.value.resources[temp2].fields
                     .map((v) => Entity.prepareField(v, deep, loop + 1))
                     .filter((v) => v),
                 },

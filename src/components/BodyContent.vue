@@ -1,20 +1,29 @@
 <template>
-  <div class="sidebar-wraper" :class="[sidebarStore.position, mode]">
-    <!-- <template #default> -->
-    <div class="sidebar-control">
+  <div :class="[sidebarStore.position, mode]">
+    <div class="sidebar-wraper">
+      <!-- <template #default> -->
+      <div class="sidebar-control">
 
-      <icon name="dock_to_right" fill :class="{ active: mode == modeStates.mini }"
-        @click="sidebarStore.setMode(modeStates.mini)" />
+        <icon name="dock_to_right" fill :class="{ active: mode == modeStates.mini }"
+          @click="sidebarStore.setMode(modeStates.mini)" />
 
-      <icon name="left_panel_close" fill @click="sidebarStore.setMode(modeStates.close)"
-        :class="{ active: mode == modeStates.close }" />
+        <icon name="left_panel_close" fill @click="sidebarStore.setMode(modeStates.close)"
+          :class="{ active: mode == modeStates.close }" />
+      </div>
+
+      <aside id="sidebar-body" ref="sidebar">
+        <slot name="content" :data="{ mode: sidebarStore.mode, modeStates: sidebarStore.modeStates }" />
+      </aside>
+      <!-- </template> -->
     </div>
 
-    <aside id="sidebar-body" ref="sidebar">
-      <slot name="content" :data="{ mode: sidebarStore.mode, modeStates: sidebarStore.modeStates }" />
-    </aside>
-    <!-- </template> -->
+    <q-page-container class="h-[100vh]">
+      <div class=" h-full u-p-xs lg:u-px-m">
+        <router-view />
+      </div>
+    </q-page-container>
   </div>
+
 </template>
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'

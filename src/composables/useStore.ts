@@ -4,6 +4,9 @@ import type { SelectOption } from "~/types/fdn";
 import { useChangeCase } from "@vueuse/integrations/useChangeCase.mjs";
 import { en } from "@formkit/i18n";
 import { useCloned } from "@vueuse/core";
+import { useWindowScroll } from "@vueuse/core";
+import { PaginationQuasar } from "@/types/collection";
+import { Dialog } from "quasar";
 
 const original = ref({ key: "value" });
 
@@ -11,7 +14,6 @@ const { cloned } = useCloned(original);
 
 original.value.key = "some new value";
 
-console.log(cloned.value.key); // 'value'
 export function createStore<Type>(
   name: string,
   options: Record<string, any> = {},
@@ -19,7 +21,6 @@ export function createStore<Type>(
   const items: Ref<Array<SelectOption> | []> = ref([]);
 
   const entity = ref(new Entity<Type>(name));
-
   const schema = ref([]);
 
   let chanel = "";
@@ -128,30 +129,6 @@ export function createStore<Type>(
       // 	);
       // }
     });
-
-    // onResult(({ data }) => {
-    //     if (typeof data == 'undefined') {
-    //         return;
-    //     }
-    //     let temp = data[entity.value.endpoints.get];
-    //     const { y: scrollY } = useWindowScroll();
-    //     scrollY.value = 0;
-    //     temp = useCloned(temp).cloned.value;
-    //     Object.keys(temp).forEach((v) => {
-    //         if (typeof temp[v] == 'object') {
-    //             if (typeof temp[v]?.collection != 'undefined') {
-    //                 temp[v] = temp[v].collection.map((v) => v?.id || v);
-    //             }
-    //             // else if (typeof temp[v]?.id != 'undefined') {
-    //             // temp[v] = temp[v].id;
-    //             // }
-    //         }
-    //     });
-    //     entity.value.item = temp;
-    //     if (typeof entity.value.item.id == 'undefined') {
-    //         entity.value.item.id = getIriFromId(entity.value.item._id, entity.value.name);
-    //     }
-    // });
   }
   function unsubscribeChanel() {
     if (typeof unsubscribe != undefined && unsubscribe) {
@@ -159,32 +136,46 @@ export function createStore<Type>(
     }
   }
   function remove(arg?) {
-    const temp = arg || entity.value.item;
-    unsubscribeChanel();
-    chanel = random();
-    msgbus("remove").emit({
-      chanel,
-      header: "Eliminar",
-      message: getAlertText("remove", temp?.nombre || "este elemento."),
-    });
-    unsubscribe = msgbus(chanel).on((v: any) => {
-      unsubscribeChanel();
-      const fields = {};
-      fields[entity.value.camelCase] = ["id"];
-      apollo
-        .mutate(
-          entity.value.endpoints.delete,
-          { id: entity.value.getIriFromId(temp) },
-          [fields],
-        )
-        .then(() => {
-          msg.emit(getAlertText("remove_after"));
-          getCollection("network-only");
-          if (useRoute().meta.action == "edit") {
-            useRouter().push({ name: entity.value.endpoints.list });
-          }
+    Dialog.create({
+      title: "Confirm",
+      message: "Would you like to turn on the wifi?",
+      cancel: true,
+      persistent: true,
+    })
+      .onOk(() => {
+        const temp = arg || entity.value.item;
+        unsubscribeChanel();
+        chanel = random();
+        msgbus("remove").emit({
+          chanel,
+          header: "Eliminar",
+          message: getAlertText("remove", temp?.nombre || "este elemento."),
         });
-    });
+        unsubscribe = msgbus(chanel).on((v: any) => {
+          unsubscribeChanel();
+          const fields = {};
+          fields[entity.value.camelCase] = ["id"];
+          apollo
+            .mutate(
+              entity.value.endpoints.delete,
+              { id: entity.value.getIriFromId(temp) },
+              [fields],
+            )
+            .then(() => {
+              msg.emit(getAlertText("remove_after"));
+              getCollection("network-only");
+              if (useRoute().meta.action == "edit") {
+                useRouter().push({ name: entity.value.endpoints.list });
+              }
+            });
+        });
+      })
+      .onCancel(() => {
+        // console.log('>>>> Cancel')
+      })
+      .onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      });
   }
   function removeMultiple(items: Ref<[any]> | any) {
     unsubscribeChanel();
@@ -240,10 +231,10 @@ export function createStore<Type>(
     // getCollection();
     return new Promise((resolve, reject) => {
       if (entity.value.collection.columns.length) {
-        resolve(true);
+        return resolve(true);
       }
 
-      apollo
+      return apollo
         .query({
           operation: "columnsMetadataResource",
           variables: { resource: entity.value.name },
@@ -253,17 +244,20 @@ export function createStore<Type>(
           if (typeof data == "undefined" && networkStatus == 1) {
             return;
           }
-          entity.value.setColumns(
-            data.columnsMetadataResource.data.collection.map((v) => v.name),
-          );
+
           setColumns(data.columnsMetadataResource.data);
+
+          if (entity.value.collection.visibleColumns.length == 0) {
+            entity.value.collection.visibleColumns =
+              entity.value.collection.columns.map((v) => v.field);
+          }
+
           resolve(true);
         });
     });
   }
   function setColumns(data) {
     const collection = entity.value.collection;
-    collection.hasFilter = data.filter as boolean;
     collection.columns = (data.collection as any).map((i) => {
       const temp: any = useCloned(i).cloned.value;
       if (temp.schema) {
@@ -273,63 +267,57 @@ export function createStore<Type>(
       return temp;
     });
   }
-  function sortCollection(d: string) {
+  function sortCollection(field: string, order: boolean) {
     const collection = entity.value.collection;
-
-    const col = collection.columns.find((i) => i.name == d);
-    if (typeof col != "undefined") {
-      d = col.name;
-    }
-    if (collection.orderField == d) {
-      if (collection.orderType == "ASC") {
-        collection.orderType = "DESC";
-      } else if (collection.orderType == "DESC") {
-        collection.orderField = "";
-        collection.orderType = "";
+    if (collection.orderField == field) {
+      order = order ? "DESC" : "ASC";
+      if (collection.orderType != order) {
+        collection.orderType = order;
       }
-    } else if (d) {
+    } else {
       collection.pagination.page = 1;
-      collection.orderField = d;
+      collection.orderField = field;
       collection.orderType = "ASC";
-    } else {
-      collection.orderField = "";
-      collection.orderType = "";
     }
-
-    if (!collection.orderField) {
-      collection.pagination.order = [{}];
-    } else {
-      // const
-      const order = {} as any;
-      order[collection.orderField] = collection.orderType;
-      collection.pagination.order = [order];
-    }
-    getCollection();
+    const temp = {} as any;
+    temp[collection.orderField] = collection.orderType;
+    collection.pagination.order = [temp];
   }
-  function getCollection(fetchPolicy = "") {
-    return apollo
-      .collection(entity, fetchPolicy)
-      .then(({ data, networkStatus }) => {
-        if (typeof data == "undefined" && networkStatus == 1) {
-          return;
-        }
-        const { y: scrollY } = useWindowScroll();
-        scrollY.value = 0;
+  function getCollection({
+    fetchPolicy = "",
+    pagination,
+  }: { fetchPolicy?: string; pagination?: PaginationQuasar } = {}) {
+    if (pagination) {
+      const { page, rowsPerPage, rowsNumber, sortBy, descending } = pagination;
+      entity.value.collection.pagination.page = page;
+      entity.value.collection.pagination.itemsPerPage =
+        rowsPerPage || rowsNumber;
 
-        const temp = data[entity.value.endpoints.collection];
+      sortCollection(sortBy, descending);
+    }
+    cloading.value++;
+    return apollo.collection(entity, fetchPolicy).then((data) => {
+      if (typeof data == "undefined" && networkStatus == 1) {
+        return;
+      }
+      // const { y: scrollY } = useWindowScroll();
+      // scrollY.value = 0;
+      const temp = data.data[entity.value.endpoints.collection];
 
-        if (!Array.isArray(temp)) {
-          const { collection, paginationInfo } =
-            data[entity.value.endpoints.collection];
-          entity.value.collection.pagination = {
-            ...paginationInfo,
-            page: entity.value.collection.pagination.page,
-          };
-          entity.value.collection.items = collection;
-        } else {
-          entity.value.collection.items = temp;
-        }
-      });
+      if (!Array.isArray(temp)) {
+        const { collection, paginationInfo } =
+          data.data[entity.value.endpoints.collection];
+        entity.value.collection.pagination = {
+          ...paginationInfo,
+          page: entity.value.collection.pagination.page,
+          order: entity.value.collection.pagination.order,
+        };
+        entity.value.collection.items = collection;
+      } else {
+        entity.value.collection.items = temp;
+      }
+      cloading.value--;
+    });
     // .catch((error) => {
 
     // });
@@ -353,18 +341,9 @@ export function createStore<Type>(
       nextTick(() => highlighted(entity.value.collection));
     },
   );
-  // watch(
-  // 	() => collection.value.vars,
-  // 	(v, v2) => {
-  // 		getCollection();
-  // 	},
-  // 	{ deep: true },
-  // );
 
-  msgbus(name).on((v: any) => {
-    if (!!v.collection) {
-      getCollection();
-    }
+  bus.on(name, (v: any) => {
+    getCollection();
   });
   return {
     getItems,

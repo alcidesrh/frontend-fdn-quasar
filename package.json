@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.9",
-    "@azbestoid/unocss-preset-utopia-core": "git+https://github.com/azbestoid/unocss-preset-utopia-core.git",
     "@formkit/addons": "^1.7.2",
     "@formkit/core": "^1.7.2",
     "@formkit/i18n": "^1.7.2",
@@ -33,6 +32,7 @@
     "pinia-plugin-persistedstate": "^4.7.1",
     "quasar": "^2.16.0",
     "utopia-core": "^1.6.0",
+    "utopia-core-scss": "^1.3.1",
     "voca": "^1.4.1",
     "vue": "^3.5.22",
     "vue-i18n": "^11.0.0",

@@ -4,12 +4,8 @@ import * as gqlBuilder from "gql-query-builder";
 import gql from "graphql-tag";
 import type { EntityInterface } from "@/types/entity";
 import { argsToArgsConfig } from "graphql/type/definition";
-import { apolloClient } from "/src/graphql/apolloClient";
 
 export const apollo = {
-  apolloClient() {
-    return apolloClient;
-  },
   prepareQueryArguments(args: []) {
     let temp = [],
       operation,
@@ -63,7 +59,7 @@ export const apollo = {
         ${query.query}
       `;
       // const { apolloClient } = useNuxtApp();
-      return this.apolloClient().query({
+      return apolloClient.query({
         query,
         variables: variables || arguments[1] || [],
         fetchPolicy: policy,
@@ -83,7 +79,7 @@ export const apollo = {
     const query: any = gql`
       ${queryBuild.query}
     `;
-    return this.apolloClient().query({
+    return apolloClient.query({
       query,
       variables: entity.value.collection.args,
       fetchPolicy: fetchPolicy,
@@ -112,7 +108,7 @@ export const apollo = {
     const query: any = gql`
       ${queryBuild.query}
     `;
-    return this.apolloClient().mutate({
+    return apolloClient.mutate({
       mutation: query,
       variables: { input: variables },
     });

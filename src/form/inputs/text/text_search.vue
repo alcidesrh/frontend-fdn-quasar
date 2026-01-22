@@ -1,11 +1,12 @@
 <template>
 
-  <q-input outlined dense bg-color="white" :type="type" :id="context.id" v-model="typing" :value="context._value"
-    :placeholder="context.placeholder" class="w-full" :loading="loading">
+  <q-input :for="context.id" v-model="typing" :placeholder="context.placeholder" :loading="loading" outlined dense flat
+    bg-color="white" class="w-full" :type="context.inputType">
     <template v-slot:append>
       <icon v-if="typing && !loading" name="close" size="20" @click="reset" />
     </template>
   </q-input>
+
 </template>
 <script setup>
 import { useTimeoutFn } from '@vueuse/core'
@@ -13,8 +14,7 @@ import { useTimeoutFn } from '@vueuse/core'
 const props = defineProps({
   context: Object,
 })
-
-const typing = ref('')
+const typing = ref(props.context._value || '')
 const loading = ref(false)
 const {
   start: startError,
@@ -29,17 +29,13 @@ const {
 )
 const { start, isPending, stop } = useTimeoutFn(
   async () => {
+    loading.value = true
 
     let value = typing.value
-    //if (props.context.node.name == 'id') {
-    //  value = value ? Number(value) : null
-    //  }
+
     await props.context.node.input(value)
     startError()
     bus.emit(props.context.eventbus)
-    loading.value = true
-
-
   },
   1000,
   { immediate: false },
@@ -60,6 +56,7 @@ watch(() => typing.value, () => {
 watch(
   () => cloading.value,
   (v) => {
+
     if (!v) {
       if (isPending) {
         stop()
@@ -68,7 +65,6 @@ watch(
         stopError()
       }
       loading.value = false
-
     }
   },
 )
@@ -88,6 +84,7 @@ async function reset() {
   loading.value = false
   typing.value = null
   await props.context.node.input(null)
-  msgbus(props.context.eventbus).emit({ collection: 'reload' })
+  bus.emit(props.context.eventbus)
 }
+
 </script>

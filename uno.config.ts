@@ -8,7 +8,7 @@ import {
   presetWind4,
 } from "unocss";
 import { utopia_rules, color_rules } from "./src/utils/unocss_rules";
-import { presetUtopia } from "@azbestoid/unocss-preset-utopia-core";
+import { theme } from "@unocss/preset-wind4";
 
 export default defineConfig({
   rules: [
@@ -19,30 +19,15 @@ export default defineConfig({
     presetUno(),
     presetAttributify(),
     // presetWind4(),
-    presetUtopia({
-      // Viewport configuration
-      minWidth: 320,
-      maxWidth: 1240,
-
-      // Typography scale
-      minFontSize: 10,
-      maxFontSize: 16,
-      minTypeScale: 1.2,
-      maxTypeScale: 1.25,
-      positiveSteps: 5,
-      negativeSteps: 2,
-
-      // Spacing scale
-      minSpaceSize: 18,
-      maxSpaceSize: 20,
-      positiveSpaceSteps: [1.5, 2, 3, 4, 6],
-      negativeSpaceSteps: [0.75, 0.5, 0.25],
-      customSpaceSizes: ["s-l", "xl-3xl"],
-
-      // Container queries support
-      relativeTo: "viewport", // or 'container'
-    }),
   ],
+  layers: {
+    reset: -10,
+    quasar: -5,
+    theme: -3,
+    base: 10,
+    components: 20,
+    overrides: 30,
+  },
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {

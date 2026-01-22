@@ -1,39 +1,70 @@
 <template>
-  <q-input outlined v-model="date" class="w-full" dense>
-    <template v-slot:prepend>
-      <q-icon name="sym_o_event" class="cursor-pointer text-slate-5" size="20px">
+  <q-input outlined v-model="value" class="w-full" dense :loading="loading" bg-color="white">
+    <template v-slot:append>
+      <q-icon v-if="!value" name="sym_o_event" class="cursor-pointer text-slate-5" size="20px">
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-          <q-date v-model="date" mask="YYYY-MM-DD HH:mm">
+          <q-date v-model="date" v-bind="util.omitKeysContaining(context.node.props)">
             <div class="row items-center justify-end">
-              <q-btn v-close-popup label="Aceptar" color="primary" flat />
             </div>
           </q-date>
         </q-popup-proxy>
       </q-icon>
-    </template>
-
-    <template v-slot:append>
-      <q-icon name="sym_o_access_time" class="cursor-pointer text-slate-5" size="20px">
-        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-          <q-time v-model="date" mask="YYYY-MM-DD HH:mm" format24h>
-            <div class="row items-center justify-end">
-              <q-btn v-close-popup label="Close" color="primary" flat />
-            </div>
-          </q-time>
-        </q-popup-proxy>
-      </q-icon>
+      <icon v-else-if="!loading" name="close" size="20" @click="reset" />
     </template>
   </q-input>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup lang="ts">
 
-export default {
-  setup() {
-    return {
-      date: ref('')
-    }
+const props = defineProps({
+  context: Object,
+})
+
+const date = ref('')
+const value = ref('')
+const loading = ref(false)
+
+watch(() => date.value, (v) => {
+  if (!v) {
+    value.value = ''
   }
+  else {
+    value.value = `${v.from} a ${v.to}`;
+  }
+  save()
+})
+
+watch(
+  () => cloading.value,
+  (v) => {
+    if (!v) {
+      loading.value = false
+    }
+  },
+)
+
+async function save() {
+
+  if (!date.value) {
+    await props.context.node.input(null)
+
+  }
+  else if (props.context?.range) {
+
+    await props.context.node.input([{ after: cformat(date.value.from), before: cformat(date.value.to) }])
+  }
+  else {
+    await props.context.node.input(date.value)
+  }
+  bus.emit(props.context.eventbus)
+  loading.value = true
+}
+
+async function reset() {
+  loading.value = false
+  date.value = null
+  value.value = null
+  await props.context.node.input(null)
+  bus.emit(props.context.eventbus)
 }
 </script>

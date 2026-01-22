@@ -1,25 +1,19 @@
 import { Entity } from "@/models/useEntityFactory";
+import { SelectOption } from "./fdn";
+import { PaginationQuasar } from "./collection";
 
-export interface Pagination {
-  hasNextPage?: Scalars['Boolean']['output'];
-  itemsPerPage?: number;
-  totalCount: Scalars['Int']['output'];
-  currentPage?: number;
-  lastPage?: number
-  
-  
-  getItems: (?force: boolean) => void;
+export interface Store {
+  getItems: (force: boolean) => void;
   schema: Ref<Array<Records<any>>>;
-  remove: (?arg: boolean) => void;
+  remove: (arg: boolean) => void;
   removeMultiple: (items: Ref<[any]> | any) => void;
   resource: (variables: any) => void;
-  entity: Ref<Entity>;
-  iniCollection: () => Promise
-  sortCollection:(d: string) => void;
+  entity: EntityInterface;
+  iniCollection: () => Promise;
+  sortCollection: (d: string) => void;
   submit: () => void;
-  getCollection,
-  items,
-  setFormkitSchema,
-
-
+  getCollection: (fetchPolicy: string) => void;
+  items: Ref<Array<SelectOption> | []>;
+  setPagination: (p: PaginationQuasar) => void;
+  setFormkitSchema: (id?: string) => void;
 }

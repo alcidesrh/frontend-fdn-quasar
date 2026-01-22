@@ -14,7 +14,8 @@ declare global {
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
   const api: typeof import('./services/api').default
   const apollo: typeof import('./graphql/api').apollo
-  const apolloClient: typeof import('./graphql/apolloClient').apolloClient
+  const apolloClient: typeof import('./graphql/apollo-client').apolloClient
+  const apolloClient2: typeof import('./graphql/apolloClient').apolloClient2
   const b: typeof import('./services/bus').b
   const bus: typeof import('./services/bus').bus
   const cformat: typeof import('./utils/autoimport/date').cformat
@@ -25,7 +26,7 @@ declare global {
   const computed: typeof import('vue').computed
   const createApp: typeof import('vue').createApp
   const createPinia: typeof import('pinia').createPinia
-  const createStore: typeof import('./stores/useStore').createStore
+  const createStore: typeof import('./composables/useStore').createStore
   const customRef: typeof import('vue').customRef
   const dayjs: typeof import('./utils/autoimport/date').dayjs
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
@@ -104,7 +105,7 @@ declare global {
   const treeKey: typeof import('./utils/autoimport/miscellaneous').treeKey
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
-  const useApollo: typeof import('./composables/useApollo').useApollo
+  const useApollo: typeof import('./graphql/apollo-client').useApollo
   const useAttrs: typeof import('vue').useAttrs
   const useBreadcrumb: typeof import('./composables/breadcrumb').useBreadcrumb
   const useBus: typeof import('./composables/useBus').useBus
@@ -182,8 +183,7 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly api: UnwrapRef<typeof import('./services/api')['default']>
     readonly apollo: UnwrapRef<typeof import('./graphql/api')['apollo']>
-    readonly apolloClient: UnwrapRef<typeof import('./graphql/apolloClient')['apolloClient']>
-    readonly b: UnwrapRef<typeof import('./services/bus')['b']>
+    readonly apolloClient: UnwrapRef<typeof import('./graphql/apollo-client')['apolloClient']>
     readonly bus: UnwrapRef<typeof import('./services/bus')['bus']>
     readonly cformat: UnwrapRef<typeof import('./utils/autoimport/date')['cformat']>
     readonly cl: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cl']>
@@ -193,7 +193,7 @@ declare module 'vue' {
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
-    readonly createStore: UnwrapRef<typeof import('./stores/useStore')['createStore']>
+    readonly createStore: UnwrapRef<typeof import('./composables/useStore')['createStore']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
     readonly defineAsyncComponent: UnwrapRef<typeof import('vue')['defineAsyncComponent']>
     readonly defineComponent: UnwrapRef<typeof import('vue')['defineComponent']>
@@ -226,7 +226,6 @@ declare module 'vue' {
     readonly minfo: UnwrapRef<typeof import('./services/bus')['minfo']>
     readonly mloading: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['mloading']>
     readonly month_day_hour_format: UnwrapRef<typeof import('./utils/autoimport/date')['month_day_hour_format']>
-    readonly msgbus: UnwrapRef<typeof import('./composables/useBus')['msgbus']>
     readonly msuccess: UnwrapRef<typeof import('./services/bus')['msuccess']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
@@ -267,10 +266,9 @@ declare module 'vue' {
     readonly treeKey: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['treeKey']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
-    readonly useApollo: UnwrapRef<typeof import('./composables/useApollo')['useApollo']>
+    readonly useApollo: UnwrapRef<typeof import('./graphql/apollo-client')['useApollo']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useBreadcrumb: UnwrapRef<typeof import('./composables/breadcrumb')['useBreadcrumb']>
-    readonly useBus: UnwrapRef<typeof import('./composables/useBus')['useBus']>
     readonly useCounterStore: UnwrapRef<typeof import('./stores/example-store')['useCounterStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>

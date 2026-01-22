@@ -84,14 +84,23 @@ export const useUserStore = defineStore(
     };
   },
   {
-    // persist: {
-    // 	afterHydrate: (ctx) => {
-    // 		console.log(`just hydrated '${ctx.store.$id}'`);
-    // },
-    // 	beforeHydrate: (ctx) => {
-    // 		console.log(`about to hydrate '${ctx.store.$id}'`);
-    // 	},
-    // 	// omit: ['collection']
-    // },
+    persist: {
+      afterHydrate: (ctx) => {
+        console.log(`just hydrated '${ctx.store.$id}'`);
+      },
+      beforeHydrate: (ctx) => {
+        console.log(`about to hydrate '${ctx.store.$id}'`);
+      },
+      // omit: ['collection']
+      pick: [
+        "entity.collection.columns",
+        "entity.collection.orderField",
+        "entity.collection.orderType",
+        "entity.collection.pagination",
+        "entity.collection.visibleColumns",
+        "entity.fields",
+        "entity.collection.filters",
+      ],
+    },
   },
 );

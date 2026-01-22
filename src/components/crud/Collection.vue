@@ -1,82 +1,72 @@
 <template>
-  <div>
-    <div v-if="entity.collection.columns.length" class="relative ">
-      <FormKit v-model="entity.collection.filters" type="form" :actions="false" form-class="block m-auto"
-        :config="{ wrapperClass: 'mb-0!' }">
-        <q-table :grid="$q.screen.xs" :dense="$q.screen.lt.md" class="sticky-header-table" title="Treats"
-          :rows="entity.collection.items" :columns="entity.collection.columns" row-key="id"
-          v-model:pagination="pagination" :loading="loading" :filter="filter" binary-state-sort @request="onRequest">
-          <template v-slot:top>
-            <q-btn color="primary" label="Add row" @click="" />
-            <q-btn class="q-ml-sm" color="primary" label="Remove row" @click="" />
-            <q-space />
-            <q-input borderless dense debounce="300" color="primary">
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-          <template v-slot:header="props">
-            <q-tr :props="props" class="h-30px!">
-              <q-th v-for="col in props.cols" :key="col.name" :props="props"
-                class="text-fluid-0! font-medium! text-left! text-slate-7" :class="[col?.class]">
-                <span>{{ col.label }}</span>
-              </q-th>
-            </q-tr>
-            <q-tr :props="props">
-              <q-th v-for="col in props.cols" :key="col.name" :props="props"
-                class="text-fluid--1! font-normal! text-left! col-wraper" :class="[col?.class]">
-                <FormKitSchema v-if="col.schema" :schema="col.schema" />
-              </q-th>
-            </q-tr>
-          </template>
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td v-for="(c, i) in props.cols" :key="c.field" :props="props" class="text-left! col-wraper"
-                :class="[c?.class]">
-                <slot :name="c.name" :data="data[c.name]">
-                  <collection-cell v-if="!c.action" :data="props.row" :column="c" :index="i" />
-                </slot>
-              </q-td>
+  <div v-if="collection.columns.length && !firstLoading" class="relative ">
 
-            </q-tr>
-          </template>
-        </q-table>
-      </FormKit>
-    </div>
-    <ListSkeleton v-else :columns="7" />
+    <FormKit v-model="collection.filters" type="form" :actions="false" form-class="block m-auto"
+      :config="{ wrapperClass: 'mb-0!' }">
+      <q-table flat :bordered="$q.screen.xs" :grid="$q.screen.xs" :dense="$q.screen.lt.md" class="sticky-header-table"
+        :title="entity.name" :rows="collection.items" :columns="collection.computedColumns" row-key="id"
+        v-model:pagination="collection.computedPagination" :loading="!!cloading"
+        :visible-columns="collection.visibleColumns" :table-style="`max-height: ${mxh}px;`" binary-state-sort
+        @request="onRequest" :class="{
+          'loading': !!cloading
+        }">
+        <template v-slot:top="props">
+          <CollectionTop :entity="entity" :inFullscreen="props.inFullscreen" @reload="store.getCollection"
+            @toggle-fullscreen="props.toggleFullscreen" />
+        </template>
+        <template v-slot:header="props">
+          <CollectionHeader :columns="collection.computedColumns" :entity="entity" :data="props" />
+        </template>
+        <template v-slot:body="props">
+          <CollectionBody :data="props" @remove="store.remove" />
+        </template>
+      </q-table>
+    </FormKit>
   </div>
+  <ListSkeleton v-else :columns="7" />
 </template>
 
 <script setup lang="ts">
+import { PaginationQuasar } from '@/types/collection';
+import { EntityInterface } from '@/types/entity';
+import { Store } from '@/types/store';
 import { useCloned } from '@vueuse/core'
-
+import { useQuasar } from 'quasar'
 
 interface Props {
-  store: any
+  store: Store
   field?: string
 }
 const { field = '_id', store } = defineProps<Props>()
+const { entity } = storeToRefs(store) as Record<'entity', Ref<EntityInterface>>
 
-const { entity } = storeToRefs(store)
-const rows = ref([])
-const filter = ref('')
-const loading = ref(false)
-const pagination = ref({})
+let collection = entity.value.collection
+const $q = useQuasar()
+const mxh = computed(() => $q.screen.height - 270)
+
+const firstLoading = ref(true)
+
+
 store.iniCollection().then(() => {
 
   store.getCollection().then(() => {
 
-    pagination.value = {
-      sortBy: 'desc',
-      descending: false,
-      page: store.collection.,
-      rowsPerPage: 3,
-      rowsNumber: 10
-    }
+    collection = entity.value.collection
+
+
+
+
+    nextTick(() => {
+      firstLoading.value = false
+      if (Object.values(entity.value.collection.filters).length) {
+        nextTick(() => highlighted(entity.value.collection));
+      }
+    })
+
   })
 
 })
+
 const data = ref({})
 
 const selected = ref([])
@@ -86,7 +76,12 @@ function removeMultiple() {
   selected.value = []
 }
 
+function onRequest(arg: Record<'pagination', PaginationQuasar>) {
+  store.getCollection(arg).then(() => {
+    collection = entity.value.collection
 
+  })
+}
 </script>
 
 <style scoped>
@@ -98,7 +93,7 @@ function removeMultiple() {
 ::highlight(highlight-5),
 ::highlight(highlight-6),
 ::highlight(highlight-7) {
-  background-color: #fde047;
+  background-color: #fef08a;
   color: black;
 }
 </style>

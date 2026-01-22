@@ -50,7 +50,7 @@ export function highlighted(collection: Collection): void {
   const properties: any = [];
   let property: any = null;
 
-  collection.columns.forEach((i: any, index) => {
+  collection.computedColumns.forEach((i: any, index) => {
     if (!i.schema) {
       properties.push([]);
     } else {

@@ -1,13 +1,14 @@
-// src/css/quasar.variables.scss
+@use 'quasar/src/css/variables' as q;
+@use 'sass:map';
 
-$primary : #334155;
-$secondary : #067d71;
-$accent : #9C27B0;
+$primary: #334155;
+$secondary: #065f46;
+$accent: #44403c;
 
-$dark : #0a0a0a;
-$dark-page : #121212;
+$dark: #0a0a0a;
+$dark-page: #121212;
 
-$positive : #2fed5c;
-$negative : #C10015;
-$info : #82e2f5;
-$warning : #fa7900;
+$positive: #2fed5c;
+$negative: #c10015;
+$info: #0284c7;
+$warning: #c2410c;

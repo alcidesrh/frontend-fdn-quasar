@@ -4,7 +4,7 @@
 
     <template v-slot:default-header="prop">
       <div class="row items-center">
-        <icon :name="prop.node.icon || 'sym_o_star'" size="28px" class="q-mr-sm" />
+        <icon :name="prop.node.icon || 'sym_o_star'" class="mr-10px slate-6" />
         <div class=" text-primary">{{ prop.node.label }}</div>
       </div>
     </template>

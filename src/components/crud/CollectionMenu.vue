@@ -55,6 +55,6 @@ function toggle(event) {
 
 <style scoped>
 .collection-menu-icon {
-  color: var(--p-surface-contrast-600)
+  color: var(--surface-contrast-600)
 }
 </style>

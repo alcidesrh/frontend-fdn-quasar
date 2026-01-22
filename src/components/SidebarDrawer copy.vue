@@ -1,20 +1,19 @@
 <template>
-  <div class="sidebar-wraper" :class="[sidebarStore.position, mode]">
-    <!-- <template #default> -->
-    <div class="sidebar-control">
+  <q-drawer v-model="open" side="left" :mini="mini" class="wrap-sidebar" :width="sidebarStore.w" mini-width="57">
+    <template #default>
+      <div class="sidebar-control" :class="[sidebarStore.position, mode]">
+      
+        <icon name="dock_to_right" fill :class="{ active: mode == modeStates.mini }"
+          @click="sidebarStore.setMode(modeStates.mini)" />
+        
+          <icon  name="left_panel_close" fill  @click="sidebarStore.setMode(modeStates.close)" :class="{ active: mode == modeStates.close }" />
+      </div>
 
-      <icon name="dock_to_right" fill :class="{ active: mode == modeStates.mini }"
-        @click="sidebarStore.setMode(modeStates.mini)" />
-
-      <icon name="left_panel_close" fill @click="sidebarStore.setMode(modeStates.close)"
-        :class="{ active: mode == modeStates.close }" />
-    </div>
-
-    <aside id="sidebar-body" ref="sidebar">
-      <slot name="content" :data="{ mode: sidebarStore.mode, modeStates: sidebarStore.modeStates }" />
-    </aside>
-    <!-- </template> -->
-  </div>
+      <aside id="layout-sidebar" ref="sidebar" class="pt-1.5rem" :class="[mode]">
+        <slot name="content" :data="{ mode: sidebarStore.mode, modeStates: sidebarStore.modeStates }" />
+      </aside>
+    </template>
+  </q-drawer>
 </template>
 <script setup lang="ts">
 import { useTimeoutFn } from '@vueuse/core'

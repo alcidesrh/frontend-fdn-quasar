@@ -6,7 +6,6 @@
 
     <SidebarDrawer store-id="sidebarLeft" position="left" v-once>
       <template #content="{ data }">
-        <q-separator class="mb-20px mt-10px" />
         <nav>
           <MenuLarge v-if="data.mode == data.modeStates.large" :store="data" :menu="customize" />
 
@@ -15,16 +14,14 @@
         </nav>
       </template>
     </SidebarDrawer>
-
-    <!-- <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered> -->
-    <!-- drawer content -->
-    <!-- </q-drawer> -->
-
-    <q-page-container>
-      <div class="border border-slate-200 [padding]-fluid-type-2">
+    <q-page-container class="h-[100vh]">
+      <div class=" h-full u-p-xs lg:u-px-m">
         <router-view />
       </div>
     </q-page-container>
+
+
+
 
 
     <!-- <q-footer elevated class="bg-grey-8 text-white">

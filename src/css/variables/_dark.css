@@ -1,32 +1,30 @@
 :root[class*='app-dark'] {
-    --p-surface-ground: var(--p-surface-800);
-    --code-background: var(--p-surface-800);
-    --code-color: var(--p-surface-100);
+	--surface-ground: var(--surface-800);
+	--code-background: var(--surface-800);
+	--code-color: var(--surface-100);
 
-    --p-surface-contrast-0: var(--p-surface-950);
-    --p-surface-contrast-50: var(--p-surface-950);
-    --p-surface-contrast-100: var(--p-surface-900);
-    --p-surface-contrast-200: var(--p-surface-800);
-    --p-surface-contrast-300: var(--p-surface-700);
-    --p-surface-contrast-400: var(--p-surface-600);
-    --p-surface-contrast-500: var(--p-surface-500);
-    --p-surface-contrast-600: var(--p-surface-400);
-    --p-surface-contrast-700: var(--p-surface-300);
-    --p-surface-contrast-800: var(--p-surface-200);
-    --p-surface-contrast-900: var(--p-surface-100);
-    --p-surface-contrast-950: var(--p-surface-50);
+	--surface-contrast-0: var(--surface-950);
+	--surface-contrast-50: var(--surface-950);
+	--surface-contrast-100: var(--surface-900);
+	--surface-contrast-200: var(--surface-800);
+	--surface-contrast-300: var(--surface-700);
+	--surface-contrast-400: var(--surface-600);
+	--surface-contrast-500: var(--surface-500);
+	--surface-contrast-600: var(--surface-400);
+	--surface-contrast-700: var(--surface-300);
+	--surface-contrast-800: var(--surface-200);
+	--surface-contrast-900: var(--surface-100);
+	--surface-contrast-950: var(--surface-50);
 
-    --p-primary-contrast-0: var(--p-primary-950);
-    --p-primary-contrast-100: var(--p-primary-900);
-    --p-primary-contrast-200: var(--p-primary-800);
-    --p-primary-contrast-300: var(--p-primary-700);
-    --p-primary-contrast-400: var(--p-primary-600);
-    --p-primary-contrast-500: var(--p-primary-500);
-    --p-primary-contrast-600: var(--p-primary-400);
-    --p-primary-contrast-700: var(--p-primary-300);
-    --p-primary-contrast-800: var(--p-primary-200);
-    --p-primary-contrast-900: var(--p-primary-100);
-    --p-primary-contrast-950: var(--p-primary-0);
-
-
+	--primary-contrast-0: var(--primary-950);
+	--primary-contrast-100: var(--primary-900);
+	--primary-contrast-200: var(--primary-800);
+	--primary-contrast-300: var(--primary-700);
+	--primary-contrast-400: var(--primary-600);
+	--primary-contrast-500: var(--primary-500);
+	--primary-contrast-600: var(--primary-400);
+	--primary-contrast-700: var(--primary-300);
+	--primary-contrast-800: var(--primary-200);
+	--primary-contrast-900: var(--primary-100);
+	--primary-contrast-950: var(--primary-0);
 }

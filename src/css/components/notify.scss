@@ -3,7 +3,7 @@
 	top: 0px;
 	width: 100%;
 
-	&>button {
+	& > button {
 		position: absolute;
 		right: -16px;
 		top: -10px;
@@ -11,23 +11,24 @@
 }
 
 .q-notification__content {
-	margin: 5px 0px;
+	margin: 10px 0px;
 	font-weight: 600;
+	padding-right: 25px;
 
-	&>i {
+	& > i {
 		position: absolute;
-		top: 10px;
+		top: 15px;
 	}
 
-	&>.q-notification__message {
+	& > .q-notification__message {
 		margin-left: 35px;
 
-		&>.q-notification__caption {
+		& > .q-notification__caption {
 			margin-top: 10px;
 		}
 	}
 }
 
-.fdn-notify.bg-negative button>span {
-	color: $negative;
+.fdn-notify.bg-negative button > span {
+	// color: $negative;
 }
