@@ -1,0 +1,14 @@
+.toolbar {
+  background-color: $topbar-sidebar-bg;
+  height: $topbar;
+  z-index: 20;
+  transition: all .5s;
+
+  &.layout-topbar-sticky {
+    box-shadow: $shadow-1;
+    background-color: -alpha($white, .2);
+    backdrop-filter: blur(3px);
+
+
+  }
+}

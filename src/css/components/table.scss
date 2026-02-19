@@ -2,23 +2,25 @@
 	/* height or max-height is important */
 	// max-height: 800px;
 	width: 100%;
-	color: var(--text-color); // table-layout: fixed;
+	color: $text-color; // table-layout: fixed;
+	// background-color: $white;
 
 	&.loading tbody {
 		opacity: 0.5;
 	}
 
 	& table {
-		& > thead > tr > th,
-		& > tbody > tr > td {
-			& > .col-small {
+
+		&>thead>tr>th,
+		&>tbody>tr>td {
+			&>.col-small {
 				max-width: 120px;
 			}
 
-			& > .col-medium {
+			&>.col-medium {
 				max-width: 180px;
 
-				& > div.collection-cell-wrap {
+				&>div.collection-cell-wrap {
 					text-overflow: ellipsis;
 					white-space: nowrap;
 					overflow: hidden;
@@ -27,27 +29,33 @@
 			}
 		}
 
-		& > thead {
-			& > tr > th {
+		&>thead {
+			&>tr>th {
+				text-transform: capitalize;
 				position: sticky;
-				z-index: 100;
-				top: 30px;
+				z-index: 10;
+				top: 35px;
 				background-color: white;
-
 				padding: 3px 15px;
 
 				&.sortable {
-					& > div {
-						display: inline-block;
+					&>div {
+						// display: inline-block;
 						padding-left: 3px;
 					}
 
-					& > i {
+					&>i {
 						transition: scale 0.5s;
-						opacity: 0.5;
-						font-size: 20px;
+						opacity: 1;
+						font-size: 18px;
+						top: 7px;
+						color: $surface-4 ;
+						position: absolute;
+						left: 0px;
+						font-weight: 500;
+
 						&:hover {
-							opacity: 1;
+							color: $surface-7
 						}
 					}
 				}
@@ -57,47 +65,68 @@
 					// scale: 1.2;
 				}
 			}
-			& > tr:first-child > th {
+
+			&>tr:first-child>th {
 				top: 0;
 			}
 		}
 
-		& > tbody {
+		&>tbody {
 			scroll-margin-top: 48px;
 
-			& > tr > td {
+			&>tr>td {
 				padding: 3px 15px;
-				font-size: 0.8rem;
+				// font-size: 1rem;
 
 				&:last-child {
 					position: sticky;
 					right: 0;
 					z-index: 1;
-					background-color: var(--surface-50);
-					border-bottom: 1px solid var(--surface-2);
-					border-left: 3px solid var(--surface-1);
+					background-color: $surface-1; //-alpha($surface-1, 0.5);
+					border-bottom: 1px solid $surface-3 ;
+					border-left: 1px solid $surface-3;
 					width: 90px;
+					min-width: 90px;
+					backdrop-filter: blur(3px) saturate(120%);
+
+
+					&>div>.fdn-icon {
+						transition: padding 0.2s;
+
+						&:hover {
+							background-color: white;
+							border: 1px solid $surface-4 ;
+							padding: 4px;
+							cursor: pointer;
+						}
+					}
 				}
 			}
 		}
 	}
 
-	// & .q-table__top,
-	& .q-table__bottom
-	// & table > thead > tr > th
-	{
-		background-color: var(--surface-50);
-		border-bottom: 1px solid var(--surface-2);
+	& table>thead>tr:last-child>th {
+		background-color: $surface-1 ;
+
+		& .form-outer {
+			margin-bottom: 0px;
+		}
 	}
 
-	& table > thead > tr:last-child > th {
-		background-color: var(--surface-50);
-	}
 
-	& > .q-table__bottom.row {
-		font-size: 1rem;
-		color: var(--slate-600);
-		font-weight: 500;
-		padding: 10px 0;
-	}
 }
+
+table {
+	border-collapse: collapse;
+}
+
+td,
+th {
+	padding: 0.5rem 0.75rem;
+}
+
+// tbody td:nth-child(even),
+// thead th:nth-child(even) {
+// 	// tbody tr:nth-child(even) {
+// 	background-color: $surface-1 // background-color: rgba(0, 0, 0, 0.03);
+// }

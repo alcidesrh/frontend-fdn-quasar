@@ -4,7 +4,6 @@ import * as gqlBuilder from "gql-query-builder";
 import gql from "graphql-tag";
 import type { EntityInterface } from "@/types/entity";
 import { argsToArgsConfig } from "graphql/type/definition";
-
 export const apollo = {
   prepareQueryArguments(args: []) {
     let temp = [],
@@ -43,47 +42,54 @@ export const apollo = {
     if (Array.isArray(arguments[0]) && arguments[0].length == 0) {
       return;
     }
-    try {
-      let query;
-      const { operation, fields, variables, policy = "network-only" } = params;
-      if (operation && fields) {
-        query = gqlBuilder.query({
-          operation: operation,
-          fields: fields,
-          variables: getQueryArgs(operation),
-        });
-      } else {
-        query = gqlBuilder.query(this.prepareQueryArguments([arguments[0]]));
-      }
-      query = gql`
-        ${query.query}
-      `;
-      // const { apolloClient } = useNuxtApp();
-      return apolloClient.query({
-        query,
-        variables: variables || arguments[1] || [],
-        fetchPolicy: policy,
+    // try {
+    let query;
+    const { operation, fields, variables, policy = "network-only" } = params;
+    if (operation && fields) {
+      query = gqlBuilder.query({
+        operation: operation,
+        fields: fields,
+        variables: getQueryArgs(operation),
       });
-    } catch (e) {
-      cl(e, 23232);
-      // alert('e');
+    } else {
+      query = gqlBuilder.query(this.prepareQueryArguments([arguments[0]]));
     }
+    query = gql`
+      ${query.query}
+    `;
+
+    // const { this.exec } = useNuxtApp();
+
+    return getApolloClient().query({
+      query,
+      variables: variables || arguments[1] || [],
+      fetchPolicy: policy,
+    });
+    // } catch (e) {
+    //   alert("e");
+    // }
   },
 
   collection(entity: Ref<EntityInterface>, fetchPolicy = "cache-first") {
-    const queryBuild = gqlBuilder.query({
-      operation: entity.value.endpoints.collection,
-      fields: entity.value.prepareFieldForCollection(),
-      variables: getQueryArgs(entity.value.endpoints.collection),
-    });
-    const query: any = gql`
-      ${queryBuild.query}
-    `;
-    return apolloClient.query({
-      query,
-      variables: entity.value.collection.args,
-      fetchPolicy: fetchPolicy,
-    });
+    try {
+      const queryBuild = gqlBuilder.query({
+        operation: entity.value.endpoints.collection,
+        fields: entity.value.prepareFieldForCollection(),
+        variables: getQueryArgs(entity.value.endpoints.collection),
+      });
+      const query: any = gql`
+        ${queryBuild.query}
+      `;
+
+      return getApolloClient().query({
+        query,
+        variables: entity.value.collection.args,
+        fetchPolicy: fetchPolicy,
+        context: { collection: true },
+      });
+    } catch (e) {
+      cl(e);
+    }
   },
 
   mutate(
@@ -99,7 +105,6 @@ export const apollo = {
       variables = arguments[1];
       fields = arguments[2];
     }
-    const l = getMutationArgs(operation);
     const queryBuild = gqlBuilder.mutation({
       operation,
       variables: getMutationArgs(operation), //getMutationArgs(operation),
@@ -108,7 +113,7 @@ export const apollo = {
     const query: any = gql`
       ${queryBuild.query}
     `;
-    return apolloClient.mutate({
+    return getApolloClient().mutate({
       mutation: query,
       variables: { input: variables },
     });

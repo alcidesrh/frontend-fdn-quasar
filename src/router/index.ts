@@ -15,15 +15,22 @@ import routes from "./routes";
  * async/await or return a Promise which resolves
  * with the Router instance.
  */
-
+let router;
 export default defineRouter(function (/* { store, ssrContext } */) {
   const createHistory = createWebHistory;
   // process.env.SERVER
   //   ? createMemoryHistory
   //   : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory);
 
-  const Router = createRouter({
-    scrollBehavior: () => ({ left: 0, top: 0 }),
+  router = createRouter({
+    // scrollBehavior: () => ({ left: 0, top: 0 }),
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) {
+        return savedPosition;
+      } else {
+        return { top: 0 };
+      }
+    },
     routes,
 
     // Leave this as is and make changes in quasar.conf.js instead!
@@ -32,5 +39,6 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  return Router;
+  return router;
 });
+export { router };

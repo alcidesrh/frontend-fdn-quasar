@@ -1,62 +1,55 @@
-<template>
-
-</template>
+<template></template>
 <script setup lang="ts">
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
-
-const $q = useQuasar()
-
+const $q = useQuasar();
 function show(arg) {
   const temp = {
-    type: arg.color,
+    type: arg.type,
     multiLine: true,
-    textColor: arg.color,
+    textColor: "surface-900",
+    // textColor: arg.color,
     actions: [
-      { icon: 'sym_o_close', color: 'info', round: true, handler: () => { /* ... */ } }
-    ]
+      {
+        icon: "sym_o_close",
+        color: "dark",
+        round: true,
+        handler: () => {
+          /* ... */
+        },
+      },
+    ],
+  };
+  if (typeof arg == "object") {
+    $q.notify({
+      ...temp,
+      ...arg,
+      ...(typeof arg.message == "object" ? arg.message : {}),
+    });
+    return;
   }
-
-  if (typeof arg.msg == "object") {
-    $q.notify({ ...temp, ...arg.msg })
-    return
-  }
-  $q.notify({ ...temp, message: arg.msg })
-
+  $q.notify({ ...temp, message: arg });
 }
 
-bus.on('error', (msg) => {
-  show({ color: 'negative', msg: msg })
-})
-bus.on('positive', (msg) => {
-  show({ color: 'positive', msg: msg })
-})
-bus.on('info', (msg) => {
-  show({ color: 'positive', msg: msg })
-})
+bus.on("error", (msg) => {
+  show({
+    message: msg,
+    type: "negative",
+    timeout: 0,
+  });
+});
+bus.on("positive", (msg) => {
+  show({
+    message: msg,
+    type: "positive",
+    // timeout: 0,
+  });
+});
 
+bus.on("info", (msg) => {
+  show({
+    message: msg,
+    type: "info",
+  });
+});
 </script>
-<style lang="scss">
-.fdn-notify {
-  border: 1px solid;
-  border-left: 10px solid;
-  backdrop-filter: blur(3px) saturate(120%);
-  font-size: 1rem;
-  background-color: rgba(white, 0.7) !important;
-
-  &.bg-negative {
-
-    border-color: $red-5;
-  }
-
-  &.bg-positive {
-    border-color: $teal-6;
-    color: $teal-9 !important
-  }
-
-  &.bg-info {
-    border-color: $blue-6;
-    color: $blue-9 !important
-  }
-}
-</style>

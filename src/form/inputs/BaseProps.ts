@@ -3,6 +3,10 @@ export default {
     type: null,
     default: undefined,
   },
+  validation: {
+    type: String,
+    default: undefined,
+  },
   defaultValue: {
     type: null,
     default: undefined,

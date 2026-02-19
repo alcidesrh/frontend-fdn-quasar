@@ -1,7 +1,7 @@
 import { defineBoot } from "#q-app/wrappers";
 import { createI18n } from "vue-i18n";
 import { Quasar } from "quasar";
-import langEs from "../lang/es";
+import langEs from "../layouts/lang/es";
 import messages from "src/i18n";
 
 export type MessageLanguages = keyof typeof messages;
@@ -23,7 +23,7 @@ declare module "vue-i18n" {
 
 export default defineBoot(({ app }) => {
   const i18n = createI18n<{ message: MessageSchema }, MessageLanguages>({
-    locale: "en-US",
+    locale: "es-ES",
     legacy: false,
     messages,
   });

@@ -7,6 +7,7 @@ import { useCloned } from "@vueuse/core";
 import { useWindowScroll } from "@vueuse/core";
 import { PaginationQuasar } from "@/types/collection";
 import { Dialog } from "quasar";
+import { router } from "@/router";
 
 const original = ref({ key: "value" });
 
@@ -18,7 +19,7 @@ export function createStore<Type>(
   name: string,
   options: Record<string, any> = {},
 ) {
-  const items: Ref<Array<SelectOption> | []> = ref([]);
+  let items: Ref<Array<SelectOption> | []> = ref([]);
 
   const entity = ref(new Entity<Type>(name));
   const schema = ref([]);
@@ -55,7 +56,7 @@ export function createStore<Type>(
             fields: entity.value.getQueryFields(),
           },
         ]);
-        variables = { ...id };
+        variables.id = id;
       }
       if (schema.value.length === 0) {
         queries.push({
@@ -64,6 +65,7 @@ export function createStore<Type>(
         });
         variables.entity = entity.value.name;
       }
+
       apollo.query(queries, variables)?.then(({ data, networkStatus }) => {
         if (typeof data == "undefined" && networkStatus == 1) {
           return;
@@ -130,45 +132,38 @@ export function createStore<Type>(
       // }
     });
   }
-  function unsubscribeChanel() {
-    if (typeof unsubscribe != undefined && unsubscribe) {
-      unsubscribe();
-    }
-  }
+
   function remove(arg?) {
+    if (!arg) {
+      arg = entity.value.item;
+    }
     Dialog.create({
-      title: "Confirm",
-      message: "Would you like to turn on the wifi?",
+      title: "Eliminar",
+      message: getAlertText(
+        "remove",
+        arg?.nombre || arg?.label || arg.id || "este elemento.",
+      ),
       cancel: true,
       persistent: true,
+      html: true,
     })
       .onOk(() => {
         const temp = arg || entity.value.item;
-        unsubscribeChanel();
-        chanel = random();
-        msgbus("remove").emit({
-          chanel,
-          header: "Eliminar",
-          message: getAlertText("remove", temp?.nombre || "este elemento."),
-        });
-        unsubscribe = msgbus(chanel).on((v: any) => {
-          unsubscribeChanel();
-          const fields = {};
-          fields[entity.value.camelCase] = ["id"];
-          apollo
-            .mutate(
-              entity.value.endpoints.delete,
-              { id: entity.value.getIriFromId(temp) },
-              [fields],
-            )
-            .then(() => {
-              msg.emit(getAlertText("remove_after"));
-              getCollection("network-only");
-              if (useRoute().meta.action == "edit") {
-                useRouter().push({ name: entity.value.endpoints.list });
-              }
-            });
-        });
+        const fields = {};
+        fields[entity.value.camelCase] = ["id"];
+        apollo
+          .mutate(
+            entity.value.endpoints.delete,
+            { id: entity.value.getIriFromId(temp) },
+            [fields],
+          )
+          .then(() => {
+            bus.emit("positive", getAlertText("remove_after"));
+            getCollection({ fetchPolicy: "network-only" });
+            if (router.currentRoute.value.name != "list") {
+              router.push({ name: "list", params: { entity: entity.name } });
+            }
+          });
       })
       .onCancel(() => {
         // console.log('>>>> Cancel')
@@ -177,16 +172,17 @@ export function createStore<Type>(
         // console.log('I am triggered on both OK and Cancel')
       });
   }
+
   function removeMultiple(items: Ref<[any]> | any) {
-    unsubscribeChanel();
-    chanel = random();
-    let text = "";
-    text = getAlertText("remove", `${items.value.length} elementos`);
-    msgbus("remove").emit({ chanel, message: text });
-    unsubscribe = msgbus(chanel).on((v: any) => {
-      unsubscribeChanel();
+    Dialog.create({
+      title: "Eliminar",
+      message: getAlertText("remove", `${items.length} elementos`),
+      cancel: true,
+      persistent: true,
+      html: true,
+    }).onOk(() => {
       const fields = { agnostic: ["id"] };
-      const temp = Array.isArray(items.value) ? items.value : [items];
+      const temp = Array.isArray(items) ? items : [items];
       apollo
         .mutate({
           operation: "deleteAgnostic",
@@ -197,8 +193,8 @@ export function createStore<Type>(
           fields: [fields],
         })
         .then(() => {
-          msg.emit(getAlertText("remove_after"));
-          getCollection("network-only");
+          bus.emit("positive", getAlertText("remove_after"));
+          getCollection({ fetchPolicy: "network-only" });
         });
     });
   }
@@ -250,6 +246,8 @@ export function createStore<Type>(
           if (entity.value.collection.visibleColumns.length == 0) {
             entity.value.collection.visibleColumns =
               entity.value.collection.columns.map((v) => v.field);
+            entity.value.collection.computedColumns =
+              entity.value.collection.columns;
           }
 
           resolve(true);
@@ -287,40 +285,43 @@ export function createStore<Type>(
     fetchPolicy = "",
     pagination,
   }: { fetchPolicy?: string; pagination?: PaginationQuasar } = {}) {
-    if (pagination) {
-      const { page, rowsPerPage, rowsNumber, sortBy, descending } = pagination;
-      entity.value.collection.pagination.page = page;
-      entity.value.collection.pagination.itemsPerPage =
-        rowsPerPage || rowsNumber;
+    return new Promise((resolve, reject) => {
+      if (pagination) {
+        const { page, rowsPerPage, rowsNumber, sortBy, descending } =
+          pagination;
+        entity.value.collection.pagination.page = page;
+        entity.value.collection.pagination.itemsPerPage =
+          rowsPerPage || rowsNumber;
 
-      sortCollection(sortBy, descending);
-    }
-    cloading.value++;
-    return apollo.collection(entity, fetchPolicy).then((data) => {
-      if (typeof data == "undefined" && networkStatus == 1) {
-        return;
+        sortCollection(sortBy, descending);
       }
-      // const { y: scrollY } = useWindowScroll();
-      // scrollY.value = 0;
-      const temp = data.data[entity.value.endpoints.collection];
+      return apollo.collection(entity, fetchPolicy).then((data) => {
+        if (typeof data == "undefined" && networkStatus == 1) {
+          return;
+        }
+        // const { y: scrollY } = useWindowScroll();
+        // scrollY.value = 0;
+        const temp = data.data[entity.value.endpoints.collection];
 
-      if (!Array.isArray(temp)) {
-        const { collection, paginationInfo } =
-          data.data[entity.value.endpoints.collection];
-        entity.value.collection.pagination = {
-          ...paginationInfo,
-          page: entity.value.collection.pagination.page,
-          order: entity.value.collection.pagination.order,
-        };
-        entity.value.collection.items = collection;
-      } else {
-        entity.value.collection.items = temp;
-      }
-      cloading.value--;
+        if (!Array.isArray(temp)) {
+          const { collection, paginationInfo } =
+            data.data[entity.value.endpoints.collection];
+          entity.value.collection.pagination = {
+            ...paginationInfo,
+            page: entity.value.collection.pagination.page,
+            order: entity.value.collection.pagination.order,
+          };
+          entity.value.collection.items = collection;
+        } else {
+          entity.value.collection.items = temp;
+        }
+        resolve(true);
+      });
+      // .finally(() => cloading.value--);
+      // .catch((error) => {
+
+      // });
     });
-    // .catch((error) => {
-
-    // });
   }
   function submit() {
     const { onDone, loading } = apollo.mutate({
@@ -331,9 +332,23 @@ export function createStore<Type>(
     onDone((data) => {
       entity.value.item = {} as any;
       msg.emit(getAlertText("update"));
-      const router = useRouter();
       router.push({ name: entity.value.routes.list });
     });
+  }
+  function orderColumns(i, to) {
+    const temp = entity.value.collection.computedColumns[i];
+    if (to == "left" && i != 0) {
+      entity.value.collection.computedColumns[i] =
+        entity.value.collection.computedColumns[i - 1];
+      entity.value.collection.computedColumns[i - 1] = temp;
+    } else if (
+      to != "left" &&
+      i + 1 <= entity.value.collection.columns.length
+    ) {
+      entity.value.collection.computedColumns[i] =
+        entity.value.collection.computedColumns[i + 1];
+      entity.value.collection.computedColumns[i + 1] = temp;
+    }
   }
   watch(
     () => entity.value.collection.items,
@@ -341,6 +356,23 @@ export function createStore<Type>(
       nextTick(() => highlighted(entity.value.collection));
     },
   );
+
+  watchEffect(() => {
+    entity.value.collection.paginationQuasar = {
+      sortBy: entity.value.collection.orderField,
+      descending: entity.value.collection.orderType == "DESC",
+      page: entity.value.collection.pagination.currentPage,
+      rowsPerPage: entity.value.collection.pagination.itemsPerPage,
+      rowsNumber: entity.value.collection.pagination.totalCount,
+    };
+  });
+
+  // watchEffect(() => {
+  //   entity.value.collection.computedColumns =
+  //     entity.value.collection.columns.filter((v) =>
+  //       entity.value.collection.visibleColumns.includes(v.field),
+  //     );
+  // });
 
   bus.on(name, (v: any) => {
     getCollection();
@@ -358,5 +390,6 @@ export function createStore<Type>(
     getCollection,
     items,
     setFormkitSchema,
+    orderColumns,
   };
 }

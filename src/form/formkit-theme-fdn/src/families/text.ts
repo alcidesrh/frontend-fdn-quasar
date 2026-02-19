@@ -28,13 +28,7 @@ export default {
   required their own additional consideration within your theme.
   */
   outer: ``,
-  wrapper: `
-    flex
-    flex-col
-    items-start
-    justify-start
-    last:mb-0
-  `,
+  wrapper: ``,
   label: ``,
   prefixIcon: `
     text-$colorTemperature-600
@@ -44,52 +38,8 @@ export default {
     text-$colorTemperature-600
     dark:text-$colorTemperature-400
   `,
-  inner: `
-    text-$scale
-    w-full
-    $radius
-    border
-    border-$colorTemperature-$colorTemperatureStrength
-
-    ${
-      "" /** === ⚠️ CAUTION: Alignment of 'inner' items ===
-    For text family inputs, the 'inner' section wraps the actual input along with
-    prefix, suffix, prefix-icon, and suffix-icon content. This means we probably want
-    to vertically center these items.
-    */
-    }
-    flex
-    items-center
-
-    ${
-      "" /** === ⚠️ CAUTION: Focus styles on 'inner' ===
-    Similarly, we likely want to put our focus styles on the inner rather than on
-    the literal input section.
-    */
-    }
-    group-data-[disabled]:!cursor-not-allowed
-
-    dark:border-$colorTemperature-$colorTemperatureStrengthDark
-  `,
-  input: `
-    text-$scale
-    text-$colorTemperature-$colorTemperatureStrength
-    min-h-[1.5em] ${"" /* fix for iOS which collapses empty date-style inputs (date, month, week, etc) */}
-    bg-transparent ${
-      "" /** Since our 'inner' is styled to look like an input, we don't want an actual input background */
-    }
-    grow ${"" /** we want the input to scale to fit the available space */}
-
-    ${
-      "" /** === ⚠️ CAUTION: Tailwind Forms Overrides ===
-    These are overrides for the Tailwind Forms plugin. You should include them in case
-    your theme user has the plugin enabled so that its styles don't conflict with your theme.
-    */
-    }
-    border-none p-0 focus:ring-0
-
-    dark:text-$colorTemperature-$colorTemperatureStrengthDark
-  `,
+  inner: ``,
+  input: ``,
   help: ``,
   messages: ``,
   message: ``,

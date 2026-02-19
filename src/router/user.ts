@@ -21,18 +21,20 @@ export default [
   {
     path: "/usuarios",
     // name: 'User',
-    meta: { label: "usuarios", icon: "icon-park-outline:every-user" },
+    meta: {
+      label: "usuarios",
+      breadcrumb: { label: "Usuarios", icon: "list" },
+
+      //  transition: "slide-left"
+    },
 
     children: [
       {
-        name: "user_collection",
+        name: "users",
         path: "",
         component: () => import("@/pages/user/UserCollection.vue"),
         meta: {
-          label: "List",
-          type: "user",
-          action: "list",
-          route: "users",
+          // breadcrumb: { label: "Listado", icon: "list" },
         },
       },
       {
@@ -40,11 +42,7 @@ export default [
         path: "crear",
         component: () => import("@/pages/user/UserForm.vue"),
         meta: {
-          label: "Crear usuario",
-          icon: "icon-park-outline:edit",
-          type: "user",
-          action: "create",
-          route: "createUser",
+          breadcrumb: { label: "Crear", icon: "person_add" },
         },
       },
       {
@@ -52,11 +50,7 @@ export default [
         path: "edit/:id",
         component: () => import("@/pages/user/UserForm.vue"),
         meta: {
-          label: "Editar usuario",
-          icon: "icon-park-outline:edit",
-          type: "user",
-          action: "edit",
-          route: "updateUser",
+          breadcrumb: { label: "Actualizar", icon: "person_edit" },
         },
       },
       {
@@ -64,11 +58,7 @@ export default [
         path: "cuenta/:id",
         component: () => import("@/pages/user/UserAccount.vue"),
         meta: {
-          label: "Mi cuenta",
-          icon: "icon-park-outline:edit",
-          type: "user",
-          action: "edit",
-          route: "account_edit",
+          breadcrumb: "Cuenta",
         },
       },
     ],

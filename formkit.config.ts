@@ -27,7 +27,7 @@ export default {
   inputs,
 
   plugins: [
-    // addAsteriskPlugin,
+    addAsteriskPlugin,
     scrollToErrors,
     createAutoAnimatePlugin(),
     // filterProps,

@@ -27,9 +27,9 @@ export default [
     },
   },
   {
-    name: create.label,
-    path: "/roles/create",
-    component: () => import("pages/role/PageCreate.vue"),
+    name: "createRole",
+    path: "/crear/role",
+    component: () => import("@/pages/role/RoleForm.vue"),
     meta: {
       breadcrumb: [{ ...list, to: { name: list.label } }, create],
     },

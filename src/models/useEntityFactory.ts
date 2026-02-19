@@ -56,7 +56,6 @@ export class Entity implements EntityInterface {
     this.name = name;
 
     this.item = ref({});
-
     this.fields = fdn.value.resources[name].fields;
 
     this.excludeFormFields = [];
@@ -78,8 +77,8 @@ export class Entity implements EntityInterface {
       form: "getFormResource",
       crud: "crudAgnostic",
       collection: `${this.plural}`,
-      create: `${this.plural}-create`,
-      update: `${this.plural}-id-edit`,
+      create: `create${capitalize}`,
+      update: `update${capitalize}`,
       delete: `delete${capitalize}`,
     };
     // const pascalCase = useChangeCase(name, 'pascalCase').value;
@@ -94,25 +93,13 @@ export class Entity implements EntityInterface {
     this.collection = ref({
       menu: "editar",
       columns: [],
-      computedColumns: computed(() =>
-        this.collection.value.columns.filter((v) =>
-          this.collection.value.visibleColumns.includes(v.field),
-        ),
-      ),
-      visibleColumns: [],
+      computedColumns: ref([]),
+      visibleColumns: ref([]),
       pagination: ref({
         page: 1,
         itemsPerPage: 15,
       }) as Ref<Pagination>,
-      computedPagination: computed(() => {
-        return {
-          sortBy: this.collection.value.orderField,
-          descending: this.collection.value.orderType == "DESC",
-          page: this.collection.value.pagination.currentPage,
-          rowsPerPage: this.collection.value.pagination.itemsPerPage,
-          rowsNumber: this.collection.value.pagination.totalCount,
-        };
-      }),
+      paginationQuasar: ref({}),
       items: [],
       orderField: "id",
       orderType: "ASC",
@@ -212,17 +199,21 @@ export class Entity implements EntityInterface {
             },
           ];
         } else {
-          temp[v.name] = ["id"];
+          temp[v.name] = fdn.value.resources[v.type.name].fields
+            .filter((i) => i?.name && ["id", "label"].includes(i.name))
+            .map((v) => Entity.prepareField(v, deep, loop + 1))
+            .filter((v) => v);
+          //  ["id"];
           // fdn.value.resources[v.type.name].fields
           // .map((v) => Entity.prepareField(v, deep, loop + 1))
           // .filter((v) => v);
         }
       } else if (v.type.kind == "LIST") {
         if (v.type.ofType.kind == "OBJECT") {
-          temp[v.name] = ["id"];
-          // fdn.value.resources[v.type.ofType.name].fields
-          // .map((v) => Entity.prepareField(v, deep, loop + 1))
-          // .filter((v) => v);
+          temp[v.name] = fdn.value.resources[v.type.ofType.name].fields
+            .filter((i) => i?.name && ["id", "label"].includes(i.name))
+            .map((v) => Entity.prepareField(v, deep, loop + 1))
+            .filter((v) => v);
         }
       }
       return temp;
@@ -255,60 +246,65 @@ export class Entity implements EntityInterface {
           temp.push(temp2);
         });
       } else if (temp2.type.kind == "LIST") {
-        temp = fdn.value.resources[temp2.type.ofType.name].fields.map((i) =>
-          this.prepareFieldForCollection(i, deep, loop),
-        );
+        temp = fdn.value.resources[temp2.type.ofType.name].fields.map((i) => {
+          const t = this.prepareFieldForCollection(i, deep, loop);
+          return t;
+        });
       }
-    } else if (
-      v.type.kind == "SCALAR" ||
-      v.type.kind == "ENUM" ||
-      (v?.type.kind == "NON_NULL" && v.type?.ofType?.kind == "SCALAR")
-    ) {
-      return v.name;
-    } else if (loop > deep) {
-      return false;
     } else {
-      if (v.type.kind == "OBJECT" && v.type.name) {
-        if (v.type.name.endsWith("PageConnection")) {
-          const r = fdn.value.resources[v.type.name].fields.find(
-            (v) => v.type.kind == "LIST",
-          ).type.ofType.name;
-          temp[v.name] = [
-            {
-              collection: ["label"],
-            },
-          ];
-        } else if (v.type.name.endsWith("CursorConnection")) {
-          const r = fdn.value.resources[v.type.name].fields.find(
-            (v) => v.name == "edges",
-          ).type.ofType.name;
-          temp2 = fdn.value.resources[r].fields.find((v) => v.name == "node")
-            .type.name;
-          temp[v.name] = [
-            {
-              edges: [
-                {
-                  node: fdn.value.resources[temp2].fields
-                    .map((v) => Entity.prepareField(v, deep, loop + 1))
-                    .filter((v) => v),
-                },
-              ],
-            },
-          ];
-        } else {
-          temp[v.name] = fdn.value.resources[v.type.ofType.name].fields.map(
-            (i) => this.prepareFieldForCollection(i, deep, loop),
-          );
-        }
-      } else if (v.type.kind == "LIST") {
-        if (v.type.ofType.kind == "OBJECT") {
-          temp[v.name] = fdn.value.resources[v.type.ofType.name].fields.map(
-            (i) => this.prepareFieldForCollection(i, deep, loop),
-          );
-        }
-      }
+      return Entity.prepareField(v);
     }
     return temp;
+    // if (
+    //   v.type.kind == "SCALAR" ||
+    //   v.type.kind == "ENUM" ||
+    //   (v?.type.kind == "NON_NULL" && v.type?.ofType?.kind == "SCALAR")
+    // ) {
+    //   return v.name;
+    // } else if (loop > deep) {
+    //   return false;
+    // } else {
+    //   if (v.type.kind == "OBJECT" && v.type.name) {
+    //     if (v.type.name.endsWith("PageConnection")) {
+    //       const r = fdn.value.resources[v.type.name].fields.find(
+    //         (v) => v.type.kind == "LIST",
+    //       ).type.ofType.name;
+    //       temp[v.name] = [
+    //         {
+    //           collection: ["label"],
+    //         },
+    //       ];
+    //     } else if (v.type.name.endsWith("CursorConnection")) {
+    //       const r = fdn.value.resources[v.type.name].fields.find(
+    //         (v) => v.name == "edges",
+    //       ).type.ofType.name;
+    //       temp2 = fdn.value.resources[r].fields.find((v) => v.name == "node")
+    //         .type.name;
+    //       temp[v.name] = [
+    //         {
+    //           edges: [
+    //             {
+    //               node: fdn.value.resources[temp2].fields
+    //                 .map((v) => Entity.prepareField(v, deep, loop + 1))
+    //                 .filter((v) => v),
+    //             },
+    //           ],
+    //         },
+    //       ];
+    //     } else {
+    //       temp[v.name] = fdn.value.resources[v.type.ofType.name].fields.map(
+    //         (i) => this.prepareFieldForCollection(i, deep, loop),
+    //       );
+    //     }
+    //   } else if (v.type.kind == "LIST") {
+    //     if (v.type.ofType.kind == "OBJECT") {
+    //       temp[v.name] = fdn.value.resources[v.type.ofType.name].fields
+    //         .map((i) => this.prepareFieldForCollection(i, deep, loop + 1))
+    //         .filter((i) => i);
+    //     }
+    //   }
+    // }
+    // return temp;
   }
 
   static prepareVariables(

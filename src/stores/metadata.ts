@@ -13,13 +13,10 @@ interface State {
   payload: Ref<Array<any>>;
   input: Ref<Array<any>>;
 }
+
 export const useMetadataStore = defineStore("Metadata", {
   persist: {
     afterHydrate: (ctx) => {
-      console.log(
-        `just hydrated '${ctx.store.$id}'-----------------------------`,
-      );
-
       fdn.value.mutations = ctx.store.mutations;
       fdn.value.queries = ctx.store.queries;
       fdn.value.resources = ctx.store.resources;
@@ -94,11 +91,6 @@ export const useMetadataStore = defineStore("Metadata", {
         };
         routes.push(item);
       }
-    },
-    beforeHydrate: (ctx) => {
-      console.log(
-        `about to hydrate '${ctx.store.$id}'-------------------------`,
-      );
     },
   },
   state: (): State => ({

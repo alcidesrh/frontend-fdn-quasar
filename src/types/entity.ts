@@ -8,7 +8,8 @@ interface base {
 
 export interface EntityInterface {
   name: string;
-  camelCase: string;
+  capitalize: computed<string>;
+  camelCase: computed<string>;
   plural: string;
   fields: [{}];
   collection: Collection;

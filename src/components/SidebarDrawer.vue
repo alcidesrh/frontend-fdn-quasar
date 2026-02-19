@@ -1,144 +1,76 @@
 <template>
   <div class="sidebar-wraper" :class="[sidebarStore.position, mode]">
-    <!-- <template #default> -->
-    <div class="sidebar-control">
-
-      <icon name="dock_to_right" fill :class="{ active: mode == modeStates.mini }"
-        @click="sidebarStore.setMode(modeStates.mini)" />
-
-      <icon name="left_panel_close" fill @click="sidebarStore.setMode(modeStates.close)"
-        :class="{ active: mode == modeStates.close }" />
+    <div class="sidebar-control" :class="[mode]">
+      <div
+        class="toogle-wraper large"
+        @click="
+          sidebarStore.setMode(
+            mode == modeStates.close
+              ? modeStates.prev
+              : mode == modeStates.large
+                ? modeStates.mini
+                : modeStates.large,
+          )
+        "
+      >
+        <icon fill name="line_start_arrow" class="text-20px font-medium" />
+      </div>
+      <div
+        class="close-wraper"
+        @click="
+          sidebarStore.setMode(
+            mode == modeStates.close ? modeStates.prev : modeStates.close,
+          )
+        "
+      >
+        <icon name="close" class="text-20px font-medium" />
+      </div>
     </div>
-
     <aside id="sidebar-body" ref="sidebar">
-      <slot name="content" :data="{ mode: sidebarStore.mode, modeStates: sidebarStore.modeStates }" />
+      <slot
+        name="content"
+        :data="{
+          mode: sidebarStore.mode,
+          modeStates: sidebarStore.modeStates,
+        }"
+      />
     </aside>
-    <!-- </template> -->
   </div>
 </template>
 <script setup lang="ts">
-import { useTimeoutFn } from '@vueuse/core'
+import { useTimeoutFn } from "@vueuse/core";
+import { useDateFormat, useIntervalFn } from "@vueuse/core";
 
 interface Props {
-  position?: string
-  classes?: string
-  storeId: string
+  position?: string;
+  classes?: string;
+  storeId: string;
 }
-const { position = 'left', classes = '', storeId } = defineProps<Props>()
+const { position = "left", classes = "", storeId } = defineProps<Props>();
 
-const sidebarStore = useSidebarStore(storeId, position)
+const sidebarStore = useSidebarStore(storeId, position);
+const { mode, modeStates } = storeToRefs(sidebarStore);
+const mini = computed(() => mode.value == modeStates.value.mini);
 
-const { mode, modeStates } = storeToRefs(sidebarStore)
-const mini = computed(() => mode.value == modeStates.value.mini)
-const open = ref(mode.value != modeStates.value.close)
-const hoverFloatButton = ref(false)
-const hoverSidebar = ref(false)
-// const hoverScreenEdge = ref(false)
+const time: Ref = ref();
+const ampm: Ref = ref();
+const seconds: Ref = ref();
+const toggle: Ref = ref(false);
 
-const openDialbtn = ref(false)
-const { start, isPending, stop } = useTimeoutFn(
-  () => {
-    sidebarStore.setMode(modeStates.value.close)
-  },
-  300,
-  { immediate: false },
-)
-
-watch(
-  () => hoverFloatButton.value,
-  (n) => {
-    if (!n && mode.value == modeStates.value.onhover) {
-      start()
+function updateDate() {
+  time.value = ref(
+    useDateFormat(new Date(), "hh:mm", { locales: "es-Es" }).value,
+  );
+  ampm.value = ref(useDateFormat(new Date(), "a", { locales: "es-Es" }).value);
+}
+updateDate();
+useIntervalFn(() => {
+  const temp = useDateFormat(new Date(), "ss", { locales: "es-Es" }).value;
+  if (parseInt(temp) % 5 == 0) {
+    seconds.value = temp; //useDateFormat(new Date(), 'ss', { locales: 'es-Es' }).value
+    if (seconds.value == "00") {
+      updateDate();
     }
-    else if (n && mode.value == modeStates.value.close) {
-      if (isPending.value) {
-        stop()
-      }
-      sidebarStore.setMode(modeStates.value.onhover)
-    }
-  },
-)
-// watch(
-//   () => hoverScreenEdge.value,
-//   (n) => {
-//     if (n && mode.value == modeStates.value.close) {
-//       mode.value = modeStates.value.onhover
-//     }
-//   },
-// )
-watch(
-  () => hoverSidebar.value,
-  (n) => {
-    if (mode.value == modeStates.value.onhover) {
-      if (!n) {
-        start()
-      }
-      else if (n) {
-        if (isPending.value) {
-          stop()
-        }
-      }
-    }
-  },
-)
-
-watch(
-  () => mode.value,
-  (n, p) => {
-    if (n == modeStates.value.close) {
-      open.value = false
-
-    }
-    else {
-      open.value = true
-    }
-  },
-)
-
-
-const items = ref([
-  {
-    label: 'Add',
-    icon: 'pi pi-pencil',
-    command: () => {
-      toast.add({
-        severity: 'info',
-        summary: 'Add',
-        detail: 'Data Added',
-        life: 3000,
-      })
-    },
-  },
-  {
-    label: 'Update',
-    icon: 'pi pi-refresh',
-    command: () => {
-      toast.add({
-        severity: 'success',
-        summary: 'Update',
-        detail: 'Data Updated',
-        life: 3000,
-      })
-    },
-  },
-  {
-    label: 'Delete',
-    icon: 'pi pi-trash',
-    command: () => {
-      toast.add({
-        severity: 'error',
-        summary: 'Delete',
-        detail: 'Data Deleted',
-        life: 3000,
-      })
-    },
-  },
-  {
-    label: 'Upload',
-    icon: 'pi pi-upload',
-    command: () => {
-      router.push('/fileupload')
-    },
   }
-])
+}, 1000);
 </script>

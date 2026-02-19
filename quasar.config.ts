@@ -7,6 +7,7 @@ import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
 import path from "path";
 import UnoCSS from "unocss/vite";
+// import VueDevTools from "vite-plugin-vue-devtools";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,7 +19,7 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ["formkit", "localstore", "i18n"],
+    boot: ["unocss", "pinia", "apollo", "metadata", "formkit", "i18n"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
     css: ["app.scss"],
@@ -39,12 +40,16 @@ export default defineConfig((ctx) => {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
     build: {
-      alias: {
-        "quasar/dist/quasar.sass": path.resolve(
-          import.meta.dirname,
-          "./src/css/empty.scss",
-        ),
-      },
+      // alias: {
+      //   "quasar/dist/quasar.sass": path.resolve(
+      //     import.meta.dirname,
+      //     "./src/css/app.scss",
+      //   ),
+      // "src/css/quasar.variables.scss": path.resolve(
+      //   import.meta.dirname,
+      //   "src/css/quasar.variables.sass",
+      // ),
+      // },
       target: {
         browser: ["es2022", "firefox115", "chrome115", "safari14"],
         node: "node20",
@@ -74,21 +79,20 @@ export default defineConfig((ctx) => {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
-
       vitePlugins: [
-        {
-          name: "quasar-strip-sass",
-          enforce: "pre",
-          transform(code, id) {
-            if (code.includes(`import 'quasar/dist/quasar.sass'`)) {
-              code = code.replaceAll(
-                "import 'quasar/dist/quasar.sass'",
-                "import 'virtual:uno.css'",
-              );
-            }
-            return code;
-          },
-        },
+        // {
+        //   name: "quasar-strip-sass",
+        //   enforce: "pre",
+        //   transform(code, id) {
+        //     if (code.includes(`import 'quasar/dist/quasar.sass'`)) {
+        //       code = code.replaceAll(
+        //         "import 'quasar/dist/quasar.sass'",
+        //         "import 'virtual:uno.css'",
+        //       );
+        //     }
+        //     return code;
+        //   },
+        // },
         // [
         //   "@intlify/unplugin-vue-i18n/vite",
         //   {
@@ -120,7 +124,7 @@ export default defineConfig((ctx) => {
             "src/utils/autoimport",
             "src/models",
             "src/services",
-            // 'src/helpers',
+            "src/router/index",
 
             // // Auto imports dentro de módulos feature
             // 'src/modules/*/composables',
@@ -143,6 +147,7 @@ export default defineConfig((ctx) => {
           vueTemplate: true,
         }) as Plugin,
         //Tu use Layers
+        // [VueDevTools(), {}],
       ],
       extendViteConf(viteConf: Record<any, any>) {
         // ----------------------------------------
@@ -155,6 +160,42 @@ export default defineConfig((ctx) => {
         };
 
         viteConf.plugins.push(UnoCSS());
+        // if (process.env.NODE_ENV === "development") {
+        //   viteConf.plugins.push(
+        //     VueDevTools({
+        //       // opciones opcionales
+        //       appendTo: "body",
+        //       componentInspector: true,
+        //     }),
+        //   );
+        // }
+
+        viteConf.css = viteConf.css || {};
+        viteConf.css.postcss = viteConf.css.postcss || {};
+        viteConf.css.postcss.plugins = viteConf.css.postcss.plugins || [];
+
+        viteConf.css = viteConf.css || {};
+        viteConf.css.preprocessorOptions =
+          viteConf.css.preprocessorOptions || {};
+        viteConf.css.preprocessorOptions.scss =
+          viteConf.css.preprocessorOptions.scss || {};
+        viteConf.css.preprocessorOptions.scss.additionalData = `
+        @function -alpha($color, $alpha) {
+          @if unit($alpha) == '%' {
+            $alpha: $alpha / 100%;
+          }
+          $color-str: inspect($color); // Convert to string
+          $modified: str-replace($color-str, ')', ' / ' + $alpha + ')');
+          @return unquote($modified);
+        }
+        @function str-replace($string, $search, $replace: '') {
+          $index: str-index($string, $search);
+          @if $index {
+            @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+          }
+          @return $string;
+        }
+        `;
       },
     },
 
@@ -177,13 +218,13 @@ export default defineConfig((ctx) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Notify", "Dialog"],
+      plugins: ["Notify", "Dialog", "LoadingBar"],
       config: {
         // ...
         notify: {
           position: "top",
           multiLine: true,
-          timeout: 0,
+          timeout: 4000,
           classes: "fdn-notify",
         },
       },

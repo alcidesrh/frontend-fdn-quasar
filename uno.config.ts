@@ -7,7 +7,7 @@ import {
   transformerVariantGroup,
   presetWind4,
 } from "unocss";
-import { utopia_rules, color_rules } from "./src/utils/unocss_rules";
+import { utopia_rules, color_rules, colors } from "./src/utils/unocss_rules";
 import { theme } from "@unocss/preset-wind4";
 
 export default defineConfig({
@@ -18,16 +18,31 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetAttributify(),
-    // presetWind4(),
+    presetWind4({
+      preflights: {
+        reset: true,
+        theme: true,
+      },
+    }),
   ],
-  layers: {
-    reset: -10,
-    quasar: -5,
-    theme: -3,
-    base: 10,
-    components: 20,
-    overrides: 30,
+  // theme
+  extendTheme: (theme) => {
+    return {
+      ...theme,
+      colors: {
+        ...theme.colors,
+        ...colors,
+      },
+    };
   },
+  // layers: {
+  //   reset: -10,
+  //   quasar: -5,
+  //   theme: -3,
+  //   base: 10,
+  //   components: 20,
+  //   overrides: 30,
+  // },
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {

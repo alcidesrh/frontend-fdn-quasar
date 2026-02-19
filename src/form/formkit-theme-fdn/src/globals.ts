@@ -1,83 +1,34 @@
 export default {
-  outer: `
-    ${
-      "" /* 
-      It is advisable to put `group` on the outer wrapper of every input
-      so that you can access all of the data attributes (eg. group-data-[disabled])
-      from any other child section of the input. "Outer" is always the outermost wrapper
-      of all 1st-party FormKit inputs.
-    */
-    }
-    group 
-    $inputMaxWidth
-    min-w-0 ${"" /** Allow input to shrink properly in Safari flex contexts */}
-    flex-grow
-    text-$scale
-    mb-$spacing(4,0.5,4)
-
-    ${"" /* recommended disabled styles across all inputs */}
-    data-[disabled]:select-none 
-    data-[disabled]:opacity-50
-    data-[disabled]:pointer-events-none
-  `,
-  wrapper: `
-    mb-$spacing(-1)
-  `,
-  label: `
-    block 
-    text-$colorTemperature-$colorTemperatureStrength 
-    text-$scale(-1,*)
-    mb-$spacing(-2,*)
-
-    dark:text-$colorTemperature-$colorTemperatureStrengthDark
-  `,
+  outer: ``,
+  wrapper: ``,
+  label: ``,
   legend: `
     ${
-      "" /* The legend key is used for inputs that have multiple child inputs within them. 
+      "" /* The legend key is used for inputs that have multiple child inputs within them.
       It is the "label" for a fieldset. Used by checkbox (multiple), radio (multiple), and repeater */
     }
-    block 
-    text-$colorTemperature-$colorTemperatureStrength 
+    block
+    text-$colorTemperature-$colorTemperatureStrength
     text-$scale(-1,*)
 
     dark:text-$colorTemperature-$colorTemperatureStrengthDark
   `,
-  input: `
-    ${
-      "" /** These styles disable the default browser styling on inputs and also enforce
-      light mode and dark mode UI within native inputs. This prevents a "light mode" native date picker
-      panel from popping up when your theme is in dark mode. */
-    }
-    appearance-none 
-    outline-hidden
-    [color-scheme:light] 
-    dark:[color-scheme:dark]
-    placeholder:text-$colorTemperature-400
-
-    dark:placeholder:text-$colorTemperature-500
-  `,
-  placeholder: `
-    ${
-      "" /** Some inputs don't have literal input elements inside of them, but still have the 
-      concept of a placeholder, so make sure we style them appropriately */
-    }
-    text-$colorTemperature-400
-    dark:text-$colorTemperature-500
-  `,
+  input: ``,
+  placeholder: ``,
   prefixIcon: `
-    flex 
-    shrink-0 
+    flex
+    shrink-0
     items-center
 
     ${
       "" /** It is recommended to pull icons back into whatever default inner padding you have set */
     }
-    -ml-$spacing(-2,0,1) 
+    -ml-$spacing(-2,0,1)
 
-    mr-$spacing 
-    text-$scale 
-    h-[1em] 
-    w-[1em] 
+    mr-$spacing
+    text-$scale
+    h-[1em]
+    w-[1em]
 
     ${
       "" /** === ⚠️ CAUTION: Styling nested SVGs ===
@@ -125,7 +76,7 @@ export default {
     dark:text-$colorTemperature-$colorTemperatureStrengthDark
   `,
   help: `
-    text-$colorTemperature-$colorTemperatureStrength 
+    text-$colorTemperature-$colorTemperatureStrength
     text-$scale(-2,*)
 
     dark:text-$colorTemperature-$colorTemperatureStrengthDark

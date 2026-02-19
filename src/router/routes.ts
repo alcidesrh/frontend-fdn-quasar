@@ -7,8 +7,23 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
+    meta: {
+      breadcrumb: { label: "Inicio", icon: "home" },
+    },
     children: [
       { path: "", component: () => import("pages/IndexPage.vue") },
+      {
+        path: "/lista/:entity",
+        name: "list",
+        component: () =>
+          import("@/components/crud/collection/DynamicCollection.vue"),
+      },
+      {
+        path: "/form/:entity/:id?",
+        name: "form",
+        component: () => import("@/components/crud/form/DynamicForm.vue"),
+      },
+
       ...userRoutes,
       ...roleRoutes,
       ...testRoutes,

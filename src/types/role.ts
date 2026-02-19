@@ -7,6 +7,5 @@ export interface Role extends Item {
   permisos?: any;
   actions?: any;
   label?: string;
-  null;
   id?: number;
 }

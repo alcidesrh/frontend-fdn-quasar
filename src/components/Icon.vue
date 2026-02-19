@@ -1,12 +1,12 @@
 <template>
+  <q-btn v-if="btn" flat round :icon="`sym_o_${name}`"> </q-btn>
 
-  <q-btn v-if="btn" flat round :icon="`sym_o_${name}`">
-
-  </q-btn>
-
-  <span v-else-if="!quasar" :class="[`fdn-icon surface-45 material-symbols-${type}`]" :style="style">{{
-    name
-  }}
+  <span
+    v-else-if="!quasar"
+    :class="[`fdn-icon relative cursor-pointer  material-symbols-${type}`]"
+    :style="style"
+    >{{ name }}
+    <slot name="default"></slot>
   </span>
 
   <q-icon v-else :name="name" tag="span" :left="left"></q-icon>
@@ -15,73 +15,71 @@
 const props = defineProps({
   flat: {
     type: Boolean,
-    default: false
+    default: false,
   },
   btn: {
     type: Boolean,
-    default: false
+    default: false,
   },
   quasar: {
     type: Boolean,
-    default: false
+    default: false,
   },
   left: {
     type: Boolean,
-    default: false
+    default: false,
   },
   right: {
     type: Boolean,
-    default: false
+    default: false,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   fill: {
     type: Boolean,
-    default: false
+    default: false,
   },
   type: {
     type: String,
-    default: 'outlined' //rounded and sharp
+    default: "outlined", //rounded and sharp
   },
 
   opsz: {
     type: Number,
-    default: 48  //20 to 48
+    default: 24, //20 to 48
   },
   grad: {
     type: Number,
-    default: 0  //-25 to 200
+    default: 0, //-25 to 200
   },
   wght: {
-    type: String,  //100 to 700
-    required: false
+    type: String, //100 to 700
+    required: false,
   },
   clases: {
     type: Array,
-    default: []
-  }
+    default: [],
+  },
 });
-const name = ref(props.quasar ? 'sym_o_' + props.name : props.name)
-let style = {}
+
+let style = {},
+  name = ref("");
 if (!props.quasar) {
-
-  const { fill, grad, opsz, wght, type, flat } = props
-  name.value = props.name
-
+  const { fill, grad, opsz, wght, type, flat } = props;
+  name.value = computed(() => props.name);
   style = computed(() => {
-    const temp = fill ? 1 : 0
+    const temp = fill ? 1 : 0;
     const style = {
-      fontVariationSettings: `'FILL' ${temp}, 'GRAD' ${grad}, 'opsz' ${opsz}`
-    }
+      fontVariationSettings: `'FILL' ${temp}, 'GRAD' ${grad}, 'opsz' ${opsz}`,
+    };
     if (wght) {
-      style.fontVariationSettings += `, 'wght' ${wght}`
+      style.fontVariationSettings += `, 'wght' ${wght}`;
     }
-    return style
-  })
-
-
-
+    return style;
+  });
+} else {
+  name = computed(() => (props.quasar ? "sym_o_" + props.name : props.name));
 }
 </script>

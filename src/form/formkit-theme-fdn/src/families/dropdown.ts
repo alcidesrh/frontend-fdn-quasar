@@ -5,25 +5,7 @@ export default {
   outer: ``,
   wrapper: ``,
   label: ``,
-  inner: `
-    relative
-    flex
-    items-center
-    border
-    border-$colorTemperature-$colorTemperatureStrength
-    focus-within:ring-2
-    $radius
-    ${
-      "" /** === ⚠️ CAUTION: Border radius on multi-line inputs === 
-    inputs such as the taglist (and the dropdown when the appearance is set to "tags") can wrap to
-    multiple lines. When the input is multiline we want to clamp the maximum radius to avoid undesireable
-    styling effects.
-    */
-    }
-    group-data-[is-multiline]:!$radius(0,rounded-none,rounded-2xl)
-
-    dark:border-$colorTemperature-$colorTemperatureStrengthDark
-  `,
+  inner: ``,
   prefixIcon: `
     !ml-$spacing
     !mr-0
@@ -38,30 +20,7 @@ export default {
 
     dark:text-$colorTemperature-$colorTemperatureStrengthDark
   `,
-  input: `
-    grow
-    p-$spacing
-    pr-0
-    pl-$spacing(3)
-    text-$scale
-    text-$colorTemperature-$colorTemperatureStrength
-    text-ellipsis
-    min-w-0 ${"" /** allows section to shrink */}
-    outline-hidden
-    bg-transparent
-    group-data-[prefix-icon]:!pl-0
-    group-data-[suffix-icon]:!pr-0
-    ${
-      "" /** === ⚠️ CAUTION: Tailwind Forms Overrides === 
-    These are overrides for the Tailwind Forms plugin. You should include them in case
-    your theme user has the plugin enabled so that its styles don't conflict with your theme.
-    */
-    }
-    border-none 
-    focus:ring-0
-
-    dark:text-$colorTemperature-$colorTemperatureStrengthDark
-  `,
+  input: ``,
   selectionWrapper: ` ${
     "" /* autocomplete (selection-appearance: option), dropdown (single) */
   }
@@ -140,9 +99,9 @@ export default {
   `,
   removeSelection: `
     ${
-      "" /** === ⚠️ CAUTION: shared section, different treatments === 
+      "" /** === ⚠️ CAUTION: shared section, different treatments ===
       The dropdown, autocomplete, and taglist all have a remove selection section.
-      the styles here handle the standard dropdown and autocomplete option appearance, 
+      the styles here handle the standard dropdown and autocomplete option appearance,
       but the dropdown and taglist require special consideration when their appearence
       is rendering tags.
       */
@@ -158,9 +117,9 @@ export default {
     dark:text-$colorTemperature-$colorTemperatureStrengthDark
 
     ${
-      "" /** === ⚠️ CAUTION: Styling the tag close button === 
+      "" /** === ⚠️ CAUTION: Styling the tag close button ===
       The tag close button shares a section name (removeSelection) which is already styled
-      above for a single-option selection. here we need to override these styles to handle the 
+      above for a single-option selection. here we need to override these styles to handle the
       removeSelection section within the context of a tag.
       */
     }

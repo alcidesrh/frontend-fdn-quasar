@@ -1,15 +1,19 @@
 <template>
-  <q-tree :nodes="menu" node-key="label" default-expand-all>
-
-
+  <q-tree
+    :nodes="menu"
+    node-key="label"
+    default-expand-all
+    class="text-surface-4 mt-20px"
+  >
     <template v-slot:default-header="prop">
       <div class="row items-center">
-        <icon :name="prop.node.icon || 'sym_o_star'" class="mr-10px slate-6" />
-        <div class=" text-primary">{{ prop.node.label }}</div>
+        <icon
+          :name="prop.node.icon || 'sym_o_star'"
+          class="mr-10px text-22px font-300"
+        />
+        <div class="text-color">{{ prop.node.label }}</div>
       </div>
     </template>
-
-
   </q-tree>
 </template>
 
@@ -23,8 +27,7 @@ const props = defineProps({
     type: Object,
     default: {},
   },
-})
-
+});
 </script>
 <style scoped></style>
 `

@@ -28,7 +28,7 @@ function defineSidebarStore<Id extends string, Position extends string>(
       return {
         mode: ref($q.screen.lt.sm ? "close" : "large"),
         position,
-        w: 220,
+        w: 200,
         t: 70,
       };
     },

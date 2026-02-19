@@ -4,12 +4,7 @@ export default {
   radio: https://formkit.com/inputs/radio#sections
   */
   outer: ``,
-  wrapper: `
-    inline-flex
-    items-center
-    mb-$spacing(-2,*)
-    group-data-[multiple]:mb-0
-  `,
+  wrapper: ``,
   fieldset: ``,
   legend: `
     mb-$spacing
@@ -20,14 +15,7 @@ export default {
     group-data-[multiple]:-mt-1.5
   `,
   inner: ``,
-  input: `
-    peer
-    absolute
-    h-0
-    w-0
-    overflow-hidden
-    opacity-0
-  `,
+  input: ``,
   decorator: `
     relative
     block
@@ -64,7 +52,7 @@ export default {
     ${
       "" /** === ⚠️ CAUTION: Disabled states for box inputs ===
     Checkbox / Radio options get their own disabled state when the root input disabled,
-    so to prevent doubling effects such as opacity reduction, we need to reset the opacity 
+    so to prevent doubling effects such as opacity reduction, we need to reset the opacity
     back to 100 if the parent outer wrapper is also disabled in order to avoid accidentally
     doubling our intended opacity reduction.
     */
@@ -73,12 +61,12 @@ export default {
   `,
   label: `
     ${
-      "" /** === ⚠️ CAUTION: Box label styling === 
-    For box family inputs the label is the text that appears adjacent to the decorator. 
+      "" /** === ⚠️ CAUTION: Box label styling ===
+    For box family inputs the label is the text that appears adjacent to the decorator.
     This means we probably want to override some of our global label styles.
     */
     }
-    !mb-0 
+    !mb-0
   `,
   optionHelp: `
     text-$colorTemperature-600

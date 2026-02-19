@@ -49,7 +49,7 @@ export interface Collection {
 	visibleColumns: [String]
 	items: Maybe<Array<Maybe<{}>>>;
 	pagination: Ref<Pagination>;
-	computedPagination: Ref<PaginationQuasar>;
+	paginationQuasar: Ref<PaginationQuasar>;
 	filters: any;
 	args: computed<Record>(() => {});
 	orderField: string;

@@ -1,23 +1,36 @@
 hr.q-separator {
+
 	// q-separator--horizontal q-separator--horizontal-inset
 	&.q-separator--horizontal {
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
+
 	&.q-separator--vertical {
 		margin-left: 10px;
 		margin-right: 10px;
 	}
 }
+
 .q-badge {
-	font-family: var(--font-family);
-	// width: fit-content;
+	font-family: $font-family;
+	width: fit-content;
 	padding: 3px 6px;
 	font-size: 13px;
 	top: -8px;
 	right: -6px;
 }
+
 .q-drawer-container {
-	z-index: 2001;
+	z-index: 30;
 	position: relative;
+}
+
+.q-breadcrumbs__el,
+.q-tree__node-header-content {
+	color: $text-color
+}
+
+.q-loading-bar.q-loading-bar--top.bg-info {
+	background-color: $surface-6 !important;
 }

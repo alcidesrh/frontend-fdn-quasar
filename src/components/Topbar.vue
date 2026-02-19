@@ -1,18 +1,35 @@
 <template>
-	<q-header class="toolbar">
-		<q-toolbar class=" full-height">
-			<q-toolbar-title>
-				<q-avatar>
-					<img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-				</q-avatar>
-				Title
-			</q-toolbar-title>
-			<clock />
-			<q-btn dense flat round icon="menu" />
-		</q-toolbar>
-	</q-header>
+  <q-header class="toolbar">
+    <q-toolbar>
+      <div class="row w-full items-center">
+        <div class="col">
+          <breadcrumbs />
+        </div>
+        <div class="col justify-center flex"><clock /></div>
+        <div class="col">.col</div>
+      </div>
+    </q-toolbar>
+  </q-header>
+  <div id="intersectionObservertarget" class="absolute" />
 </template>
 <script setup lang="ts">
-const sidebarStore = useSidebarStore('sidebarLeft')
-const { mode, modeStates } = storeToRefs(sidebarStore)
+const sidebarStore = useSidebarStore("sidebarLeft");
+const { mode, modeStates } = storeToRefs(sidebarStore);
+
+const observer = new IntersectionObserver(
+  (e) => {
+    const el = document.querySelector(".toolbar");
+    if (e[0].intersectionRatio < 1) el.classList.add("layout-topbar-sticky");
+    else el.classList.remove("layout-topbar-sticky");
+  },
+  {
+    threshold: 1,
+  },
+);
+
+onMounted(async () => {
+  const el = document.querySelector("#intersectionObservertarget");
+  observer.observe(el);
+});
+onUnmounted(() => observer.disconnect());
 </script>

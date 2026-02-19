@@ -36,4 +36,5 @@ export {
   // textarea_primevue,
   // texticon_primevue,
   // toggleswitch_primevue,
+  custom_text,
 };

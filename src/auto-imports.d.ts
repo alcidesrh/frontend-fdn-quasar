@@ -10,13 +10,15 @@ declare global {
   const ENTRYPOINT_GRAPHQL: typeof import('./graphql/config').ENTRYPOINT_GRAPHQL
   const EffectScope: typeof import('vue').EffectScope
   const Entity: typeof import('./models/useEntityFactory').Entity
-  const SubmissionError: typeof import("./utils/error").SubmissionError
+  const LAYOUTS: typeof import('./composables/useProductsLayout').LAYOUTS
+  const ProductLayout: typeof import('./composables/useProductsLayout').ProductLayout
   const acceptHMRUpdate: typeof import('pinia').acceptHMRUpdate
   const api: typeof import('./services/api').default
   const apollo: typeof import('./graphql/api').apollo
-  const apolloClient: typeof import('./graphql/apollo-client').apolloClient
-  const apolloClient2: typeof import('./graphql/apolloClient').apolloClient2
-  const b: typeof import('./services/bus').b
+  const apolloClient: typeof import("./graphql/apollo-client").apolloClient
+  const buildCollectionQuery: typeof import('./stores/chat/New Folder (1)/src/core/graphql/queryBuilder').buildCollectionQuery
+  const buildFilterInput: typeof import('./stores/chat/ultima/src/core/filters/filterBuilder').buildFilterInput
+  const buildFormSchema: typeof import('./stores/chat/New Folder (1)/src/core/generators/formGenerator').buildFormSchema
   const bus: typeof import('./services/bus').bus
   const cformat: typeof import('./utils/autoimport/date').cformat
   const cl: typeof import('./utils/autoimport/miscellaneous').cl
@@ -25,33 +27,53 @@ declare global {
   const cls: typeof import('./utils/autoimport/miscellaneous').cls
   const computed: typeof import('vue').computed
   const createApp: typeof import('vue').createApp
+  const createCrudStore: typeof import('./stores/chat/New Folder/src/stores/crudFactory').createCrudStore
+  const createEnterpriseStore: typeof import('./stores/enterpriseFactory').createEnterpriseStore
+  const createEntityStore: typeof import('./stores/dynamicEntityStore').createEntityStore
+  const createGlobalStore: typeof import('./stores/global/_core/createGlobalStore').createGlobalStore
+  const createHydraStore: typeof import('./stores/createHydraStore').createHydraStore
+  const createLoadingLink: typeof import("./graphql/links/loadingLink").createLoadingLink
   const createPinia: typeof import('pinia').createPinia
+  const createRelationStore: typeof import('./stores/tenant/_core/createRelationStore').createRelationStore
   const createStore: typeof import('./composables/useStore').createStore
+  const createUltraStore: typeof import('./stores/chat/ultima/src/stores/factory/ultraFactory').createUltraStore
   const customRef: typeof import('vue').customRef
-  const dayjs: typeof import('./utils/autoimport/date').dayjs
+  const decrease: typeof import("./composables/useLoading").decrease
   const defineAsyncComponent: typeof import('vue').defineAsyncComponent
   const defineComponent: typeof import('vue').defineComponent
   const defineStore: typeof import('pinia').defineStore
   const dformat: typeof import('./utils/autoimport/date').dformat
   const effectScope: typeof import('vue').effectScope
-  const extractHubURL: typeof import("./utils/mercure").extractHubURL
+  const entityConfig: typeof import('./stores/chat/src/stores/entities').entityConfig
   const fdn: typeof import('./models/useEntityFactory').fdn
-  const formatDateInput: typeof import('./utils/autoimport/date').formatDateInput
-  const formatDateTime: typeof import('./utils/autoimport/date').formatDateTime
+  const fetchIntrospection: typeof import('./stores/chat/New Folder/src/services/graphql-introspection').fetchIntrospection
+  const fromIri: typeof import('./stores/chat/src/utils/iri').fromIri
+  const generateFormSchema: typeof import('./stores/chat/New Folder/src/composables/useFormGenerator').generateFormSchema
   const getActivePinia: typeof import('pinia').getActivePinia
   const getAlertText: typeof import('./utils/autoimport/miscellaneous').getAlertText
+  const getApolloClient: typeof import('./graphql/apollo-client').getApolloClient
   const getCurrentInstance: typeof import('vue').getCurrentInstance
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
+  const getEntities: typeof import('./utils/autoimport/schemaParser').getEntities
+  const getEntityFields: typeof import('./utils/autoimport/schemaParser').getEntityFields
+  const getFilterConfig: typeof import('./utils/autoimport/schemaParser').getFilterConfig
+  const getFormSchema: typeof import('./utils/autoimport/schemaParser').getFormSchema
+  const getStore: typeof import('./composables/useEntityStore').getStore
   const gloading: typeof import('./utils/autoimport/miscellaneous').gloading
   const h: typeof import('vue').h
   const highlighted: typeof import('./utils/autoimport/miscellaneous').highlighted
+  const increase: typeof import("./composables/useLoading").increase
+  const initStore: typeof import('./composables/useEntityStore').initStore
+  const initUltraRegistry: typeof import('./stores/chat/ultima/src/stores/registry/index').initUltraRegistry
   const inject: typeof import('vue').inject
   const isProxy: typeof import('vue').isProxy
   const isReactive: typeof import('vue').isReactive
   const isReadonly: typeof import('vue').isReadonly
   const isRef: typeof import('vue').isRef
   const isShallow: typeof import('vue').isShallow
+  const loadSchema: typeof import('./stores/chat/New Folder (1)/src/core/introspection/schemaLoader').loadSchema
+  const loading: typeof import("./composables/useLoading").loading
   const logSQL: typeof import('./utils/autoimport/miscellaneous').logSQL
   const mapActions: typeof import('pinia').mapActions
   const mapGetters: typeof import('pinia').mapGetters
@@ -59,12 +81,11 @@ declare global {
   const mapStores: typeof import('pinia').mapStores
   const mapWritableState: typeof import('pinia').mapWritableState
   const markRaw: typeof import('vue').markRaw
-  const mercureSubscribe: typeof import("./utils/mercure").mercureSubscribe
   const merror: typeof import('./services/bus').merror
+  const metadata: typeof import("./models/useEntityFactory").metadata
   const minfo: typeof import('./services/bus').minfo
   const mloading: typeof import('./utils/autoimport/miscellaneous').mloading
   const month_day_hour_format: typeof import('./utils/autoimport/date').month_day_hour_format
-  const msgbus: typeof import('./composables/useBus').msgbus
   const msuccess: typeof import('./services/bus').msuccess
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
@@ -83,14 +104,23 @@ declare global {
   const onUnmounted: typeof import('vue').onUnmounted
   const onUpdated: typeof import('vue').onUpdated
   const onWatcherCleanup: typeof import('vue').onWatcherCleanup
+  const parseObjectTypes: typeof import('./stores/chat/New Folder/src/services/graphql-introspection').parseObjectTypes
+  const persist: typeof import('./stores/persist').persist
   const provide: typeof import('vue').provide
   const qloading: typeof import('./utils/autoimport/miscellaneous').qloading
+  const r: typeof import("./utils/autoimport/miscellaneous").r
   const random: typeof import('./utils/autoimport/miscellaneous').random
   const reactive: typeof import('vue').reactive
   const readonly: typeof import('vue').readonly
   const ref: typeof import('vue').ref
+  const registerTenantStore: typeof import('./stores/tenant/_core/entityRegistry').registerTenantStore
+  const registry: typeof import("./stores/registry/index").registry
+  const resetTenantStores: typeof import('./stores/tenant/_core/entityRegistry').resetTenantStores
   const resolveComponent: typeof import('vue').resolveComponent
+  const resolveRelationInput: typeof import('./stores/chat/ultima/src/core/relations/relationResolver').resolveRelationInput
+  const router: typeof import("./utils/autoimport/miscellaneous").router
   const setActivePinia: typeof import('pinia').setActivePinia
+  const setApolloClient: typeof import('./graphql/apollo-client').setApolloClient
   const setMapStoreSuffix: typeof import('pinia').setMapStoreSuffix
   const shallowReactive: typeof import('vue').shallowReactive
   const shallowReadonly: typeof import('vue').shallowReadonly
@@ -98,6 +128,7 @@ declare global {
   const storeToRefs: typeof import('pinia').storeToRefs
   const stores: typeof import('./stores/index').default
   const str: typeof import('./utils/autoimport/miscellaneous').str
+  const toIri: typeof import('./stores/chat/src/utils/iri').toIri
   const toRaw: typeof import('vue').toRaw
   const toRef: typeof import('vue').toRef
   const toRefs: typeof import('vue').toRefs
@@ -105,38 +136,85 @@ declare global {
   const treeKey: typeof import('./utils/autoimport/miscellaneous').treeKey
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
-  const useApollo: typeof import('./graphql/apollo-client').useApollo
+  const useActionCreateStore: typeof import('./stores/action/create').useActionCreateStore
+  const useActionDeleteStore: typeof import('./stores/action/delete').useActionDeleteStore
+  const useActionListStore: typeof import('./stores/action/list').useActionListStore
+  const useActionShowStore: typeof import('./stores/action/show').useActionShowStore
+  const useActionUpdateStore: typeof import('./stores/action/update').useActionUpdateStore
+  const useApollo: typeof import("./css/useApollo").useApollo
+  const useApollo2: typeof import("./graphql/apollo-client").useApollo2
   const useAttrs: typeof import('vue').useAttrs
   const useBreadcrumb: typeof import('./composables/breadcrumb').useBreadcrumb
-  const useBus: typeof import('./composables/useBus').useBus
+  const useCatalogStore: typeof import('./stores/global/catalogStore').useCatalogStore
   const useCounterStore: typeof import('./stores/example-store').useCounterStore
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
+  const useCurrentEntityStore: typeof import('./composables/useEntityStore').useCurrentEntityStore
+  const useDashboardQueries: typeof import("./css/useApollo").useDashboardQueries
+  const useEntity: typeof import('./composables/useEntity').useEntity
+  const useEntityStore: typeof import("./composables/useEntityStore").useEntityStore
+  const useIconCreateStore: typeof import('./stores/icon/create').useIconCreateStore
+  const useIconDeleteStore: typeof import('./stores/icon/delete').useIconDeleteStore
+  const useIconListStore: typeof import('./stores/icon/list').useIconListStore
+  const useIconShowStore: typeof import('./stores/icon/show').useIconShowStore
+  const useIconStore: typeof import('./stores/icon/iconStore').useIconStore
+  const useIconUpdateStore: typeof import('./stores/icon/update').useIconUpdateStore
   const useId: typeof import('vue').useId
+  const useLayout: typeof import('./composables/useLayout').useLayout
+  const useLayoutFactory: typeof import('./composables/useLayoutFactory').useLayoutFactory
+  const useLazyQuery: typeof import("./css/useApollo").useLazyQuery
   const useLink: typeof import('vue-router').useLink
+  const useLoading: typeof import("./composables/useLoading").useLoading
+  const useLoadingStore: typeof import('./stores/loading').useLoadingStore
+  const useLoadingStore2: typeof import('./stores/ui/loadingStore').useLoadingStore2
+  const useLocalidadCreateStore: typeof import('./stores/localidad/create').useLocalidadCreateStore
+  const useLocalidadDeleteStore: typeof import('./stores/localidad/delete').useLocalidadDeleteStore
+  const useLocalidadListStore: typeof import('./stores/localidad/list').useLocalidadListStore
+  const useLocalidadShowStore: typeof import('./stores/localidad/show').useLocalidadShowStore
+  const useLocalidadStore: typeof import('./stores/localidad/localidadStore').useLocalidadStore
+  const useLocalidadUpdateStore: typeof import('./stores/localidad/update').useLocalidadUpdateStore
+  const useMenuCreateStore: typeof import('./stores/menu/create').useMenuCreateStore
+  const useMenuDeleteStore: typeof import('./stores/menu/delete').useMenuDeleteStore
+  const useMenuListStore: typeof import('./stores/menu/list').useMenuListStore
+  const useMenuShowStore: typeof import('./stores/menu/show').useMenuShowStore
   const useMenuStateStore: typeof import('./stores/ui/menu').useMenuStateStore
+  const useMenuStore: typeof import('./stores/menu/menuStore').useMenuStore
+  const useMenuUpdateStore: typeof import('./stores/menu/update').useMenuUpdateStore
   const useMercureItem: typeof import('./composables/mercureItem').useMercureItem
   const useMercureList: typeof import('./composables/mercureList').useMercureList
   const useMetadataStore: typeof import('./stores/metadata').useMetadataStore
   const useModel: typeof import('vue').useModel
+  const useMutation: typeof import('./composables/useMutation').useMutation
+  const useMutationSmart: typeof import("./css/useApollo").useMutationSmart
   const useNotifications: typeof import('./composables/notifications').useNotifications
+  const usePaginatedQuery: typeof import("./css/useApollo").usePaginatedQuery
   const usePermisoCreateStore: typeof import('./stores/permiso/create').usePermisoCreateStore
   const usePermisoDeleteStore: typeof import('./stores/permiso/delete').usePermisoDeleteStore
   const usePermisoListStore: typeof import('./stores/permiso/list').usePermisoListStore
   const usePermisoShowStore: typeof import('./stores/permiso/show').usePermisoShowStore
+  const usePermisoStore: typeof import('./stores/permiso/permisoStore').usePermisoStore
   const usePermisoUpdateStore: typeof import('./stores/permiso/update').usePermisoUpdateStore
+  const useProductLayout: typeof import('./composables/useProductsLayout').useProductLayout
+  const useProjectStore: typeof import('./stores/tenant/projectStore').useProjectStore
   const useQuasar: typeof import('quasar').useQuasar
+  const useQuery: typeof import('./composables/useQuery').useQuery
   const useRoleCreateStore: typeof import('./stores/role/create').useRoleCreateStore
   const useRoleDeleteStore: typeof import('./stores/role/delete').useRoleDeleteStore
   const useRoleListStore: typeof import('./stores/role/list').useRoleListStore
   const useRoleShowStore: typeof import('./stores/role/show').useRoleShowStore
+  const useRoleStore: typeof import('./stores/role/roleStore').useRoleStore
   const useRoleUpdateStore: typeof import('./stores/role/update').useRoleUpdateStore
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
+  const useSchemaStore: typeof import('./stores/schemaStore').useSchemaStore
+  const useSessionStore: typeof import('./stores/session/sessionStore').useSessionStore
   const useSidebarStore: typeof import('./stores/ui/sidebar').useSidebarStore
   const useSlots: typeof import('vue').useSlots
+  const useSmartQuery: typeof import("./css/useApollo").useSmartQuery
+  const useStoreRegistry: typeof import('./stores/chat/src/stores/registry').useStoreRegistry
   const useTemplateRef: typeof import('vue').useTemplateRef
   const useThemeStateStore: typeof import('./stores/ui/ThemeState').useThemeStateStore
+  const useUltraStore: typeof import('./stores/chat/ultima/src/stores/registry/index').useUltraStore
   const useUserCreateStore: typeof import('./stores/user/create').useUserCreateStore
   const useUserDeleteStore: typeof import('./stores/user/delete').useUserDeleteStore
   const useUserListStore: typeof import('./stores/user/list').useUserListStore
@@ -147,6 +225,7 @@ declare global {
   const useWatchErrors: typeof import('./composables/errors').useWatchErrors
   const user: typeof import('./models/useEntityFactory').user
   const util: typeof import('./utils/autoimport/miscellaneous').util
+  const vueRouter: typeof import("./utils/autoimport/miscellaneous").vueRouter
   const watch: typeof import('vue').watch
   const watchEffect: typeof import('vue').watchEffect
   const watchPostEffect: typeof import('vue').watchPostEffect
@@ -183,7 +262,6 @@ declare module 'vue' {
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly api: UnwrapRef<typeof import('./services/api')['default']>
     readonly apollo: UnwrapRef<typeof import('./graphql/api')['apollo']>
-    readonly apolloClient: UnwrapRef<typeof import('./graphql/apollo-client')['apolloClient']>
     readonly bus: UnwrapRef<typeof import('./services/bus')['bus']>
     readonly cformat: UnwrapRef<typeof import('./utils/autoimport/date')['cformat']>
     readonly cl: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cl']>
@@ -192,6 +270,7 @@ declare module 'vue' {
     readonly cls: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['cls']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
+    readonly createEntityStore: UnwrapRef<typeof import('./stores/dynamicEntityStore')['createEntityStore']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
     readonly createStore: UnwrapRef<typeof import('./composables/useStore')['createStore']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
@@ -203,12 +282,19 @@ declare module 'vue' {
     readonly fdn: UnwrapRef<typeof import('./models/useEntityFactory')['fdn']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getAlertText: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['getAlertText']>
+    readonly getApolloClient: UnwrapRef<typeof import('./graphql/apollo-client')['getApolloClient']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
+    readonly getEntities: UnwrapRef<typeof import('./utils/autoimport/schemaParser')['getEntities']>
+    readonly getEntityFields: UnwrapRef<typeof import('./utils/autoimport/schemaParser')['getEntityFields']>
+    readonly getFilterConfig: UnwrapRef<typeof import('./utils/autoimport/schemaParser')['getFilterConfig']>
+    readonly getFormSchema: UnwrapRef<typeof import('./utils/autoimport/schemaParser')['getFormSchema']>
+    readonly getStore: UnwrapRef<typeof import('./composables/useEntityStore')['getStore']>
     readonly gloading: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['gloading']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly highlighted: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['highlighted']>
+    readonly initStore: UnwrapRef<typeof import('./composables/useEntityStore')['initStore']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>
@@ -252,6 +338,7 @@ declare module 'vue' {
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
+    readonly setApolloClient: UnwrapRef<typeof import('./graphql/apollo-client')['setApolloClient']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
@@ -266,15 +353,18 @@ declare module 'vue' {
     readonly treeKey: UnwrapRef<typeof import('./utils/autoimport/miscellaneous')['treeKey']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
-    readonly useApollo: UnwrapRef<typeof import('./graphql/apollo-client')['useApollo']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useBreadcrumb: UnwrapRef<typeof import('./composables/breadcrumb')['useBreadcrumb']>
-    readonly useCounterStore: UnwrapRef<typeof import('./stores/example-store')['useCounterStore']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useCurrentEntityStore: UnwrapRef<typeof import('./composables/useEntityStore')['useCurrentEntityStore']>
+    readonly useIconStore: UnwrapRef<typeof import('./stores/icon/iconStore')['useIconStore']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
+    readonly useLoadingStore: UnwrapRef<typeof import('./stores/loading')['useLoadingStore']>
+    readonly useLocalidadStore: UnwrapRef<typeof import('./stores/localidad/localidadStore')['useLocalidadStore']>
     readonly useMenuStateStore: UnwrapRef<typeof import('./stores/ui/menu')['useMenuStateStore']>
+    readonly useMenuStore: UnwrapRef<typeof import('./stores/menu/menuStore')['useMenuStore']>
     readonly useMercureItem: UnwrapRef<typeof import('./composables/mercureItem')['useMercureItem']>
     readonly useMercureList: UnwrapRef<typeof import('./composables/mercureList')['useMercureList']>
     readonly useMetadataStore: UnwrapRef<typeof import('./stores/metadata')['useMetadataStore']>
@@ -284,15 +374,18 @@ declare module 'vue' {
     readonly usePermisoDeleteStore: UnwrapRef<typeof import('./stores/permiso/delete')['usePermisoDeleteStore']>
     readonly usePermisoListStore: UnwrapRef<typeof import('./stores/permiso/list')['usePermisoListStore']>
     readonly usePermisoShowStore: UnwrapRef<typeof import('./stores/permiso/show')['usePermisoShowStore']>
+    readonly usePermisoStore: UnwrapRef<typeof import('./stores/permiso/permisoStore')['usePermisoStore']>
     readonly usePermisoUpdateStore: UnwrapRef<typeof import('./stores/permiso/update')['usePermisoUpdateStore']>
     readonly useQuasar: UnwrapRef<typeof import('quasar')['useQuasar']>
     readonly useRoleCreateStore: UnwrapRef<typeof import('./stores/role/create')['useRoleCreateStore']>
     readonly useRoleDeleteStore: UnwrapRef<typeof import('./stores/role/delete')['useRoleDeleteStore']>
     readonly useRoleListStore: UnwrapRef<typeof import('./stores/role/list')['useRoleListStore']>
     readonly useRoleShowStore: UnwrapRef<typeof import('./stores/role/show')['useRoleShowStore']>
+    readonly useRoleStore: UnwrapRef<typeof import('./stores/role/roleStore')['useRoleStore']>
     readonly useRoleUpdateStore: UnwrapRef<typeof import('./stores/role/update')['useRoleUpdateStore']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
+    readonly useSchemaStore: UnwrapRef<typeof import('./stores/schemaStore')['useSchemaStore']>
     readonly useSidebarStore: UnwrapRef<typeof import('./stores/ui/sidebar')['useSidebarStore']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
