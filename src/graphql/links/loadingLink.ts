@@ -61,7 +61,7 @@ export function createLoadingLink(pinia) {
 }
 LoadingBar.setDefaults({
   color: "info",
-  size: "7px",
+  size: "5px",
   // position: "bottom",
 });
 watch(

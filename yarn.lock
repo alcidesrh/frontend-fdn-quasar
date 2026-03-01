@@ -1285,6 +1285,11 @@ braces@^3.0.3, braces@~3.0.2:
   dependencies:
     fill-range "^7.1.1"
 
+browser-tab-id@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/browser-tab-id/-/browser-tab-id-0.0.8.tgz"
+  integrity sha512-hp/Dt63Y5MFLDOV0ebmzvQSg0htBL13T+TI1v/dEJ0T+tLnmiMiJiQ1IO4x40+H5MSINCKB5io8sfAdmVzM0yw==
+
 browserslist@^4.27.0, "browserslist@>= 4.21.0":
   version "4.28.1"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz"

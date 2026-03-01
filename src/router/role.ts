@@ -18,14 +18,14 @@ const show: BreadcrumbValue = {
 };
 
 export default [
-  {
-    name: list.label,
-    path: "/roles/",
-    component: () => import("pages/role/PageList.vue"),
-    meta: {
-      breadcrumb: [list],
-    },
-  },
+  // {
+  //   name: list.label,
+  //   path: "/roles/",
+  //   component: () => import("pages/role/PageList.vue"),
+  //   meta: {
+  //     breadcrumb: [list],
+  //   },
+  // },
   {
     name: "createRole",
     path: "/crear/role",

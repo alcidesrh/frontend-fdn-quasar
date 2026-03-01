@@ -50,7 +50,7 @@ const { start, isPending, stop } = useTimeoutFn(
 
     await props.context.node.input(value);
     startError();
-    bus.emit(props.context.eventbus);
+    // bus.emit(props.context.eventbus);
   },
   1000,
   { immediate: false },
@@ -101,6 +101,6 @@ async function reset() {
   loading.value = false;
   typing.value = null;
   await props.context.node.input(null);
-  bus.emit(props.context.eventbus);
+  // bus.emit(props.context.eventbus);
 }
 </script>

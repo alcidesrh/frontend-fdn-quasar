@@ -33,6 +33,8 @@ const props = defineProps({
   context: Object,
 });
 
+const loadingStore = useLoadingStore();
+
 const date = ref("");
 const value = ref("");
 const loading = ref(false);
@@ -50,7 +52,7 @@ watch(
 );
 
 watch(
-  () => cloading.value,
+  () => loadingStore.loading,
   (v) => {
     if (!v) {
       loading.value = false;

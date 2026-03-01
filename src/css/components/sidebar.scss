@@ -59,7 +59,7 @@
 		padding: 3px;
 		background-color: $surface-1;
 		border: $border;
-		border-radius: 100px;
+		border-radius: 98px;
 		transition: all .3s;
 
 		&:hover {
@@ -74,19 +74,19 @@
 
 		&>.fdn-icon {
 			transition: all .3s;
-			font-weight: 400;
-			color: $surface-5 ;
-			font-size: 16px;
+			font-weight: 300;
+			color: $surface-6 ;
+			font-size: 18px;
 		}
 
 		&.toogle-wraper>.fdn-icon {
 			transition: rotate 1s;
-			rotate: 0deg;
+			rotate: 180deg;
 		}
 	}
 
 	&:not(.large)>.toogle-wraper>.fdn-icon {
-		rotate: 180deg;
+		rotate: 0deg;
 	}
 
 	&.mini {

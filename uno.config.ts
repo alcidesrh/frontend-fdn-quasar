@@ -7,7 +7,8 @@ import {
   transformerVariantGroup,
   presetWind4,
 } from "unocss";
-import { utopia_rules, color_rules, colors } from "./src/utils/unocss_rules";
+import { utopia_rules, color_rules } from "./src/utils/unocss_rules";
+import { colors } from "./src/utils/colors";
 import { theme } from "@unocss/preset-wind4";
 
 export default defineConfig({

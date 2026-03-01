@@ -50,11 +50,15 @@ input[type='number'] {
 
 .formkit-outer {
   margin-bottom: 20px;
-  width: fit-content;
+  // width: fit-content;
 
   &>.formkit-wrapper {
+    max-width: 20rem;
+    // margin: auto;
+
     &>.formkit-inner {
-      width: 20rem;
+      // width: 100%;F
+      // max-width: 20rem;
     }
   }
 }
@@ -180,8 +184,8 @@ fieldset {
   }
 
   &>* {
-    display: grid;
-    justify-content: center;
+    // display: grid;
+    // justify-content: center;
   }
 }
 

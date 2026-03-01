@@ -13,9 +13,6 @@
   <div id="intersectionObservertarget" class="absolute" />
 </template>
 <script setup lang="ts">
-const sidebarStore = useSidebarStore("sidebarLeft");
-const { mode, modeStates } = storeToRefs(sidebarStore);
-
 const observer = new IntersectionObserver(
   (e) => {
     const el = document.querySelector(".toolbar");

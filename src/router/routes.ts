@@ -23,6 +23,11 @@ const routes: RouteRecordRaw[] = [
         name: "form",
         component: () => import("@/components/crud/form/DynamicForm.vue"),
       },
+      {
+        path: "/test",
+        name: "test",
+        component: () => import("@/pages/Test.vue"),
+      },
 
       ...userRoutes,
       ...roleRoutes,

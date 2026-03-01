@@ -29,7 +29,8 @@
           </transition>
         </RouterView>
         <q-inner-loading :showing="loadingStore.loading">
-          <q-spinner-gears size="50px" color="primary" />
+          <!-- <q-spinner-gears size="50px" color="primary" :thickness="2" /> -->
+          <q-spinner-dots color="primary" size="3em" />
         </q-inner-loading>
       </div>
     </q-page-container>
@@ -38,6 +39,9 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+
+useServerEventErrorListener();
+
 const sidebarStore = useSidebarStore("sidebarLeft", "left");
 const loadingStore = useLoadingStore();
 
@@ -159,14 +163,6 @@ const customize = ref([
     ],
   },
 ]);
-
-const eventSource = new EventSource(
-  "http://localhost/.well-known/mercure?topic=error",
-);
-
-eventSource.onmessage = (event) => {
-  // alert("yes");
-};
 </script>
 <style lang="scss">
 .q-page-container {

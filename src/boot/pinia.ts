@@ -1,13 +1,13 @@
-import { defineBoot } from "#q-app/wrappers";
+// src/boot/pinia.js
+import { boot } from "quasar/wrappers";
+// import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-// "async" is optional;
-// more info on params: https://v2.quasar.dev/quasar-cli-vite/boot-files
 
-export default defineBoot(async ({ store }) => {
+// const pinia = createPinia();
+export default boot(({ app, store }) => {
   store.use(piniaPluginPersistedstate);
-  // useMetadataStore();
-  // if (!fdn.value.isReady) {
-  //   await fdn.value.load();
-  // }
-  // initStore(store);
+  // app.use(pinia);
+  app.config.globalProperties.$pinia = store;
 });
+
+// export { pinia };

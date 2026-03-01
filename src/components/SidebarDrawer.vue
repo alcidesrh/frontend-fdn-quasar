@@ -13,7 +13,7 @@
           )
         "
       >
-        <icon fill name="line_start_arrow" class="text-20px font-medium" />
+        <icon fill name="double_arrow" class="text-20px font-medium" />
       </div>
       <div
         class="close-wraper"

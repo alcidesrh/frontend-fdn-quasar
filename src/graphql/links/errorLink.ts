@@ -12,7 +12,6 @@ export function createErrorLink() {
     const { loading } = storeToRefs(store);
 
     let temp;
-
     if (ServerError.is(error)) {
       if (error.statusCode == 401) {
         useUserSessionStore().clear();
@@ -42,27 +41,29 @@ export function createErrorLink() {
       }
     } else if (CombinedGraphQLErrors.is(error)) {
       error.errors.forEach(({ message, locations, path, extensions }) => {
-        if (extensions && extensions.debugMessage) {
-          temp = {
-            caption: message,
-            message:
-              extensions.debugMessage +
-              " " +
-              extensions?.file +
-              " " +
-              extensions.line,
-          };
-        } else {
-          temp = {
-            caption:
-              "GraphQL error from /home/alcides/frontend-fdn-quasar/src/graphql/apollo-client.ts",
-            message:
-              message +
-              " " +
-              (extensions && extensions.debugMessage
-                ? extensions.debugMessage
-                : ""),
-          };
+        if (message) {
+          if (extensions && extensions.debugMessage) {
+            temp = {
+              caption: message,
+              message:
+                extensions.debugMessage +
+                " " +
+                extensions?.file +
+                " " +
+                extensions.line,
+            };
+          } else {
+            temp = {
+              caption:
+                "GraphQL error from /home/alcides/frontend-fdn-quasar/src/graphql/apollo-client.ts",
+              message:
+                message +
+                " " +
+                (extensions && extensions.debugMessage
+                  ? extensions.debugMessage
+                  : ""),
+            };
+          }
         }
       });
     } else if (ServerParseError.is(error)) {
@@ -79,7 +80,7 @@ export function createErrorLink() {
       }; //loading.value.value = c//loading.value.value = q//loading.value.value = 0;
     }
     // decrease();
-    merror(temp);
+    if (temp) merror(temp);
     // console.error(`[Error]: ${error}`);
 
     // return forward(operation).finally(() => {

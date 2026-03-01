@@ -41,7 +41,7 @@ export function getAlertText(type: string, target: {} | null = null) {
   }
 }
 
-export function highlighted(collection: Collection): void {
+export function highlighted(cols, filters): void {
   if (!CSS.highlights) {
     return;
   }
@@ -50,7 +50,7 @@ export function highlighted(collection: Collection): void {
   const properties: any = [];
   let property: any = null;
 
-  collection.computedColumns.forEach((i: any, index) => {
+  cols.forEach((i: any, index) => {
     if (!i.schema) {
       properties.push([]);
     } else {
@@ -77,7 +77,7 @@ export function highlighted(collection: Collection): void {
   });
   Object.keys(properties).forEach((i, index) => {
     if (properties[i].length) {
-      const str = collection.filters[i]?.toString().trim().toLowerCase();
+      const str = filters[i]?.toString().trim().toLowerCase();
       if (!str) {
         return;
       }

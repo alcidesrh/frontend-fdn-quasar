@@ -17,7 +17,7 @@
 <script setup>
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useSchemaStore } from "src/stores/schemaStore";
+import { useSchemaStore } from "@/stores/schemaStore2";
 import { getEntities } from "src/utils/schemaParser";
 
 const schemaStore = useSchemaStore();

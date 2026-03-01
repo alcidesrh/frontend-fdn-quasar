@@ -101,7 +101,7 @@ export const useMetadataStore = defineStore("Metadata", {
     input: ref([]),
   }),
   actions: {
-    async setApiMetadata(force = false) {
+    async loadMetadata(force = false) {
       const aux = (a: {}, i: number = 0, f: number = -1) => {
         let c = -1;
         const o = {};

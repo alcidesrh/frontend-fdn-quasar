@@ -18,7 +18,7 @@ import { useRoute } from "vue-router";
 let storeMap = ref({}) as const;
 
 export const initStore = (store) => {
-  const metadata = useMetadataStore(store);
+  // const metadata = useMetadataStore(store);
   const userStore = useUserStore(store);
   const roleStore = useRoleStore(store);
   const permisoStore = usePermisoStore(store);

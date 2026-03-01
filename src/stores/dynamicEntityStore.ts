@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { gql } from "@apollo/client/core";
-import { useSchemaStore } from "./schemaStore";
+import { useSchemaStore } from "./schemaStore2";
 
 export const createEntityStore = (entityName) => {
   const schemaStore = useSchemaStore();
