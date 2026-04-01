@@ -7,19 +7,23 @@ import Components from 'unplugin-vue-components/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import path from 'path';
 import UnoCSS from 'unocss/vite';
-// import VueDevTools from "vite-plugin-vue-devtools";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig((ctx) => {
 	return {
-		// https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
-		// preFetch: true,
-
-		// app boot file (/src/boot)
-		// --> boot files are part of "main.js"
-		// https://v2.quasar.dev/quasar-cli-vite/boot-files
-		boot: ['unocss', 'pinia', 'apollo', 'introspection', 'formkit', 'i18n'],
+		boot: [
+			'unocss',
+			'apollo',
+			'server-response-listener',
+			'formkit',
+			'pinia',
+			'introspection',
+			'middleware',
+			'i18n',
+			'responsive',
+			'gsap',
+		],
 
 		// https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
 		css: ['app.scss'],
@@ -119,9 +123,8 @@ export default defineConfig((ctx) => {
 					// rutas para autoimportar tus composables
 					dirs: [
 						'src/composables',
-						'src/stores/**/*',
+						'src/stores/autoimport/**/*',
 						'src/utils/autoimport/**/*',
-						'src/models',
 						'src/config',
 						'src/graphql',
 						'src/services',
@@ -221,7 +224,9 @@ export default defineConfig((ctx) => {
 			// Quasar plugins
 			plugins: ['Notify', 'Dialog', 'LoadingBar'],
 			config: {
-				// ...
+				screen: {
+					bodyClasses: true, // <<< add this
+				},
 				notify: {
 					position: 'top',
 					multiLine: true,
@@ -231,9 +236,9 @@ export default defineConfig((ctx) => {
 			},
 		},
 
-		// animations: 'all', // --- includes all animations
+		animations: 'all', // --- includes all animations
 		// https://v2.quasar.dev/options/animations
-		animations: [],
+		// animations: [],
 
 		// https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
 		// sourceFiles: {

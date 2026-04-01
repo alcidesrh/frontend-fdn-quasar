@@ -1,3 +1,8 @@
+.q-field--dense .q-field__control,
+.q-field--dense .q-field__marginal {
+  height: 35px;
+}
+
 .col-wraper {
 
   .q-field--outlined .q-field__control,
@@ -53,13 +58,11 @@ input[type='number'] {
   // width: fit-content;
 
   &>.formkit-wrapper {
+    width: 100%;
     max-width: 20rem;
-    // margin: auto;
+    margin: auto;
 
-    &>.formkit-inner {
-      // width: 100%;F
-      // max-width: 20rem;
-    }
+    &>.formkit-inner {}
   }
 }
 
@@ -102,12 +105,12 @@ input[type='number'] {
       width: 40%;
     }
 
-    &>div>.form-header {
+    & .form-header {
       display: flex;
       flex-wrap: wrap;
       justify-content: end;
-      margin: 0px auto 0px auto;
-      width: 80%;
+      margin: 10px auto;
+      width: 70%;
     }
 
     & .form-columns-2 {
@@ -166,16 +169,27 @@ input[type='number'] {
   }
 }
 
-input {
-  // font-size: 1rem !important;
+.q-field__native.row {
+  display: flex;
+  overflow: hidden;
+  // white-space: ;
+  // align-content: center;
 }
+
+.q-field--auto-height.q-field--dense .q-field__control,
+.q-field--auto-height.q-field--dense .q-field__native {
+  min-height: 35px;
+}
+
 
 fieldset {
   width: fit-content;
   // border: none;
   // border: $border;
   padding: 2rem 1rem;
-  box-shadow: $shadow-2;
+
+  // box-shadow: $shadow-2;
+  border: 1px solid $surface-3;
 
   &>legend {
     font-size: 1.1rem;
@@ -183,9 +197,10 @@ fieldset {
     padding: 5px 18px;
   }
 
-  &>* {
-    // display: grid;
-    // justify-content: center;
+  &>span {
+    // display: flex;
+    width: fit-content;
+    justify-content: center;
   }
 }
 

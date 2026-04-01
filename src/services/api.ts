@@ -1,7 +1,6 @@
 import qs from "qs";
 import type { SubmissionErrors } from "../types/error";
 import { SubmissionError } from "../utils/error";
-import { ENTRYPOINT } from "../utils/config";
 
 const MIME_TYPE = "application/ld+json";
 
@@ -33,7 +32,7 @@ export default async function (id: string, options: any = {}) {
     // credentials: 'include', // when credentials needed
   });
 
-  const response = await fetch(new URL(id, ENTRYPOINT), options);
+  const response = await fetch(new URL(id, config.ENTRYPOINT), options);
 
   if (!response.ok) {
     const data = await response.json();

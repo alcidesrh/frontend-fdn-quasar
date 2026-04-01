@@ -83,7 +83,9 @@ export default {
   `,
   messages: ``,
   message: `
-    text-red-600
+    text-red-6
+    m-auto
+    max-w-[20rem]
     mb-$spacing(-1)
     text-$scale(-2,*)
 

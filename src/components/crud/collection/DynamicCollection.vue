@@ -1,6 +1,8 @@
 <template>
   <div v-if="store.columns.length" class="relative">
-    <!-- <div class="absolute left-50% top-20px z-2000"></div> -->
+    <!-- <div class="absolute left-50% top-20px z-2000 bg-slate-2">
+      <pre>  {{ t2 }}</pre>
+    </div> -->
     <FormKit
       v-model="store.filters"
       type="form"
@@ -12,14 +14,14 @@
         flat
         :bordered="$q.screen.xs"
         :grid="$q.screen.xs"
-        :dense="$q.screen.lt.md"
+        :dense="$q.screen.sm"
         class="sticky-header-table"
-        :rows="store.items"
+        :rows="items"
         :columns="store.computedColumns"
+        :visible-columns="store.visibleColumns"
         row-key="id"
         v-model:pagination="paginationQuasar"
         :loading="!!cloading"
-        :visible-columns="store.visibleColumns"
         :table-style="`max-height: ${mxh}px;`"
         binary-state-sort
         @request="onRequest"
@@ -40,9 +42,10 @@
         </template>
         <template v-slot:header="props">
           <CollectionHeader
-            :data="props"
             :selection-mode="selectionMode"
             :selected="selected"
+            :data="props"
+            :clear="clear"
             @remove-multiple="store.removeMultiple(selected)"
             @order-columns="store.orderColumns"
           />
@@ -50,27 +53,27 @@
         <template v-slot:body="props">
           <CollectionBody :data="props" :selection-mode="selectionMode">
             <template #actions_row>
-              <div flex justify-center items-center>
+              <div flex justify-center items-center gap-1>
                 <icon
                   @click="
                     $router.push({
                       name: 'form',
                       params: {
-                        entity: entity.name,
+                        entity: store?.nameDecapitalize,
                         id: props.row[field || '_id'],
                       },
                     })
                   "
                   round
                   name="stylus"
-                  class="border-surface-4 rounded-full absolute! mr-35px text-emerald-8 text-24px"
+                  class="border-surface-4 rounded-full text-emerald-8 text-20px lg:text-22px"
                   wght="200"
                 />
                 <icon
                   @click="store.remove(props.row)"
                   name="delete"
                   wght="200"
-                  class="border-surface-4 rounded-full absolute! -mr-35px text-orange-8 text-24px"
+                  class="border-surface-4 rounded-full text-orange-8 text-22px"
                 />
               </div>
             </template>
@@ -89,43 +92,13 @@ import { EntityStore } from "@/types/graphql";
 import { Store } from "@/types/store";
 import { useCloned } from "@vueuse/core";
 import { useQuasar } from "quasar";
-// import { defineStore, getActivePinia, storeToRefs } from "pinia";
 
-// const route = useRoute();
-// const entity = route.params.entity;
-// const storeId = `${entity.toLowerCase()}Store`;
+const store = await getStore();
 
-// const pinia = getActivePinia();
+const { items } = storeToRefs(store);
 
-// if (!pinia || !pinia._s.has(storeId)) {
-//   throw new Error(
-//     `Store "${storeId}" not found. Ensure introspection completed successfully.`,
-//   );
-// }
-// const store = defineStore(storeId)();
-const { store } = useActiveStore();
-// const { pagination } = storeToRefs(store);
-
-// store.collection();
-// cl(store.$state);
-// store.collection();
-// const store = useEntityStore();
-// interface Props {
-//   store: Store;
-//   field?: string;
-// }
-// const store = useCurrentEntityStore();
-// const { field = "_id", store } = defineProps<Props>();
-// const { entity } = storeToRefs(store.value) as Record<
-//   "entity",
-//   Ref<EntityInterface>
-// >;
-
-// let collection = entity.value.collection;
 const $q = useQuasar();
 const mxh = computed(() => $q.screen.height - 270);
-
-const firstLoading = ref(false);
 
 const paginationQuasar = ref({
   sortBy: store.orderField,
@@ -141,10 +114,20 @@ watchEffect(() => {
   paginationQuasar.value.descending = store?.orderType == "DESC";
   paginationQuasar.value.sortBy = store?.orderField;
 });
+let firstLoad = true;
+// (async () => {
+//   await store.collection();
+// })();
+
 watch(
-  () => store?.filters,
-  () => store.collection(),
-  { immediate: true },
+  () => store.filters,
+  (v, y) => {
+    if (!firstLoad) {
+      store.collection();
+    } else {
+      firstLoad = false;
+    }
+  },
 );
 
 const data = ref({});
@@ -152,9 +135,10 @@ const data = ref({});
 const selected = ref([]),
   selectionMode = ref(false);
 
+const clear = ref(false);
 function reset() {
   selected.value = [];
-  collection.filters = [];
+  clear.value = !clear.value;
 }
 
 function removeMultiple() {

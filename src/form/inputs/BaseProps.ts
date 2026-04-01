@@ -19,6 +19,10 @@ export default {
     type: Boolean,
     default: undefined,
   },
+  clear: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false,

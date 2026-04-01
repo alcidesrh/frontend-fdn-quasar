@@ -9,11 +9,11 @@ import {
   HttpLink,
   InMemoryCache,
 } from "@apollo/client";
-
 import { createAuthLink } from "@/graphql/links/authLink";
 import { createErrorLink } from "@/graphql/links/errorLink";
 import { createLoadingLink } from "@/graphql/links/loadingLink";
 import { createMutationLink } from "@/graphql/links/mutationLink";
+import { removeTypenameLink } from "@/graphql/links/removeTypenameLink";
 import { createQueryLink } from "@/graphql/links/queryLink";
 import { TabIdCoordinator } from "browser-tab-id";
 
@@ -24,27 +24,38 @@ export { tabId };
 
 export default defineBoot(async ({ app, pinia }) => {
   const httpLink = new HttpLink({
-    uri: ENTRYPOINT_GRAPHQL,
+    uri: config.ENTRYPOINT_GRAPHQL,
   });
   const apolloClient = new ApolloClient({
     assumeImmutableResults: true,
     link: ApolloLink.from([
-      createQueryLink(),
+      // createQueryLink(),
       createMutationLink(),
       createAuthLink(tabId),
       createErrorLink(),
       createLoadingLink(pinia),
+      removeTypenameLink,
       httpLink,
     ]),
-    cache: new InMemoryCache(),
-    queryDeduplication: false,
-
-    defaultOptions: {
-      watchQuery: {
-        notifyOnNetworkStatusChange: false,
-        fetchPolicy: "cache-and-network",
+    cache: new InMemoryCache({
+      typePolicies: {
+        EntityConfiguration: {
+          keyFields: ["entityClass"],
+        },
       },
+    }),
+    queryDeduplication: false,
+    defaultOptions: {
+      watchQuery: { fetchPolicy: "no-cache" },
+      query: { fetchPolicy: "no-cache" },
+      mutate: { errorPolicy: "all" },
     },
+    // defaultOptions: {
+    //   watchQuery: {
+    //     notifyOnNetworkStatusChange: false,
+    //     fetchPolicy: "cache-and-network",
+    //   },
+    // },
   });
   setApolloClient(apolloClient);
 });

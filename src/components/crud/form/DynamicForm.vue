@@ -1,7 +1,8 @@
 <template>
   <div class="h-full w-full @container">
-    <div v-if="schema.length" class="form-container">
-      <FormKit
+    <pre>{{ formSchema }}</pre>
+    <div v-if="store.formSchema.length" class="form-container">
+      <!-- <FormKit
         id="form"
         ref="form"
         type="form"
@@ -9,18 +10,20 @@
         v-model="defaultValue"
         :actions="false"
       >
-        <FormKitSchema :schema="schema" :data="data" :library="library">
+        <FormKitSchema :schema="formSchema" :data="formData" :library="library">
           <template #crudBtn>
             <div class="flex flex-wrap justify-end gap-5 align-middle">
               <slot name="CrudButton">
                 <CrudButton
-                  :edit="!!entity.item?.id"
+                  :edit="!!store.item?.id"
                   @submit="submit"
                   @delete="store.remove()"
                   @cancel="
                     $router.push({
                       name: 'list',
-                      params: { entity: entity.name, id: entity.item?.id },
+                      params: {
+                        entity: store.nameDecapitalize,
+                      },
                     })
                   "
                 />
@@ -28,7 +31,7 @@
             </div>
           </template>
         </FormKitSchema>
-      </FormKit>
+      </FormKit> -->
     </div>
     <div v-else class="w-full">
       <FormPreload :cols="2" />
@@ -36,38 +39,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import type { Store } from "pinia";
 import { FormKitMessages } from "@formkit/vue";
 import { markRaw } from "vue";
 import { useRouter } from "vue-router";
 import { reset } from "@formkit/core";
 import { clearErrors } from "@formkit/vue";
-import { Entity } from "@/models/useEntityFactory";
 
 const route = useRouter();
 
-interface Props {
-  // store: Store;
-  columns?: number;
-}
-const { columns = 3 } = defineProps<Props>();
-
-const store = useCurrentEntityStore();
-
+const store = await getStore();
+const { formSchema, formData } = storeToRefs(store);
 const library = markRaw({
   FormKitMessages: FormKitMessages,
 });
 
-const { schema, entity } = storeToRefs(store.value) as Record<
-  "entity",
-  Ref<Entity>
->;
 const form = ref(null);
-store.value.setFormkitSchema(route.currentRoute.value.params?.id);
 
-const defaultValue = ref({});
+const defaultValue = ref(store.item);
 watch(
-  () => entity.value.item,
+  () => store.item,
   (v) => {
     defaultValue.value = v;
   },
@@ -79,10 +69,11 @@ function submit(data) {
     form.value.node.submit();
     return;
   }
-  store.value
+  store
     .submit(data)
     .then((data) => {
-      msuccess();
+      bus.emit("positive", getAlertText());
+
       if (resetForm.value) {
         resetForm.value = false;
         if (router.currentRoute.value.name == entity.value.endpoints.create) {
@@ -97,18 +88,18 @@ function submit(data) {
     .catch((e) => {});
   // form.value.node.submit();
 }
+// const tem = store.getFormData();
+// const data = ref({
+//   localidades: [], //items,
+//   parents: [],
+//   children: [],
+//   permisos: [],
+//   actions: [],
+//   roles: [],
 
-const data = ref({
-  localidades: [], //items,
-  parents: [],
-  children: [],
-  permisos: [],
-  actions: [],
-  roles: [],
-
-  item: computed(() => entity.value.item),
-  // submit: (data) => store.submit(data),
-});
+//   item: computed(() => store.item),
+//   // submit: (data) => store.submit(data),
+// });
 // onBeforeMount(() => {
 // 	const eventSource = new EventSource(
 // 		'http://localhost/.well-known/mercure?topic=form'

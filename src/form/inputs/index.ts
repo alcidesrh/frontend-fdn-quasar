@@ -1,7 +1,7 @@
 // import autoComplete_primevue from "./autocomplete/autocomplete";
 // import button_primevue from "./button/button";
 // import checkbox_primevue from "./checkbox/checkox";
-import datepicker from "./datepicker/datepicker";
+import datetime from "./datepicker/datepicker";
 // import iconinput_primevue from "./icon/iconinput";
 // import multiselect_primevue from "./multiselect/multiselect";
 // i`mport number_primevue from "./number/number";
@@ -20,7 +20,7 @@ export {
   // autoComplete_primevue,
   // button_primevue,
   // checkbox_primevue,
-  datepicker,
+  datetime,
   // iconinput_primevue,
   // multiselect_primevue,
   // number_primevue,

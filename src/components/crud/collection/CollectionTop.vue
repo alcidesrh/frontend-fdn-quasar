@@ -1,24 +1,18 @@
 <template>
   <div class="grid justify-items-center ml-auto">
     <div class="flex table-options">
-      <div
-        @click="$router.push({ name: 'form', params: { entity: entity.name } })"
-      >
+      <div @click="$router.push({ path: `/form/${store.nameDecapitalize}` })">
         <icon name="add" />
       </div>
-      <div>
-        <icon
-          name="add_column_right"
-          class="px-6px py-2px"
-          :class="{ active: open }"
-        >
+      <div :class="{ active: open }" class="relative">
+        <icon name="add_column_right" class="px-6px py-2px">
           <q-badge
             v-if="!visibleAllColumns"
             color="primary"
             floating
             class="font-medium"
             rounded
-            >{{ store.columns.length - store.computedColumns.length }}</q-badge
+            >{{ store.columns.length - store.visibleColumns.length }}</q-badge
           >
           <q-menu
             v-model="open"
@@ -53,11 +47,11 @@
                       <div class="col-auto">
                         <q-toggle
                           size="xs"
-                          v-model="store.visibleColumns"
+                          v-model="visibleColumns"
                           :val="col.field"
                           :disable="
-                            store.visibleColumns.length == 1 &&
-                            store.visibleColumns[0] == col.field
+                            visibleColumns.length == 1 &&
+                            visibleColumns[0] == col.field
                           "
                         />
                       </div>
@@ -69,34 +63,25 @@
           </q-menu>
         </icon>
       </div>
-      <div>
-        <icon
-          :class="{ active: !toggleAction }"
-          @click="setToggleAction"
-          name="checklist_rtl"
-        />
+      <div :class="{ active: !toggleAction }">
+        <icon @click="setToggleAction" name="checklist_rtl" />
       </div>
-      <div>
+      <div :class="{ active: inFullscreen }">
         <icon
-          :class="{ active: inFullscreen }"
           :name="inFullscreen ? 'recenter' : 'fullscreen'"
           @click="$emit('toggleFullscreen')"
         />
       </div>
 
-      <div>
-        <icon
-          @click="reset"
-          name="autorenew"
-          :class="{ active: open || !toggleAction || inFullscreen }"
-        />
+      <div :class="{ active: open || !toggleAction || inFullscreen }">
+        <icon @click="reset" name="autorenew" />
       </div>
     </div>
     <!-- </div> -->
   </div>
 </template>
 <script setup lang="ts">
-const { store } = useActiveStore();
+const store = await getStore();
 
 // import { EntityInterface } from "@/types/entity";
 
@@ -116,6 +101,8 @@ const emit = defineEmits<{
 // const collection = store.items,
 const toggleAction = ref(true);
 
+const visibleColumns = ref(store?.visibleColumns);
+
 const visibleAllColumns = ref(
   store.visibleColumns.length == store.columns.length,
 );
@@ -128,19 +115,18 @@ function setToggleAction() {
 }
 
 watch(
-  () => store.visibleColumns,
+  () => visibleColumns.value,
   (v) => {
-    visibleAllColumns.value =
-      store.visibleColumns.length == store.columns.length;
+    visibleAllColumns.value = v.length == store.columns.length;
 
-    const computedColumns = store.computedColumns.map((v) => v.field);
-    const temp = computedColumns.filter((r) => v.includes(r));
-    const temp2 = v.filter((v) => !temp.includes(v));
-
-    store.computedColumns = store.columns.filter((v) =>
-      [...temp, ...temp2].includes(v.field),
-    );
-
+    store?.columns.forEach((v2) => {
+      if (v.includes(v2.field)) {
+        v2.visible = true;
+      } else {
+        v2.visible = false;
+      }
+    });
+    store.setComputedColumns();
     emit("reload");
     // store.getCollection()
   },
@@ -149,7 +135,7 @@ watch(
   () => visibleAllColumns.value,
   (v) => {
     if (v) {
-      store.visibleColumns = store.columns.map((v) => v.field);
+      store.computedColumns = store.columns.filter((v) => v.visible);
     }
   },
 );
@@ -178,7 +164,7 @@ function reset() {
     align-items: center;
     justify-content: center;
     border-right: 1px solid $surface-4;
-    background-color: $surface-2;
+    background-color: $surface-1;
 
     padding: 3px 10px;
     &:hover {
@@ -186,9 +172,13 @@ function reset() {
     }
     & > .fdn-icon {
       font-size: 1.2rem;
-      color: $surface-9;
+    }
+    &.active {
+      background-color: $surface-3;
       &.active {
         font-weight: 600;
+        border-right: 1px solid $surface-4;
+        border-left: 1px solid $surface-5;
       }
     }
   }

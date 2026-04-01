@@ -5,7 +5,6 @@
       Seleccione una entidad para gestionar sus datos. Las rutas se generan
       automáticamente a partir del esquema GraphQL introspeccionado.
     </p>
-
     <q-list bordered class="rounded-borders" v-if="entityRoutes.length > 0">
       <q-item
         v-for="route in list"
@@ -63,7 +62,7 @@ const list = computed(() => {
     ) {
       temp.push({
         name: type.name,
-        path: `/lista/${type.name}`,
+        path: `/lista/${type.name.toLowerCase()}`,
         meta: { entity: type.name },
       });
     }

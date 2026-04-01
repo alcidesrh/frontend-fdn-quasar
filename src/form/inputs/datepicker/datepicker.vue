@@ -32,7 +32,6 @@
 const props = defineProps({
   context: Object,
 });
-
 const loadingStore = useLoadingStore();
 
 const date = ref("");
@@ -63,22 +62,27 @@ watch(
 async function save() {
   if (!date.value) {
     await props.context.node.input(null);
-  } else if (props.context?.range) {
-    await props.context.node.input([
-      { after: cformat(date.value.from), before: cformat(date.value.to) },
-    ]);
   } else {
-    await props.context.node.input(date.value);
+    loading.value = true;
+    if (props.context?.range) {
+      await props.context.node.input([
+        { after: cformat(date.value.from), before: cformat(date.value.to) },
+      ]);
+    } else {
+      await props.context.node.input(date.value);
+    }
   }
-  bus.emit(props.context.eventbus);
-  loading.value = true;
 }
-
+watch(
+  () => props.context.clear,
+  () => {
+    reset();
+  },
+);
 async function reset() {
   loading.value = false;
   date.value = null;
   value.value = null;
   await props.context.node.input(null);
-  bus.emit(props.context.eventbus);
 }
 </script>

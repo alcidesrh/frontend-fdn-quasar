@@ -4,7 +4,7 @@
       <q-btn-dropdown
         split
         outline
-        class="[&>button]:before:border-slate-4 [&>button]:border-slate-4! bg-surface-1"
+        class=""
         label="Guardar"
         icon="sym_o_save"
         type="submit"

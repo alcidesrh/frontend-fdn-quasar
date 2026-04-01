@@ -34,6 +34,4 @@ interface Props {
 }
 const { data, selectionMode } = defineProps<Props>();
 const selected = ref([]);
-
-// cl(data);
 </script>

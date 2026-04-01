@@ -30,8 +30,8 @@
 		}
 
 		&>thead {
+
 			&>tr>th {
-				text-transform: capitalize;
 				position: sticky;
 				z-index: 10;
 				top: 35px;
@@ -45,14 +45,12 @@
 					}
 
 					&>i {
-						transition: scale 0.5s;
 						font-size: 18px;
-						top: 6px;
-						color: $surface-5 ;
-						position: absolute;
 						left: 5px;
+						color: $surface-4 ;
+						position: absolute;
 						font-weight: 500;
-						opacity: 0.6 !important;
+						opacity: 1 !important;
 
 						&:hover {
 							color: $surface-7
@@ -64,9 +62,35 @@
 					opacity: 1;
 					color: $surface-7
 				}
+
+				&:last-child {
+					position: sticky;
+					right: 0;
+					z-index: 20;
+					background-color: -alpha($surface-1, 0.6);
+					border-bottom: 1px solid $surface-3 ;
+					border-left: 1px solid $surface-3;
+					width: 50px;
+					min-width: 50px;
+					backdrop-filter: blur(2px) saturate(120%);
+					padding: 0px !important;
+
+
+					&>div>.fdn-icon {
+						transition: padding 0.2s;
+
+						&:hover {
+							background-color: white;
+							border: 1px solid $surface-4 ;
+							padding: 4px;
+							cursor: pointer;
+						}
+					}
+				}
 			}
 
 			&>tr:first-child>th {
+				text-transform: capitalize;
 				top: 0;
 			}
 		}
@@ -85,10 +109,10 @@
 					background-color: -alpha($surface-1, 0.6);
 					border-bottom: 1px solid $surface-3 ;
 					border-left: 1px solid $surface-3;
-					width: 90px;
-					min-width: 90px;
+					width: 75px;
+					min-width: 75px;
 					backdrop-filter: blur(2px) saturate(120%);
-
+					padding: 0px !important;
 
 					&>div>.fdn-icon {
 						transition: padding 0.2s;
@@ -96,7 +120,7 @@
 						&:hover {
 							background-color: white;
 							border: 1px solid $surface-4 ;
-							padding: 4px;
+							padding: 2px;
 							cursor: pointer;
 						}
 					}

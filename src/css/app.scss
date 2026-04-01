@@ -6,12 +6,11 @@
 @import './components/index.scss';
 @import 'utopia.scss';
 @import 'material-symbols/index.css';
-@import '_fonts.css';
+@import '_fonts.scss';
 @import './theme/index.scss';
-// @import './media.scss';
 // @import './media-form.scss';
 // @import './media-grid-form.scss';
-
+@import './media-queries.scss';
 
 .route-enter-active,
 .route-leave-active {
@@ -83,4 +82,25 @@ fade-enter-active,
 .slide-right-leave-to {
   opacity: 0;
   transform: translateX(100%);
+}
+
+.auto-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.auto-grid-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.auto-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.auto-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.auto-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
 }

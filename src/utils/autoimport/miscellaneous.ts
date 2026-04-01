@@ -8,7 +8,8 @@ export const logSQL = new Log("Console Log", {
 });
 
 export const cl = (...data) => {
-  logSQL.info(data);
+  console.log(data);
+  // logSQL.info(data);
 };
 
 export const cle = (...data) => {
@@ -37,7 +38,7 @@ export function getAlertText(type: string, target: {} | null = null) {
       return `Se eliminaran ${target}.`;
 
     default:
-      return "";
+      return "Operación realizada";
   }
 }
 
@@ -52,14 +53,14 @@ export function highlighted(cols, filters): void {
 
   cols.forEach((i: any, index) => {
     if (!i.schema) {
-      properties.push([]);
+      properties[i.field] = [];
     } else {
       property = i.schema.name;
+
       const highlights = document.querySelectorAll(`.highlight-${index}`);
       if (!highlights.length) {
         return;
       }
-
       if (typeof properties[property] == "undefined") {
         properties[property] = [];
       }
@@ -107,6 +108,7 @@ export function highlighted(cols, filters): void {
             return range;
           });
         });
+
       const searchResultsHighlight = new Highlight(...ranges.flat());
       CSS.highlights.set(`highlight-${index}`, searchResultsHighlight);
     }
@@ -597,4 +599,16 @@ export const util = {
       }),
     );
   },
+};
+
+export const getIdFromIri = (iri?: string): string => {
+  if (!iri) return "";
+
+  const id = iri.split("/").pop();
+
+  if (!id) {
+    return "";
+  }
+
+  return parseInt(id);
 };

@@ -29,6 +29,7 @@ const loadingStore = useLoadingStore();
 const props = defineProps({
   context: Object,
 });
+
 const typing = ref(props.context._value || "");
 const loading = ref(false);
 const {
@@ -44,13 +45,13 @@ const {
 );
 const { start, isPending, stop } = useTimeoutFn(
   async () => {
-    loading.value = true;
-
     let value = typing.value;
+    if (value) {
+      loading.value = true;
+    }
 
     await props.context.node.input(value);
     startError();
-    // bus.emit(props.context.eventbus);
   },
   1000,
   { immediate: false },
@@ -96,11 +97,15 @@ watch(
     loading.value = false;
   },
 );
-
+watch(
+  () => props.context.clear,
+  () => {
+    reset();
+  },
+);
 async function reset() {
   loading.value = false;
   typing.value = null;
   await props.context.node.input(null);
-  // bus.emit(props.context.eventbus);
 }
 </script>

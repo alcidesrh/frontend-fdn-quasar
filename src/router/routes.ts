@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import adminRoutes from "./admin";
 import userRoutes from "./user";
 import roleRoutes from "./role";
 import testRoutes from "./test";
@@ -17,11 +18,13 @@ const routes: RouteRecordRaw[] = [
         name: "list",
         component: () =>
           import("@/components/crud/collection/DynamicCollection.vue"),
+        meta: { lista: true },
       },
       {
         path: "/form/:entity/:id?",
         name: "form",
         component: () => import("@/components/crud/form/DynamicForm.vue"),
+        meta: { form: true },
       },
       {
         path: "/test",
@@ -32,6 +35,7 @@ const routes: RouteRecordRaw[] = [
       ...userRoutes,
       ...roleRoutes,
       ...testRoutes,
+      ...adminRoutes,
     ],
   },
 

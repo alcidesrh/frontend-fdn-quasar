@@ -2,19 +2,23 @@ import { ApolloLink } from "@apollo/client/core";
 export function createMutationLink() {
   return new ApolloLink((operation, forward) => {
     if (operation.operationType == "mutation") {
-      const variables = operation.variables.input;
-      const f = Object.keys(variables);
-      Object.keys(variables).forEach((k) => {
-        if (util.isObject(variables[k]) && !!variables[k]?.id) {
-          operation.variables.input[k] = variables[k].id;
-        } else if (util.isArray(variables[k])) {
-          variables[k].forEach((v, i) => {
-            if (util.isObject(v) && !!v?.id) {
-              operation.variables.input[k][i] = v.id;
-            }
-          });
-        }
-      });
+      const ctx = operation.getContext();
+      if (!ctx?.keepId) {
+        const input = operation.variables.input;
+        Object.keys(input).forEach((k) => {
+          if (util.isObject(input[k]) && !!input[k]?.id) {
+            input[k] = input[k].id;
+          } else if (util.isArray(input[k])) {
+            const temp = input[k];
+            input[k] = [];
+            temp.forEach((v, i) => {
+              if (util.isObject(v) && !!v?.id) {
+                input[k].push(v.id);
+              }
+            });
+          }
+        });
+      }
     }
     return forward(operation);
   });

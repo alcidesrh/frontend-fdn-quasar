@@ -7,6 +7,16 @@
     <SidebarDrawer store-id="sidebarLeft" position="left" v-once>
       <template #content="{ data }">
         <nav>
+          <!-- <ResponsiveComponent
+            :mobile="{
+              cmp: 'MenuMini',
+              props: { items: customize },
+            }"
+            :desktop="{
+              cmp: 'MenuLarge',
+              props: { store: data, menu: customize },
+            }"
+          /> -->
           <MenuLarge
             v-if="data.mode == data.modeStates.large"
             :store="data"
@@ -21,26 +31,33 @@
         </nav>
       </template>
     </SidebarDrawer>
-    <q-page-container class="h-[100vh]" :class="[sidebarStore.position, mode]">
-      <div class="h-full u-p-xs">
-        <RouterView v-slot="{ Component, route }">
-          <transition :name="route.meta.transition || 'route'" mode="out-in">
-            <component :is="Component" :key="route.path" />
-          </transition>
-        </RouterView>
-        <q-inner-loading :showing="loadingStore.loading">
-          <!-- <q-spinner-gears size="50px" color="primary" :thickness="2" /> -->
-          <q-spinner-dots color="primary" size="3em" />
-        </q-inner-loading>
-      </div>
+    <q-page-container
+      class="h-[100vh] z-9 relative"
+      :class="[sidebarStore.position, mode]"
+    >
+      <!-- <div class="h-full u-p-xs"> -->
+      <Suspense>
+        <q-page class="h-full u-p-xs lg:max-w-1240px m-auto relative">
+          <RouterView v-slot="{ Component, route }">
+            <transition :name="route.meta.transition || 'route'" mode="out-in">
+              <component :is="Component" :key="route.path" />
+            </transition>
+          </RouterView>
+        </q-page>
+      </Suspense>
+
+      <!-- </div> -->
     </q-page-container>
+
+    <q-inner-loading :showing="loadingStore.loading">
+      <!-- <q-spinner-gears size="50px" color="primary" :thickness="2" /> -->
+      <q-spinner-dots color="primary" size="3em" />
+    </q-inner-loading>
   </q-layout>
 </template>
 
 <script lang="ts" setup>
 import { ref } from "vue";
-
-useServerEventErrorListener();
 
 const sidebarStore = useSidebarStore("sidebarLeft", "left");
 const loadingStore = useLoadingStore();

@@ -12,7 +12,7 @@ export function createQueryLink() {
         // && i.selectionSet.selections.filter((i) => i.name.value == "collection").length == 0,
       );
       if (temp2.length) {
-        operation.variables.id = `/api/${temp2[0].name.value}s/${operation.variables.id}`;
+        operation.variables.id = `/api/${temp2[0].name.value}/${operation.variables.id}`;
       }
     }
     return forward(operation);

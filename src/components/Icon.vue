@@ -3,7 +3,7 @@
 
   <span
     v-else-if="!quasar"
-    :class="[`fdn-icon relative cursor-pointer  material-symbols-${type}`]"
+    :class="[`fdn-icon cursor-pointer  material-symbols-${type}`]"
     :style="style"
     >{{ name }}
     <slot name="default"></slot>
