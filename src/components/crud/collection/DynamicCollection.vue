@@ -1,7 +1,7 @@
 <template>
-  <div v-if="store.columns.length" class="relative">
+  <div v-if="store && store.columns.length" class="relative">
     <!-- <div class="absolute left-50% top-20px z-2000 bg-slate-2">
-      <pre>  {{ t2 }}</pre>
+      <pre>  {{ store.computedColumns }}</pre>
     </div> -->
     <FormKit
       v-model="store.filters"
@@ -11,12 +11,12 @@
       :config="{ wrapperClass: 'mb-0!' }"
     >
       <q-table
-        flat
         :bordered="$q.screen.xs"
         :grid="$q.screen.xs"
         :dense="$q.screen.sm"
+        flat
         class="sticky-header-table"
-        :rows="items"
+        :rows="store.items"
         :columns="store.computedColumns"
         :visible-columns="store.visibleColumns"
         row-key="id"
@@ -66,19 +66,18 @@
                   "
                   round
                   name="stylus"
-                  class="border-surface-4 rounded-full text-emerald-8 text-20px lg:text-22px"
-                  wght="200"
+                  class="border-surface-4 rounded-full text-22px lg:text-22px"
                 />
                 <icon
                   @click="store.remove(props.row)"
                   name="delete"
-                  wght="200"
-                  class="border-surface-4 rounded-full text-orange-8 text-22px"
+                  class="border-surface-4 rounded-full text-22px"
                 />
               </div>
             </template>
           </CollectionBody>
         </template>
+        <template #body-cell-[name]></template>
       </q-table>
     </FormKit>
   </div>
@@ -87,55 +86,26 @@
 
 <script setup lang="ts">
 import { PaginationQuasar } from "@/types/collection";
-import { EntityInterface } from "@/types/entity";
-import { EntityStore } from "@/types/graphql";
-import { Store } from "@/types/store";
 import { useCloned } from "@vueuse/core";
 import { useQuasar } from "quasar";
 
-const store = await getStore();
-
-const { items } = storeToRefs(store);
-
 const $q = useQuasar();
 const mxh = computed(() => $q.screen.height - 270);
-
-const paginationQuasar = ref({
-  sortBy: store.orderField,
-  descending: store.orderType == "DESC",
-  page: store.pagination.currentPage,
-  rowsPerPage: store.pagination.itemsPerPage,
-  rowsNumber: store.pagination.totalCount,
-});
+const store = ref();
+const paginationQuasar = ref({});
 watchEffect(() => {
-  paginationQuasar.value.page = store.pagination.currentPage;
-  paginationQuasar.value.rowsPerPage = store.pagination.itemsPerPage;
-  paginationQuasar.value.rowsNumber = store.pagination.totalCount;
-  paginationQuasar.value.descending = store?.orderType == "DESC";
-  paginationQuasar.value.sortBy = store?.orderField;
+  if (store.value) {
+    paginationQuasar.value.page = store.value.pagination.currentPage;
+    paginationQuasar.value.rowsPerPage = store.value.pagination.itemsPerPage;
+    paginationQuasar.value.rowsNumber = store.value.pagination.totalCount;
+    paginationQuasar.value.descending = store?.orderType == "DESC";
+    paginationQuasar.value.sortBy = store?.orderField;
+  }
 });
-let firstLoad = true;
-// (async () => {
-//   await store.collection();
-// })();
-
-watch(
-  () => store.filters,
-  (v, y) => {
-    if (!firstLoad) {
-      store.collection();
-    } else {
-      firstLoad = false;
-    }
-  },
-);
-
-const data = ref({});
-
 const selected = ref([]),
-  selectionMode = ref(false);
+  selectionMode = ref(false),
+  clear = ref(false);
 
-const clear = ref(false);
 function reset() {
   selected.value = [];
   clear.value = !clear.value;
@@ -150,13 +120,12 @@ function onRequest({
   pagination,
   filter,
 }: Record<"pagination", PaginationQuasar>) {
-  store.pagination.currentPage = pagination.page;
-  store.pagination.itemsPerPage = pagination.rowsPerPage;
-  store.pagination.totalCount = pagination.rowsNumber;
-  store.orderField = pagination.sortBy;
-  store.orderType = pagination.descending ? "DESC" : "ASC";
-
-  store.collection();
+  store.value.pagination.currentPage = pagination.page;
+  store.value.pagination.itemsPerPage = pagination.rowsPerPage;
+  store.value.pagination.totalCount = pagination.rowsNumber;
+  store.value.orderField = pagination.sortBy;
+  store.value.orderType = pagination.descending ? "DESC" : "ASC";
+  store.value.collection();
 }
 function toggleSelectionMode() {
   if (selectionMode.value) {
@@ -164,6 +133,16 @@ function toggleSelectionMode() {
   }
   selectionMode.value = !selectionMode.value;
 }
+
+onBeforeMount(async () => {
+  store.value = await getStore();
+  // const { items } = storeToRefs(store.value);
+  paginationQuasar.value.sortBy = store.value.orderField;
+  paginationQuasar.value.descending = store.value.orderType == "DESC";
+  paginationQuasar.value.page = store.value.pagination.currentPage;
+  paginationQuasar.value.rowsPerPage = store.value.pagination.itemsPerPage;
+  paginationQuasar.value.rowsNumber = store.value.pagination.totalCount;
+});
 </script>
 
 <style scoped lang="scss">

@@ -374,15 +374,15 @@ export default async (key: string) => {
       name: (s) => s.entity.name,
       nameDecapitalize: (s) => s.entity.nameDecapitalize,
       collectionEndpoint: (s) => `${s.nameDecapitalize}s`,
-      quasarPagination: (s) => {
-        return {
-          sortBy: s.orderField,
-          descending: s.orderType == "DESC",
-          page: s.pagination.currentPage,
-          rowsPerPage: s.pagination.itemsPerPage,
-          rowsNumber: s.pagination.totalCount,
-        };
-      },
+      // quasarPagination: (s) => {
+      //   return {
+      //     sortBy: s.orderField,
+      //     descending: s.orderType == "DESC",
+      //     page: s.pagination.currentPage,
+      //     rowsPerPage: s.pagination.itemsPerPage,
+      //     rowsNumber: s.pagination.totalCount,
+      //   };
+      // },
       mutationOperation: (s) =>
         s.item.id ? `update${s.name}` : `create${s.name}`,
       visibleColumns: (s) =>

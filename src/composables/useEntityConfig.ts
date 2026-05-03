@@ -1,4 +1,3 @@
-import { inject } from "vue";
 import { gql } from "@apollo/client/core";
 
 export interface CollectionFieldConfig {
@@ -10,10 +9,7 @@ export interface CollectionFieldConfig {
   filterable?: boolean;
   label: string;
   attrs: null;
-  type: Type;
   name: string;
-  relatedTo: null | string;
-  __typename: Typename;
   groupName?: null;
 }
 
@@ -25,9 +21,7 @@ export interface FormField {
   groupName: null;
   attrs: null;
   label: string;
-  type: string;
   name: string;
-  relatedTo: string;
   __typename: string;
 }
 
@@ -60,9 +54,7 @@ const GET_CONFIG = gql`
         filterable
         label
         attrs
-        type
         name
-        relatedTo
       }
       formFields {
         id
@@ -72,9 +64,7 @@ const GET_CONFIG = gql`
         groupName
         attrs
         label
-        type
         name
-        relatedTo
       }
     }
   }
@@ -93,7 +83,6 @@ const GET_CONFIG_ADMIN = gql`
         filterable
         label
         attrs
-        type
         name
       }
       formFields {
@@ -104,7 +93,6 @@ const GET_CONFIG_ADMIN = gql`
         groupName
         attrs
         label
-        type
         name
       }
     }
@@ -132,6 +120,9 @@ export const useEntityConfig = () => {
     const { data } = await getApolloClient().query({
       query: GET_CONFIG,
       variables: { entityClass },
+      context: {
+        noLoading: true,
+      },
     });
     return data.entityConfigurations[0];
   };

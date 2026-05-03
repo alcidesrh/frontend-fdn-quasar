@@ -14,6 +14,8 @@ export function createMutationLink() {
             temp.forEach((v, i) => {
               if (util.isObject(v) && !!v?.id) {
                 input[k].push(v.id);
+              } else {
+                input[k].push(v);
               }
             });
           }

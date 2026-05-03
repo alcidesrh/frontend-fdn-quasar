@@ -11,7 +11,7 @@
       <q-icon
         v-if="!value"
         name="sym_o_event"
-        class="cursor-pointer text-surface-5"
+        class="cursor-pointer"
         size="20px"
       >
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -72,6 +72,9 @@ async function save() {
       await props.context.node.input(date.value);
     }
   }
+  if (props.context.store) {
+    props.context.store.collection();
+  }
 }
 watch(
   () => props.context.clear,
@@ -84,5 +87,8 @@ async function reset() {
   date.value = null;
   value.value = null;
   await props.context.node.input(null);
+  if (props.context.store) {
+    props.context.store.collection();
+  }
 }
 </script>

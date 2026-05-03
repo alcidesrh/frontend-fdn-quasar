@@ -1,7 +1,7 @@
 // src/boot/pinia.js
-import { boot } from "quasar/wrappers";
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { entityPlugin } from "@/stores/baseStoreFactory";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { boot } from "quasar/wrappers";
 
 export default boot(({ app, store }) => {
   store.use(entityPlugin);

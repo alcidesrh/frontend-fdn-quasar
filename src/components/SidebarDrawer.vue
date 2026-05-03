@@ -38,7 +38,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useTimeoutFn } from "@vueuse/core";
+import { useSidebarStore } from "@/stores/autoimport/sidebar";
 import { useDateFormat, useIntervalFn } from "@vueuse/core";
 
 interface Props {

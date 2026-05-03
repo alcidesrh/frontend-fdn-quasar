@@ -32,7 +32,6 @@ function show(arg) {
 }
 
 bus.on("error", (msg) => {
-  alert(89);
   show({
     message: msg,
     type: "negative",

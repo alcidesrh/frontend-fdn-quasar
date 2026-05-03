@@ -1,6 +1,5 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <!-- <LoadingBar /> -->
     <Notify />
     <Topbar />
 
@@ -36,15 +35,30 @@
       :class="[sidebarStore.position, mode]"
     >
       <!-- <div class="h-full u-p-xs"> -->
-      <Suspense>
-        <q-page class="h-full u-p-xs lg:max-w-1240px m-auto relative">
-          <RouterView v-slot="{ Component, route }">
-            <transition :name="route.meta.transition || 'route'" mode="out-in">
+      <!-- <q-page class="h-full u-p-xs lg:max-w-1240px m-auto relative">
+        <RouterView v-slot="{ Component, route }">
+          <transition :name="route.meta.transition || 'route'" mode="out-in">
+            <Suspense>
               <component :is="Component" :key="route.path" />
-            </transition>
-          </RouterView>
-        </q-page>
-      </Suspense>
+            </Suspense>
+          </transition>
+        </RouterView>
+      </q-page> -->
+      <q-page class="h-full u-p-xs lg:max-w-1240px m-auto relative">
+        <!-- <Suspense> -->
+        <!-- <template #default> -->
+        <RouterView v-slot="{ Component, route }">
+          <transition :name="route.meta.transition || 'route'" mode="out-in">
+            <component :is="Component" :key="route.fullPath" />
+          </transition>
+        </RouterView>
+        <!-- </template> -->
+        <!-- 
+        <template #fallback>
+          <div class="q-pa-md">Cargando...</div>
+        </template> -->
+        <!-- </Suspense> -->
+      </q-page>
 
       <!-- </div> -->
     </q-page-container>
@@ -57,8 +71,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useSidebarStore } from "@/stores/autoimport/sidebar";
 import { ref } from "vue";
-
 const sidebarStore = useSidebarStore("sidebarLeft", "left");
 const loadingStore = useLoadingStore();
 

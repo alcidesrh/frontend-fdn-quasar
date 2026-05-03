@@ -6,9 +6,9 @@
           :mode="data.mode"
           :menu="menuStore.menu"
           :root="true"
-          :toggle="toggle"
+          :toggle="menuStore.toggle"
           position="left"
-          @toggle="toggle = !toggle"
+          @toggle="menuStore.toggle = !menuStore.toggle"
         />
       </nav>
     </template>
@@ -57,4 +57,10 @@ const menu = [
 ];
 const menuStore = useMenuStateStore("menu-left", menu);
 const { toggle } = storeToRefs(menuStore);
+watch(
+  () => menuStore.toggle,
+  () => {
+    alert(5);
+  },
+);
 </script>

@@ -11,6 +11,8 @@
     bg-color="white"
     @update:model-value="handleInput"
     @filter="filterFn"
+    class="lowercase"
+    popup-content-class="lowercase"
   >
     <template #no-option>
       <div class="p-10px">No hay elementos</div>
@@ -28,12 +30,18 @@ watchEffect(() => {
   options.value = props.context.options;
 });
 const model = ref();
-function handleInput(e) {
-  props.context.node.input(e);
+async function handleInput(e) {
+  await props.context.node.input(e);
+  if (props.context.store) {
+    props.context.store.collection();
+  }
 }
 function reset() {
   model.value = "";
   props.context.node.input("");
+  if (props.context.store) {
+    props.context.store.collection();
+  }
 }
 function filterFn(val, update) {
   if (val === "") {

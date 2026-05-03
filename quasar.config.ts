@@ -3,21 +3,23 @@
 
 import { defineConfig } from '#q-app/wrappers';
 import { fileURLToPath } from 'node:url';
-import Components from 'unplugin-vue-components/vite';
-import AutoImport from 'unplugin-auto-import/vite';
 import path from 'path';
 import UnoCSS from 'unocss/vite';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig((ctx) => {
 	return {
 		boot: [
+			// 'pinia',
 			'unocss',
+			'api-rest',
 			'apollo',
 			'server-response-listener',
 			'formkit',
-			'pinia',
+
 			'introspection',
 			'middleware',
 			'i18n',
@@ -128,7 +130,6 @@ export default defineConfig((ctx) => {
 						'src/config',
 						'src/graphql',
 						'src/services',
-						'src/router/index',
 
 						// // Auto imports dentro de módulos feature
 						// 'src/modules/*/composables',
@@ -329,7 +330,7 @@ export default defineConfig((ctx) => {
 			builder: {
 				// https://www.electron.build/configuration/configuration
 
-				appId: 'frontend-fdn-quasar',
+				appId: 'frontend',
 			},
 		},
 

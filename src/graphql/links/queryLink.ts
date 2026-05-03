@@ -7,8 +7,8 @@ export function createQueryLink() {
       // Object.keys(operation.variables).includes("id")
     ) {
       const temp = operation.query.definitions[0].selectionSet.selections;
-      const temp2 = temp.filter(
-        (i) => i.arguments.filter((i) => i.name.value == "id").length,
+      const temp2 = temp.find(
+        (i) => i.arguments.find((i) => i.name.value == "id").length,
         // && i.selectionSet.selections.filter((i) => i.name.value == "collection").length == 0,
       );
       if (temp2.length) {

@@ -1,5 +1,5 @@
 {
-  "name": "frontend-fdn-quasar",
+  "name": "frontend",
   "version": "0.0.1",
   "description": "A Quasar Project",
   "productName": "Quasar App",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/client": "^4.0.9",
     "@formkit/addons": "^1.7.2",
+    "@formkit/utils": "^2.0.0",
     "@formkit/vue": "^1.7.2",
     "@kitql/helpers": "^0.8.13",
     "@quasar/extras": "^1.16.4",
@@ -55,5 +56,6 @@
     "node": "^28 || ^26 || ^24 || ^22 || ^20",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

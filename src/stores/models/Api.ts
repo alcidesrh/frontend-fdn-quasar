@@ -212,7 +212,7 @@ export default class Api {
   }
   static getMutationVariables(operation) {
     const temp = {};
-    mutations.value[operation].args.forEach((v) => {
+    types.value[operation].args.forEach((v) => {
       if (v.type.ofType) {
         if (v.type.kind == "NON_NULL") {
           temp[v.name] = { type: v.type.ofType.name + "!" };

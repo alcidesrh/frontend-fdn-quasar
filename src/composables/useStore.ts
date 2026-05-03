@@ -183,12 +183,13 @@ export function createStore<Type>(
     }).onOk(() => {
       const fields = { agnostic: ["id"] };
       const temp = Array.isArray(items) ? items : [items];
+      cl(temp);
       apollo
         .mutate({
           operation: "deleteAgnostic",
           variables: {
             resource: entity.value.name,
-            ids: temp.map((i: any) => i._id),
+            ids: temp.map((i: any) => getIdFromIri(i.id)),
           },
           fields: [fields],
         })

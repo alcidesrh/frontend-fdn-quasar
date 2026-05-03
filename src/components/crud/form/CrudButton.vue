@@ -1,52 +1,45 @@
 <template>
-  <div class="h-fit w-full flex justify-end gap-5 crud-button-wraper">
-    <slot name="CrudSubmitButton">
-      <q-btn-dropdown
-        split
-        outline
-        class=""
-        label="Guardar"
-        icon="sym_o_save"
-        type="submit"
-      >
-        <q-list class="crud-button-wraper">
-          <q-item clickable v-close-popup @click="$emit('submit', 'reset')">
-            <q-item-section side>
-              <icon name="add" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Guardar & Agregar Nuevo</q-item-label>
-            </q-item-section>
-          </q-item>
+	<div class="h-fit w-full flex justify-end gap-5 crud-button-wraper">
+		<slot name="CrudSubmitButton">
+			<q-btn-dropdown split outline class="" label="Guardar" icon="sym_o_save" type="submit">
+				<q-list class="crud-button-wraper">
+					<q-item clickable v-close-popup @click="$emit('submit', 'reset')">
+						<q-item-section side>
+							<icon name="add" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label>Guardar & Agregar Nuevo</q-item-label>
+						</q-item-section>
+					</q-item>
 
-          <q-item clickable v-close-popup @click="$emit('cancel')">
-            <q-item-section side>
-              <icon name="cancel" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Cancelar</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item clickable v-close-popup @click="$emit('delete')">
-            <q-item-section side>
-              <icon name="delete" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Eliminar</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
-    </slot>
-  </div>
+					<q-item clickable v-close-popup @click="$emit('cancel')">
+						<q-item-section side>
+							<icon name="cancel" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label>Cancelar</q-item-label>
+						</q-item-section>
+					</q-item>
+					<q-item clickable v-close-popup @click="$emit('delete')">
+						<q-item-section side>
+							<icon name="delete" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label>Eliminar</q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</q-btn-dropdown>
+		</slot>
+	</div>
 </template>
 
 <script setup lang="ts">
-const { edit = false } = defineProps<{ edit: boolean }>();
+	const { edit = false } = defineProps<{ edit: boolean }>()
 
-const emit = defineEmits(["cancel", "delete", "submit"]);
+	const emit = defineEmits(['cancel', 'delete', 'submit'])
 
-function submit() {
-  emit("submit");
-}
+	function submit() {
+		emit('submit')
+	}
 </script>

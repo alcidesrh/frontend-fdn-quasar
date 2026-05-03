@@ -1,6 +1,5 @@
 // src/graphql/links/loadingLink.ts
 import { ApolloLink, Observable } from "@apollo/client/core";
-import { useLoadingStore } from "src/stores/loading";
 import { LoadingBar } from "quasar";
 import { watch } from "vue";
 
@@ -15,9 +14,7 @@ export function createLoadingLink(pinia) {
   return new ApolloLink((operation, forward) => {
     loadingStore.value = useLoadingStore();
     const ctx = operation.getContext() as Ctx;
-
     if (ctx.noLoading) return forward(operation);
-
     const key =
       ctx.loadingKey ||
       operation.operationName ||

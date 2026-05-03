@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from "vue-router";
 import adminRoutes from "./admin";
-import userRoutes from "./user";
 import roleRoutes from "./role";
 import testRoutes from "./test";
+import userRoutes from "./user";
 
 const routes: RouteRecordRaw[] = [
   {

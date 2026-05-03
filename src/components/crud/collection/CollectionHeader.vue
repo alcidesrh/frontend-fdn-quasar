@@ -7,23 +7,30 @@
       :class="['sortable' ? col.sortable : '']"
     >
       <div class="flex w-full flex-nowrap" @click.stop>
-        <div class="u-text-0 ml-15px w-fit" :class="[col?.class]">
+        <div
+          class="u-text-0 w-fit"
+          :class="[
+            col?.class,
+            col.sortable ? 'ml-15px' : '',
+            i == 0 ? 'ml-10px!' : '',
+          ]"
+        >
           {{ col?.label || col.name }}
         </div>
         <div class="w-fit ml-10px" @click.stop="">
           <icon
             fill
             v-if="i > 0"
-            name="arrow_back_ios_new"
-            class="text-12px lg:text-14px font-200 text-surface-6 hover:(text-surface-7 font-700) rosdtate-90"
+            name="arrow_back_2"
+            class="text-12px lg:text-16px font-700 text-surface-4 hover:(text-surface-7 font-700) rosdtate-90"
             @click.stop="$emit('orderColumns', i, 'left')"
           />
           <icon
             fill
             v-if="i + 1 < data.cols.length"
-            class="text-12px lg:text-14px ml-5px font-200 text-surface-6 hover:(text-surface-7 font-700) rosdtsate-45"
-            name="arrow_forward_ios"
-            @click.stop="$emit('orderColumns', i, 'rigth')"
+            class="text-12px rotate-180deg lg:text-16px font-700 text-surface-4 hover:(text-surface-7 font-700) rosdtsate-45"
+            name="arrow_back_2"
+            @click.stop="$emit('orderColumns', i, 'right')"
           />
         </div>
       </div>
@@ -46,6 +53,7 @@
           v-if="col.schema"
           :schema="col.schema"
           :data="{ clear }"
+          :store="store"
         />
       </div>
     </q-th>
@@ -61,8 +69,6 @@
 </template>
 
 <script setup lang="ts">
-const store = getStore();
-
 interface Props {
   data: any;
   selectionMode: Boolean;
@@ -72,4 +78,9 @@ interface Props {
 const { clear, data, selectionMode } = defineProps<Props>();
 
 const emit = defineEmits(["removeMultiple", "orderColumns"]);
+
+const store = ref();
+onBeforeMount(async () => {
+  store.value = await getStore();
+});
 </script>

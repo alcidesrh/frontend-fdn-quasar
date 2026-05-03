@@ -11,5 +11,6 @@ export default {
     "pagination",
     "formSchema",
     "options",
+    "config",
   ],
 };

@@ -25,7 +25,6 @@
 import { useTimeoutFn } from "@vueuse/core";
 
 const loadingStore = useLoadingStore();
-
 const props = defineProps({
   context: Object,
 });
@@ -51,6 +50,10 @@ const { start, isPending, stop } = useTimeoutFn(
     }
 
     await props.context.node.input(value);
+    if (props.context.store) {
+      props.context.store.collection();
+    }
+
     startError();
   },
   1000,
@@ -107,5 +110,8 @@ async function reset() {
   loading.value = false;
   typing.value = null;
   await props.context.node.input(null);
+  if (props.context.store) {
+    props.context.store.collection();
+  }
 }
 </script>

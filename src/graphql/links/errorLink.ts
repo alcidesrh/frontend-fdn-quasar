@@ -1,16 +1,11 @@
-import { ErrorLink } from "@apollo/client/link/error";
-import { ErrorLink } from "@apollo/client/link/error";
-import { ApolloLink } from "@apollo/client/core";
 import {
-  ServerError,
   CombinedGraphQLErrors,
+  ServerError,
   ServerParseError,
 } from "@apollo/client";
+import { ErrorLink } from "@apollo/client/link/error";
 export function createErrorLink() {
   return new ErrorLink(({ error, networkError, operation, forward }) => {
-    const store = useLoadingStore();
-    const { loading } = storeToRefs(store);
-
     let temp;
     if (ServerError.is(error)) {
       if (error.statusCode == 401) {
@@ -55,7 +50,7 @@ export function createErrorLink() {
           } else {
             temp = {
               caption:
-                "GraphQL error from /home/alcides/frontend-fdn-quasar/src/graphql/apollo-client.ts",
+                "GraphQL error from /home/alcides/frontend/src/graphql/apollo-client.ts",
               message:
                 message +
                 " " +
@@ -75,17 +70,10 @@ export function createErrorLink() {
     } else {
       temp = {
         caption:
-          "GraphQL error from /home/alcides/frontend-fdn-quasar/src/graphql/apollo-client.ts",
+          "GraphQL error from /home/alcides/frontend/src/graphql/apollo-client.ts",
         message: "Problema con la conexión.",
-      }; //loading.value.value = c//loading.value.value = q//loading.value.value = 0;
+      };
     }
-    // decrease();
     if (temp) merror(temp);
-    // console.error(`[Error]: ${error}`);
-
-    // return forward(operation).finally(() => {
-    //   loading.value.m--;
-    //   loading.value.g--;
-    // });
   });
 }

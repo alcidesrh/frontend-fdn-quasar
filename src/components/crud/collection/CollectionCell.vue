@@ -10,7 +10,7 @@
       :class="column.schema ? `highlight-${index}` : ''"
       :data-property="column.name"
     >
-      {{ data._id }}
+      {{ getIdFromIri(data.id) }}
     </span>
 
     <span v-else-if="data[column.name]?.label">

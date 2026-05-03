@@ -72,7 +72,6 @@
                     <span :class="{ 'text-red': editing.list }">Lista</span>
                   </q-tab>
                   <q-tab name="form">
-                    {{ editing.form }}
                     <q-badge
                       v-if="editing.form"
                       floating

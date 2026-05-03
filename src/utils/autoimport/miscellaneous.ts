@@ -1,22 +1,21 @@
-import type { Collection } from "@/types/collection";
+import { Log } from "@kitql/helpers";
 import voca from "voca";
-import { green, Log, yellow } from "@kitql/helpers";
 
-export const logSQL = new Log("Console Log", {
+export const cl = new Log("Console Log", {
   levelsToShow: 3,
   withDate: "time",
 });
 
-export const cl = (...data) => {
-  console.log(data);
-  // logSQL.info(data);
+export const cl2 = (...data) => {
+  // console.debug(data);
+  cl.info(data);
 };
 
 export const cle = (...data) => {
-  logSQL.error(...data);
+  cl.error(...data);
 };
 export const cls = (...data) => {
-  logSQL.success(...data);
+  cl.success(...data);
 };
 
 export const str = voca;

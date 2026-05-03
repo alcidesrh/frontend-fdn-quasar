@@ -1,7 +1,7 @@
 {
-  "editor.bracketPairColorization.enabled": true,
+  "editor.bracketPairColorization.enabled": false,
   "editor.guides.bracketPairs": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
   // ========== Visuals ==========
   // ==========  Global Level Config, needs to put in User Settings ==========
   "unocss.exclude": [
